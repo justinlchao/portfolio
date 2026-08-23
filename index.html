@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justin Chao — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --font-system: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --paper: #F8F8F8;
+    --ink: #14151A;
+    --ink-soft: #4A4C55;
+    --mute: #8A8D93;
+    --blue: #3355FF;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html, body{
+    height:100%;
+    overflow:hidden; /* no real scrolling — the stage is fully fixed and self-driven */
+  }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-system);
+    cursor:auto;
+  }
+
+  .mono{ font-family:'JetBrains Mono', monospace; }
+
+  /* STAGE — fixed, fills the viewport, never scrolls */
+  .stack-stage{
+    position:fixed;
+    inset:0;
+  }
+
+  .stack-card{
+    position:absolute;
+    top:38%;
+    left:50%;
+    width:min(900px, 92vw);
+    height:min(420px, 58vh);
+    border-radius:20px;
+    background:#FFFFFF;
+    transform-origin:center center;
+    will-change:transform, opacity, filter;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:32px;
+  }
+
+  .stack-card .card-tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--blue);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:8px;
+  }
+  .stack-card h3{
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:-.01em;
+  }
+
+  /* HERO CARD — floating name over a ripple canvas */
+  .hero-card{
+    overflow:hidden;
+    justify-content:center;
+    align-items:center;
+    padding:0;
+  }
+  .video-frame{
+    position:absolute;
+    inset:0;
+  }
+  .card-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .video-caption-gloss{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:34%;
+    background:linear-gradient(to top, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 40%, rgba(255,255,255,0) 75%);
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-start;
+    pointer-events:none;
+  }
+  .video-caption{
+    text-align:left;
+    padding:0 34px 30px;
+    max-width:74%;
+  }
+  .video-caption-title{
+    font-family:var(--font-system);
+    font-weight:700;
+    font-size:26px;
+    color:var(--ink);
+    letter-spacing:-.01em;
+    text-shadow:0 1px 8px rgba(255,255,255,.55), 0 1px 2px rgba(255,255,255,.4);
+  }
+  .video-caption-sub{
+    font-family:var(--font-system);
+    font-weight:500;
+    font-size:14.5px;
+    color:#4A4C55;
+    margin-top:5px;
+    line-height:1.4;
+    text-shadow:0 1px 6px rgba(255,255,255,.5), 0 1px 2px rgba(255,255,255,.35);
+  }
+  .ripple-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border-radius:inherit;
+    display:block;
+  }
+  .hero-content{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    pointer-events:none;
+  }
+  .floating-name{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .floating-name .letter{
+    display:inline-block;
+    font-weight:700;
+    font-size:clamp(38px, 6vw, 68px);
+    letter-spacing:-.01em;
+    color:lab(76.6045% -40.9406 -29.6231);
+    will-change:transform;
+    margin:0 6px;
+  }
+  .floating-name .space{ width:1.1em; }
+  .hero-greeting{
+    margin-bottom:6px;
+    font-family:var(--font-system);
+    font-weight:200;
+    font-size:clamp(16px, 2vw, 22px);
+    letter-spacing:.03em;
+    color:var(--ink-soft);
+  }
+  .hero-tagline{
+    margin-top:14px;
+    font-family:var(--font-system);
+    font-weight:200;
+    font-size:clamp(14px, 1.6vw, 18px);
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<div class="stack-stage" id="stackStage">
+  <article class="stack-card hero-card" data-index="0">
+    <canvas class="ripple-canvas" id="rippleCanvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-greeting">hi, im</div>
+      <div class="floating-name" id="floatingName">
+        <span class="letter">J</span><span class="letter">u</span><span class="letter">s</span><span class="letter">t</span><span class="letter">i</span><span class="letter">n</span>
+        <span class="space"></span>
+        <span class="letter">C</span><span class="letter">h</span><span class="letter">a</span><span class="letter">o</span>
+      </div>
+      <div class="hero-tagline">a designer that dives deep</div>
+    </div>
+  </article>
+  <article class="stack-card hero-card" data-index="1">
+    <div class="video-frame">
+      <video class="card-video" autoplay muted loop playsinline poster="card2_poster.jpg">
+        <source src="card2_walkthrough.mp4" type="video/mp4">
+      </video>
+      <div class="video-caption-gloss">
+        <div class="video-caption">
+          <div class="video-caption-title">Y Stem and Chess</div>
+          <div class="video-caption-sub">Reimagined a legacy system for a non-profit organization</div>
+        </div>
+      </div>
+    </div>
+  </article>
+  <article class="stack-card" data-index="2"></article>
+  <article class="stack-card" data-index="3"></article>
+  <article class="stack-card" data-index="4"></article>
+</div>
+
+<script>
+  const cards = Array.from(document.querySelectorAll('.stack-card'));
+  const N = cards.length;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const STEP_DURATION = 800; // ms
+
+  let displayPos = 0; // continuous, unbounded — increases/decreases forever as the deck cycles
+  let animating = false;
+
+  function easeInOutCubic(t){
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  // color stops: front (white) -> depth 1 (grey) -> depth 2 (darker grey)
+  const COLOR_STOPS = [
+    [0xFF, 0xFF, 0xFF],
+    [0xEC, 0xEC, 0xEC],
+    [0x1A, 0x1A, 0x1A],
+  ];
+  function colorForDepth(depth){
+    const d = Math.max(0, Math.min(depth, 2));
+    const i = Math.min(Math.floor(d), 1); // segment index: 0 (white->grey1) or 1 (grey1->grey2)
+    const t = d - i;
+    const a = COLOR_STOPS[i], b = COLOR_STOPS[i + 1];
+    const r = Math.round(a[0] + (b[0] - a[0]) * t);
+    const g = Math.round(a[1] + (b[1] - a[1]) * t);
+    const bl = Math.round(a[2] + (b[2] - a[2]) * t);
+    return `rgb(${r}, ${g}, ${bl})`;
+  }
+
+  function render(){
+    cards.forEach((card, j) => {
+      const raw = displayPos - j;
+      // wrap into [0, N) so the deck cycles infinitely instead of running out of cards
+      const wrapped = ((raw % N) + N) % N;
+
+      let translateY, scale, scaleX, opacity, grayscale, rotate = 0, bg, z;
+
+      if (wrapped < 1) {
+        // this card is currently front-and-throwing
+        const m = wrapped;
+        const FADE_START = 0.6;
+        const fadeM = m < FADE_START ? 0 : (m - FADE_START) / (1 - FADE_START);
+        translateY = -m * 60;
+        scale = 1 - m * 0.15;
+        scaleX = scale;
+        opacity = 1 - fadeM;
+        grayscale = fadeM * 100;
+        rotate = m * 8;
+        bg = colorForDepth(0); // white, matching the depth-0 end of the gradient
+        z = 3000; // always renders above the waiting stack while it's leaving
+      } else {
+        // waiting in the stack behind — position/scale freeze once capped at depth 3,
+        // acting as a fixed anchor. Always fully opaque: identical cards further back
+        // sit perfectly hidden underneath it until it's their turn to move forward.
+        const rawDepth = N - wrapped;
+        const depth = Math.min(rawDepth, 2); // 3 cards total visible: front + 2 behind
+        translateY = depth * 4.5;
+        scale = 1 - depth * 0.045;
+        scaleX = scale * (1 - depth * 0.06); // extra horizontal shrink — corners peek out more distinctly
+        opacity = 1;
+        grayscale = 0;
+        bg = colorForDepth(depth); // continuous — no snapping between color stops
+        z = 2000 - Math.round(depth * 100); // shallower depth (closer to front) stacks on top
+      }
+
+      card.style.transform = `translate(-50%, calc(-50% + ${translateY}vh)) rotate(${rotate}deg) scaleX(${scaleX}) scaleY(${scale})`;
+      card.style.backgroundColor = bg;
+      card.style.opacity = opacity;
+      card.style.filter = `grayscale(${grayscale}%)`;
+      card.style.zIndex = z;
+    });
+  }
+
+  function animateTo(target, duration){
+    const startVal = displayPos;
+    const delta = target - startVal;
+    const startTime = performance.now();
+    animating = true;
+
+    function frame(now){
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = easeInOutCubic(t);
+      displayPos = startVal + delta * eased;
+      render();
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        displayPos = target;
+        render();
+        animating = false;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function step(dir){
+    if (animating) return;
+    const target = Math.round(displayPos) + dir;
+    if (reduceMotion) {
+      displayPos = target;
+      render();
+    } else {
+      animateTo(target, STEP_DURATION);
+    }
+  }
+
+  window.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    step(e.deltaY > 0 ? 1 : -1);
+  }, { passive: false });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); step(1); }
+    else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); step(-1); }
+  });
+
+  let touchStartY = null;
+  window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (touchStartY === null) return;
+    const dy = touchStartY - e.touches[0].clientY;
+    if (Math.abs(dy) < 30) return;
+    e.preventDefault();
+    step(dy > 0 ? 1 : -1);
+    touchStartY = null;
+  }, { passive: false });
+
+  // ---- Hero card: floating letters over a fishtank of rising bubbles ----
+  const heroCanvas = document.getElementById('rippleCanvas');
+  const heroName = document.getElementById('floatingName');
+
+  if (heroCanvas && heroName && !reduceMotion) {
+    const ctx = heroCanvas.getContext('2d');
+
+    function resizeHeroCanvas(){
+      const rect = heroCanvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      heroCanvas.width = Math.max(1, Math.round(rect.width * dpr));
+      heroCanvas.height = Math.max(1, Math.round(rect.height * dpr));
+    }
+    resizeHeroCanvas();
+    window.addEventListener('resize', resizeHeroCanvas);
+
+    let bubbles = [];
+    function spawnBubble(){
+      const w = heroCanvas.width, h = heroCanvas.height;
+      bubbles.push({
+        x: Math.random() * w,
+        y: h + 10,
+        r: (2 + Math.random() * 4) * (w / 400), // scale roughly with canvas size
+        speed: (18 + Math.random() * 22) * (h / 400),
+        wobbleAmp: 4 + Math.random() * 8,
+        wobbleSpeed: 1 + Math.random() * 1.2,
+        wobblePhase: Math.random() * Math.PI * 2,
+        life: 0,
+        popping: false,
+        popStart: 0,
+      });
+    }
+
+    let cursorX = null, cursorY = null;
+    heroCanvas.addEventListener('mousemove', (e) => {
+      const rect = heroCanvas.getBoundingClientRect();
+      const scaleX = heroCanvas.width / rect.width;
+      const scaleY = heroCanvas.height / rect.height;
+      cursorX = (e.clientX - rect.left) * scaleX;
+      cursorY = (e.clientY - rect.top) * scaleY;
+    });
+    heroCanvas.addEventListener('mouseleave', () => { cursorX = null; cursorY = null; });
+
+    const POP_DURATION = 0.22; // seconds
+    heroCanvas.addEventListener('click', (e) => {
+      const rect = heroCanvas.getBoundingClientRect();
+      const scaleX = heroCanvas.width / rect.width;
+      const scaleY = heroCanvas.height / rect.height;
+      const cx = (e.clientX - rect.left) * scaleX;
+      const cy = (e.clientY - rect.top) * scaleY;
+      const now = performance.now() / 1000;
+      // pop the nearest hit bubble rather than every overlapping one — feels more precise
+      let closest = null, closestDist = Infinity;
+      bubbles.forEach(b => {
+        if (b.popping) return;
+        const dx = b.x - cx, dy = b.y - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist <= b.r * 1.6 && dist < closestDist) { closest = b; closestDist = dist; }
+      });
+      if (closest) { closest.popping = true; closest.popStart = now; }
+    });
+
+    let lastSpawn = -Infinity;
+    const SPAWN_INTERVAL = 0.55; // seconds, with jitter applied at spawn time
+    let nextInterval = SPAWN_INTERVAL;
+    let lastFrameTime = null;
+
+    function drawBubble(b, t){
+      if (b.popping) {
+        const popT = Math.min((t - b.popStart) / POP_DURATION, 1);
+        const ringR = b.r * (1 + popT * 1.8);
+        const alpha = (1 - popT) * 0.6;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(190,210,225,${alpha})`;
+        ctx.lineWidth = Math.max(1, b.r * 0.25 * (1 - popT * 0.6));
+        ctx.arc(b.x, b.y, ringR, 0, Math.PI * 2);
+        ctx.stroke();
+        return;
+      }
+      const alphaIn = Math.min(b.life / 0.4, 1);
+      const alphaOut = Math.min((heroCanvas.height - b.y) / 40, 1); // fade as it nears the top
+      const alpha = Math.min(alphaIn, alphaOut) * 0.55;
+      const grad = ctx.createRadialGradient(
+        b.x - b.r * 0.3, b.y - b.r * 0.3, b.r * 0.1,
+        b.x, b.y, b.r
+      );
+      grad.addColorStop(0, `rgba(250,253,255,${alpha})`);
+      grad.addColorStop(0.6, `rgba(205,228,245,${alpha * 0.6})`);
+      grad.addColorStop(1, `rgba(160,190,215,${alpha * 0.2})`);
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+      // small highlight for a glassy look
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255,255,255,${alpha * 0.8})`;
+      ctx.arc(b.x - b.r * 0.35, b.y - b.r * 0.35, b.r * 0.25, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    const letters = Array.from(heroName.querySelectorAll('.letter'));
+    const letterState = letters.map(el => ({
+      el,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.35 + Math.random() * 0.15,
+      ampY: 4 + Math.random() * 2,
+      ampX: 1.2 + Math.random() * 1,
+      ampR: 1 + Math.random() * 1.2,
+      dispX: 0, dispY: 0, // cursor-pushed displacement, in canvas pixel space
+      velX: 0, velY: 0,
+    }));
+
+    const PUSH_RADIUS = 70;   // canvas px — how close the cursor needs to be to shove a letter
+    const PUSH_STRENGTH = 900; // how hard the shove is
+    const SPRING_K = 90;       // how strongly it's pulled back to its resting spot
+    const SPRING_DAMPING = 11; // higher = settles faster, lower = more bounce/overshoot
+
+    function heroFrame(now){
+      const t = now / 1000;
+      if (lastFrameTime === null) lastFrameTime = t;
+      const dt = Math.min(t - lastFrameTime, 0.05);
+      lastFrameTime = t;
+
+      const canvasRect = heroCanvas.getBoundingClientRect();
+      const scaleX = canvasRect.width > 0 ? heroCanvas.width / canvasRect.width : 1;
+      const scaleY = canvasRect.height > 0 ? heroCanvas.height / canvasRect.height : 1;
+
+      letterState.forEach(s => {
+        const bobY = Math.sin(t * s.speed + s.phase) * s.ampY;
+        const bobX = Math.sin(t * s.speed * 0.7 + s.phase + 1.3) * s.ampX;
+        const rot = Math.sin(t * s.speed * 0.5 + s.phase) * s.ampR;
+
+        // cursor moving through the water shoves nearby letters off course
+        if (cursorX !== null && canvasRect.width > 0) {
+          const r = s.el.getBoundingClientRect();
+          const lx = (r.left + r.width / 2 - canvasRect.left) * scaleX;
+          const ly = (r.top + r.height / 2 - canvasRect.top) * scaleY;
+          const dx = lx - cursorX, dy = ly - cursorY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < PUSH_RADIUS && dist > 0.001) {
+            const force = (1 - dist / PUSH_RADIUS) * PUSH_STRENGTH;
+            s.velX += (dx / dist) * force * dt;
+            s.velY += (dy / dist) * force * dt;
+          }
+        }
+
+        // spring pulls the letter back to its natural resting position — settles naturally, no snapping
+        s.velX += (-SPRING_K * s.dispX - SPRING_DAMPING * s.velX) * dt;
+        s.velY += (-SPRING_K * s.dispY - SPRING_DAMPING * s.velY) * dt;
+        s.dispX += s.velX * dt;
+        s.dispY += s.velY * dt;
+
+        const dispXcss = s.dispX / scaleX;
+        const dispYcss = s.dispY / scaleY;
+
+        s.el.style.transform = `translate(${bobX + dispXcss}px, ${bobY + dispYcss}px) rotate(${rot}deg)`;
+      });
+
+      if (canvasRect.width > 0) {
+        if (t - lastSpawn >= nextInterval) {
+          spawnBubble();
+          lastSpawn = t;
+          nextInterval = SPAWN_INTERVAL + (Math.random() - 0.5) * 0.4;
+        }
+
+        ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+        bubbles.forEach(b => {
+          if (!b.popping) {
+            b.life += dt;
+            b.y -= b.speed * dt;
+            b.x += Math.sin(t * b.wobbleSpeed + b.wobblePhase) * b.wobbleAmp * dt;
+          }
+          drawBubble(b, t);
+        });
+        bubbles = bubbles.filter(b => b.popping ? (t - b.popStart) < POP_DURATION : b.y > -20);
+      }
+
+      requestAnimationFrame(heroFrame);
+    }
+    requestAnimationFrame(heroFrame);
+  }
+
+  render();
+</script>
+
+</body>
+</html>
