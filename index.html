@@ -91,6 +91,12 @@
   .card-video.video-contain{
     object-fit:contain;
   }
+  .video-depth-overlay{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:0;
+  }
   .video-caption-gloss{
     position:absolute;
     left:44px; bottom:44px;
@@ -251,6 +257,7 @@
       <video class="card-video" autoplay muted loop playsinline>
         <source src="card2_walkthrough.mp4" type="video/mp4">
       </video>
+      <div class="video-depth-overlay"></div>
       <div class="video-caption-gloss">
         <div class="video-caption">
           <div class="video-caption-title-row">
@@ -271,6 +278,7 @@
       <video class="card-video video-contain" autoplay muted loop playsinline>
         <source src="uplift_walkthrough.mp4" type="video/mp4">
       </video>
+      <div class="video-depth-overlay"></div>
       <div class="video-caption-gloss">
         <div class="video-caption purple-variant">
           <div class="video-caption-title-row">
@@ -306,6 +314,9 @@
 
 <script>
   const cards = Array.from(document.querySelectorAll('.stack-card'));
+  const cardVideos = cards.map(card => card.querySelector('video'));
+  const cardOverlays = cards.map(card => card.querySelector('.video-depth-overlay'));
+  let previousFrontIndex = null;
   const N = cards.length;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const STEP_DURATION = 800; // ms
@@ -340,7 +351,7 @@
       // wrap into [0, N) so the deck cycles infinitely instead of running out of cards
       const wrapped = ((raw % N) + N) % N;
 
-      let translateY, scale, scaleX, opacity, grayscale, rotate = 0, bg, z;
+      let translateY, scale, scaleX, opacity, grayscale, rotate = 0, bg, z, overlayOpacity;
 
       if (wrapped < 1) {
         // this card is currently front-and-throwing
@@ -355,6 +366,7 @@
         rotate = m * 8;
         bg = colorForDepth(0); // white, matching the depth-0 end of the gradient
         z = 3000; // always renders above the waiting stack while it's leaving
+        overlayOpacity = fadeM; // video shows normally while front; fades to solid color as it throws away
       } else {
         // waiting in the stack behind — position/scale freeze once capped at depth 3,
         // acting as a fixed anchor. Always fully opaque: identical cards further back
@@ -368,6 +380,7 @@
         grayscale = 0;
         bg = colorForDepth(depth); // continuous — no snapping between color stops
         z = 2000 - Math.round(depth * 100); // shallower depth (closer to front) stacks on top
+        overlayOpacity = Math.min(1, depth / 0.4); // once behind the front, quickly covers the video with matching grey/black
       }
 
       card.style.transform = `translate(-50%, calc(-50% + ${translateY}vh)) rotate(${rotate}deg) scaleX(${scaleX}) scaleY(${scale})`;
@@ -375,7 +388,30 @@
       card.style.opacity = opacity;
       card.style.filter = `grayscale(${grayscale}%)`;
       card.style.zIndex = z;
+
+      const overlay = cardOverlays[j];
+      if (overlay) {
+        overlay.style.backgroundColor = bg;
+        overlay.style.opacity = overlayOpacity;
+      }
     });
+
+    // only play a card's video once it's actually the settled front card —
+    // keeps videos from silently looping in the background and guarantees
+    // you see each one's intro from the start
+    const frontIndex = ((Math.round(displayPos) % N) + N) % N;
+    if (frontIndex !== previousFrontIndex) {
+      if (previousFrontIndex !== null) {
+        const prevVideo = cardVideos[previousFrontIndex];
+        if (prevVideo) prevVideo.pause();
+      }
+      const newVideo = cardVideos[frontIndex];
+      if (newVideo) {
+        newVideo.currentTime = 0;
+        newVideo.play().catch(() => {});
+      }
+      previousFrontIndex = frontIndex;
+    }
   }
 
   function animateTo(target, duration){
