@@ -380,7 +380,8 @@
     });
 
     // only play a card's video once it's actually the settled front card —
-    // otherwise it'd already be mid-loop (and past its intro) by the time you reach it
+    // keeps videos from silently looping in the background and guarantees
+    // you see each one's intro from the start
     const frontIndex = ((Math.round(displayPos) % N) + N) % N;
     if (frontIndex !== previousFrontIndex) {
       if (previousFrontIndex !== null) {
