@@ -248,7 +248,7 @@
   </article>
   <article class="stack-card hero-card" data-index="1">
     <div class="video-frame">
-      <video class="card-video" autoplay muted loop playsinline poster="card2_poster.jpg">
+      <video class="card-video" muted loop playsinline poster="card2_poster.jpg">
         <source src="card2_walkthrough.mp4" type="video/mp4">
       </video>
       <div class="video-caption-gloss">
@@ -268,7 +268,7 @@
   </article>
   <article class="stack-card hero-card" data-index="2">
     <div class="video-frame">
-      <video class="card-video video-contain" autoplay muted loop playsinline poster="uplift_poster.jpg">
+      <video class="card-video video-contain" muted loop playsinline poster="uplift_poster.jpg">
         <source src="uplift_walkthrough.mp4" type="video/mp4">
       </video>
       <div class="video-caption-gloss">
@@ -306,6 +306,8 @@
 
 <script>
   const cards = Array.from(document.querySelectorAll('.stack-card'));
+  const cardVideos = cards.map(card => card.querySelector('video'));
+  let previousFrontIndex = null;
   const N = cards.length;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const STEP_DURATION = 800; // ms
@@ -376,6 +378,22 @@
       card.style.filter = `grayscale(${grayscale}%)`;
       card.style.zIndex = z;
     });
+
+    // only play a card's video once it's actually the settled front card —
+    // otherwise it'd already be mid-loop (and past its intro) by the time you reach it
+    const frontIndex = ((Math.round(displayPos) % N) + N) % N;
+    if (frontIndex !== previousFrontIndex) {
+      if (previousFrontIndex !== null) {
+        const prevVideo = cardVideos[previousFrontIndex];
+        if (prevVideo) prevVideo.pause();
+      }
+      const newVideo = cardVideos[frontIndex];
+      if (newVideo) {
+        newVideo.currentTime = 0;
+        newVideo.play().catch(() => {});
+      }
+      previousFrontIndex = frontIndex;
+    }
   }
 
   function animateTo(target, duration){
