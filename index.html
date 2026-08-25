@@ -575,7 +575,7 @@
         const ringR = b.r * (1 + popT * 1.8);
         const alpha = (1 - popT) * 0.6;
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(190,210,225,${alpha})`;
+        ctx.strokeStyle = `rgba(0,164,255,${alpha})`;
         ctx.lineWidth = Math.max(1, b.r * 0.25 * (1 - popT * 0.6));
         ctx.arc(b.x, b.y, ringR, 0, Math.PI * 2);
         ctx.stroke();
@@ -589,8 +589,8 @@
         b.x, b.y, b.r
       );
       grad.addColorStop(0, `rgba(250,253,255,${alpha})`);
-      grad.addColorStop(0.6, `rgba(205,228,245,${alpha * 0.6})`);
-      grad.addColorStop(1, `rgba(160,190,215,${alpha * 0.2})`);
+      grad.addColorStop(0.6, `rgba(0,164,255,${alpha * 0.65})`);
+      grad.addColorStop(1, `rgba(0,120,190,${alpha * 0.3})`);
       ctx.beginPath();
       ctx.fillStyle = grad;
       ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
