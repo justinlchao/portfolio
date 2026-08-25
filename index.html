@@ -429,8 +429,9 @@
         const m = wrapped;
         const FADE_START = 0.6;
         const fadeM = m < FADE_START ? 0 : (m - FADE_START) / (1 - FADE_START);
+        const heroRevealScale = 0.75 + 0.25 * stackRevealed; // center frame expands from center as it reveals
         translateY = -m * 60;
-        scale = 1 - m * 0.15;
+        scale = (1 - m * 0.15) * heroRevealScale;
         scaleX = scale;
         opacity = 1 - fadeM;
         grayscale = fadeM * 100;
@@ -444,8 +445,9 @@
         // sit perfectly hidden underneath it until it's their turn to move forward.
         const rawDepth = N - wrapped;
         const depth = Math.min(rawDepth, 2); // 3 cards total visible: front + 2 behind
-        translateY = depth * 4.5;
-        scale = (1 - depth * 0.045) * stackRevealed;
+        const revealSlide = (1 - stackRevealed) * 3; // starts slightly below resting spot, slides up into place
+        translateY = depth * 4.5 + revealSlide;
+        scale = 1 - depth * 0.045;
         scaleX = scale * (1 - depth * 0.06); // extra horizontal shrink — corners peek out more distinctly
         opacity = stackRevealed;
         grayscale = 0;
@@ -781,6 +783,9 @@
   }, 700);
 
   // reveal the stacked cards behind the hero once the letter entrance has mostly finished
+  function easeOutSmooth(t){
+    return 1 - Math.pow(1 - t, 3);
+  }
   function stackRevealFrame(now){
     const elapsed = now - pageStartTime;
     if (elapsed < STACK_REVEAL_DELAY) {
@@ -788,7 +793,7 @@
       return;
     }
     const progress = Math.min((elapsed - STACK_REVEAL_DELAY) / STACK_REVEAL_DURATION, 1);
-    stackRevealed = reduceMotion ? 1 : easeOutBackShared(progress);
+    stackRevealed = reduceMotion ? 1 : easeOutSmooth(progress);
     render();
     if (progress < 1) requestAnimationFrame(stackRevealFrame);
   }
