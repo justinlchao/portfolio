@@ -246,20 +246,30 @@
   }
   .floating-name .space{ width:.5em; }
   .hero-greeting{
+    display:inline-block;
     margin-bottom:20px;
     font-family:var(--font-system);
     font-weight:500;
     font-size:clamp(16px, 2vw, 22px);
     letter-spacing:.03em;
     color:var(--ink-soft);
+    background:var(--paper);
+    border:1px solid #E3E5EA;
+    border-radius:999px;
+    padding:6px 18px;
   }
   .hero-tagline{
+    display:inline-block;
     margin-top:34px;
     font-family:var(--font-system);
     font-weight:500;
     font-size:clamp(14px, 1.6vw, 18px);
     letter-spacing:.04em;
     color:var(--ink-soft);
+    background:var(--paper);
+    border:1px solid #E3E5EA;
+    border-radius:999px;
+    padding:6px 18px;
   }
 </style>
 </head>
@@ -281,7 +291,7 @@
         <span class="space"></span>
         <span class="letter">C</span><span class="letter">h</span><span class="letter short">a</span><span class="letter short">o</span>
       </div>
-      <div class="hero-tagline">a designer that dives deep</div>
+      <div class="hero-tagline">a designer that likes to dive deep</div>
     </div>
   </article>
   <article class="stack-card hero-card" data-index="1">
@@ -608,7 +618,7 @@
     }
 
     const letters = Array.from(heroName.querySelectorAll('.letter'));
-    const LETTER_COLORS = ['#3355FF', '#82C341', '#8B5CF6', '#FF6B4A', '#00B8A9', '#EC4899'];
+    const LETTER_COLORS = ['#3355FF', '#1E3FE0', '#5C7CFF', '#0D2BB8', '#7C93FF', '#274FE0'];
     letters.forEach((el, i) => { el.style.background = LETTER_COLORS[i % LETTER_COLORS.length]; });
     const letterState = letters.map((el, i) => ({
       el,
