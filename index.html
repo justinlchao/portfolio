@@ -383,7 +383,7 @@
   const pageStartTime = performance.now();
   let heroFrameOpacity = 0; // 0 = hero's own frame not visible yet, 1 = fully faded in — transitions first
   let stackRevealed = 0; // 0 = the two cards behind hidden, 1 = fully revealed — transitions after the hero frame
-  const HERO_FRAME_DELAY = 1300; // ms — waits for the letter entrance to mostly finish
+  const HERO_FRAME_DELAY = 2100; // ms — extra pause here gives time to read the text before frames pop in
   const HERO_FRAME_DURATION = 350;
   const STACK_REVEAL_DELAY = HERO_FRAME_DELAY + HERO_FRAME_DURATION; // starts right after the hero frame finishes
   const STACK_REVEAL_DURATION = 400;
