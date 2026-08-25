@@ -155,6 +155,12 @@
   .video-caption.brown-variant:hover{
     background:rgb(245,175,90);
   }
+  .video-caption.black-variant{
+    background:rgb(20,21,26);
+  }
+  .video-caption.black-variant:hover{
+    background:rgb(38,40,48);
+  }
   .video-caption-title-row{
     display:flex;
     align-items:center;
@@ -380,6 +386,25 @@
     </div>
     </div>
   </article>
+  <article class="stack-card hero-card" data-index="4">
+    <div class="video-caption-gloss">
+      <div class="video-caption black-variant">
+        <div class="video-caption-title-row">
+          <div class="video-caption-logo-box">
+            <svg class="video-caption-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="#14151A"/>
+            </svg>
+          </div>
+          <div class="video-caption-title">Thanks for visiting!</div>
+        </div>
+        <div class="video-caption-expand">
+          <div class="video-caption-expand-inner">
+            <div class="video-caption-sub">Get in touch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
 </div>
 
 <script>
@@ -472,7 +497,7 @@
       if (frameBg) {
         // hero card: drive the dedicated background layer instead — scales/fades independently of the letters and canvas
         card.style.backgroundColor = 'transparent';
-        frameBg.style.opacity = heroFrameOpacity;
+        frameBg.style.backgroundColor = bg; // same color the other cards use — white when front, greying out as it recedes
         frameBg.style.transform = `scale(${0.94 + 0.06 * heroFrameOpacity})`; // a tad of expand-from-center, without touching the letters
       } else {
         card.style.backgroundColor = bg;
