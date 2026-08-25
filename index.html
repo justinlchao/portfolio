@@ -34,6 +34,24 @@
   .mono{ font-family:'JetBrains Mono', monospace; }
 
   /* STAGE — fixed, fills the viewport, never scrolls */
+  .navbar{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:5000;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:44px;
+    padding:32px 48px;
+    pointer-events:none;
+  }
+  .navbar span{
+    font-family:var(--font-system);
+    font-weight:600;
+    font-size:24px;
+    color:var(--mute);
+    pointer-events:auto;
+  }
   .stack-stage{
     position:fixed;
     inset:0;
@@ -238,6 +256,12 @@
 </style>
 </head>
 <body>
+
+<nav class="navbar">
+  <span>About</span>
+  <span>Projects</span>
+  <span>Resume</span>
+</nav>
 
 <div class="stack-stage" id="stackStage">
   <article class="stack-card hero-card" data-index="0">
