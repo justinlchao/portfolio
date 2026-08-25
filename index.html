@@ -123,6 +123,116 @@
     pointer-events:none;
     opacity:0;
   }
+  .fortune-card{
+    overflow:hidden;
+    justify-content:center;
+    align-items:center;
+    padding:0;
+  }
+  .fortune-content{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    transform:scale(0.75);
+    opacity:0;
+  }
+  .fortune-content.pop-in{
+    animation:fortunePop 0.6s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes fortunePop{
+    0%{ transform:scale(0.75); opacity:0; }
+    100%{ transform:scale(1); opacity:1; }
+  }
+  .fortune-heading{
+    font-family:var(--font-system);
+    font-weight:600;
+    font-size:clamp(20px,3vw,28px);
+    color:#fff;
+    letter-spacing:-.01em;
+  }
+  .cookie-stage{
+    position:relative;
+    width:min(220px,45vw);
+    height:min(220px,45vw);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cookie-whole{
+    width:100%;
+    cursor:pointer;
+    animation:cookieFloat 3s ease-in-out infinite;
+    transition:transform .3s ease, filter .3s ease;
+    touch-action:manipulation;
+  }
+  .cookie-whole:hover{
+    transform:scale(1.08);
+    filter:brightness(1.1);
+  }
+  @keyframes cookieFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-12px); }
+  }
+  .cookie-half{
+    position:absolute;
+    top:0;
+    width:50%;
+    height:100%;
+    object-fit:contain;
+    opacity:0;
+    pointer-events:none;
+  }
+  .cookie-half.cookie-left{ left:0; object-position:right center; }
+  .cookie-half.cookie-right{ right:0; object-position:left center; }
+  .cookie-stage.broken .cookie-whole{ opacity:0; pointer-events:none; }
+  .cookie-stage.broken .cookie-half{ opacity:1; }
+  .cookie-stage.broken .cookie-half.cookie-left{ animation:crackLeft .6s ease-out forwards; }
+  .cookie-stage.broken .cookie-half.cookie-right{ animation:crackRight .6s ease-out forwards; }
+  @keyframes crackLeft{
+    0%{ transform:translateX(0) rotate(0deg); }
+    100%{ transform:translateX(-26px) rotate(-20deg); }
+  }
+  @keyframes crackRight{
+    0%{ transform:translateX(0) rotate(0deg); }
+    100%{ transform:translateX(26px) rotate(20deg); }
+  }
+  .fortune-result{
+    width:100%;
+    max-width:520px;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    background:#fefdfb;
+    border:1px solid #e5e5e5;
+    border-radius:8px;
+    padding:16px 28px;
+    animation:fortuneFadeUp .5s ease-out both;
+  }
+  .fortune-result.show{ display:flex; }
+  @keyframes fortuneFadeUp{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .fortune-text{
+    font-family:var(--font-system);
+    font-size:15px;
+    color:#1a1a1a;
+    margin:0;
+    text-align:center;
+    line-height:1.5;
+  }
+  .fortune-numbers{
+    display:flex;
+    gap:6px;
+    font-family:var(--font-system);
+    font-size:13px;
+    color:#666;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .fortune-numbers span{ color:#d97706; font-weight:600; }
   .video-caption-gloss{
     position:absolute;
     left:44px; bottom:44px;
@@ -380,7 +490,20 @@
     </div>
     </div>
   </article>
-  <article class="stack-card" data-index="4"></article>
+  <article class="stack-card hero-card fortune-card" data-index="4">
+    <div class="fortune-content" id="fortuneContent">
+      <h2 class="fortune-heading">Thanks for visiting!</h2>
+      <div class="cookie-stage" id="cookieStage">
+        <img id="cookieWhole" class="cookie-whole" src="https://i.imgur.com/scK351u.png" alt="Fortune cookie" />
+        <img id="cookieLeft" class="cookie-half cookie-left" src="https://i.imgur.com/7QPj7vS.png" alt="" />
+        <img id="cookieRight" class="cookie-half cookie-right" src="https://i.imgur.com/dqLBXRo.png" alt="" />
+      </div>
+      <div class="fortune-result" id="fortuneResult">
+        <p class="fortune-text" id="fortuneText"></p>
+        <div class="fortune-numbers" id="fortuneNumbers"></div>
+      </div>
+    </div>
+  </article>
 </div>
 
 <script>
@@ -448,7 +571,7 @@
         opacity = 1 - fadeM;
         grayscale = fadeM * 100;
         rotate = m * 8;
-        bg = `rgba(255,255,255,${heroFrameOpacity})`; // frame fades in from transparent — letters/bubbles are separate elements, never scaled, always full size
+        bg = (j === 4) ? 'rgb(196,30,45)' : `rgba(255,255,255,${heroFrameOpacity})`; // last card gets red; hero frame fades in from transparent — letters/bubbles are separate elements, never scaled, always full size
         z = 3000; // always renders above the waiting stack while it's leaving
         overlayOpacity = fadeM; // video shows normally while front; fades to solid color as it throws away
       } else {
@@ -497,6 +620,14 @@
         newVideo.currentTime = 0;
         newVideo.play().catch(() => {});
         videoStarted[frontIndex] = true;
+      }
+      if (frontIndex === 4) {
+        const fortuneContent = document.getElementById('fortuneContent');
+        if (fortuneContent) {
+          fortuneContent.classList.remove('pop-in');
+          void fortuneContent.offsetWidth; // force reflow so the animation replays every visit
+          fortuneContent.classList.add('pop-in');
+        }
       }
       previousFrontIndex = frontIndex;
     }
@@ -792,6 +923,59 @@
     }
     requestAnimationFrame(heroFrame);
   }
+
+  // ---- Fortune cookie (last card) ----
+  (function initFortuneCookie(){
+    const stage = document.getElementById('cookieStage');
+    const result = document.getElementById('fortuneResult');
+    const textEl = document.getElementById('fortuneText');
+    const numsEl = document.getElementById('fortuneNumbers');
+    if (!stage) return;
+
+    const fortunes = [
+      "A thrilling opportunity awaits you this week.",
+      "Your creativity will lead to unexpected success.",
+      "Be calm and collected. Peace is a virtue.",
+      "A small act of kindness will have a big impact.",
+      "Trust your instincts—they're guiding you well.",
+      "New connections will open exciting doors.",
+      "Your next hire will be a great one.",
+      "Don't give up. It will pay off soon.",
+      "Something you've been waiting for is near.",
+      "A pleasant surprise is heading your way.",
+    ];
+
+    function generateLuckyNumbers(){
+      const numbers = [];
+      while (numbers.length < 6) {
+        const num = Math.floor(Math.random() * 49) + 1;
+        if (!numbers.includes(num)) numbers.push(num);
+      }
+      return numbers.sort((a, b) => a - b);
+    }
+
+    let isBroken = false;
+    let resetTimer = null;
+
+    stage.addEventListener('click', () => {
+      if (isBroken) return;
+      isBroken = true;
+      stage.classList.add('broken');
+
+      const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+      const nums = generateLuckyNumbers();
+      textEl.textContent = fortune;
+      numsEl.innerHTML = nums.map(n => `<span>${n}</span>`).join(', ');
+      result.classList.add('show');
+
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        isBroken = false;
+        stage.classList.remove('broken');
+        result.classList.remove('show');
+      }, 4000);
+    });
+  })();
 
   render();
 
