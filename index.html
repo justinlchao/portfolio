@@ -94,6 +94,14 @@
     align-items:center;
     padding:0;
   }
+  .hero-frame-bg{
+    position:absolute;
+    inset:0;
+    background:#fff;
+    border-radius:inherit;
+    transform-origin:center center;
+    pointer-events:none;
+  }
   .video-frame{
     position:absolute;
     inset:0;
@@ -297,6 +305,7 @@
 
 <div class="stack-stage" id="stackStage">
   <article class="stack-card hero-card" data-index="0">
+    <div class="hero-frame-bg" id="heroFrameBg"></div>
     <canvas class="ripple-canvas" id="rippleCanvas"></canvas>
     <div class="hero-content">
       <div class="hero-greeting">hi, im</div>
@@ -376,6 +385,7 @@
 
 <script>
   const cards = Array.from(document.querySelectorAll('.stack-card'));
+  const frameBgs = cards.map(card => card.querySelector('.hero-frame-bg'));
   const cardVideos = cards.map(card => card.querySelector('video'));
   const cardOverlays = cards.map(card => card.querySelector('.video-depth-overlay'));
   let previousFrontIndex = null;
@@ -459,7 +469,15 @@
       }
 
       card.style.transform = `translate(-50%, calc(-50% + ${translateY}vh)) rotate(${rotate}deg) scaleX(${scaleX}) scaleY(${scale})`;
-      card.style.backgroundColor = bg;
+      const frameBg = frameBgs[j];
+      if (frameBg) {
+        // hero card: drive the dedicated background layer instead — scales/fades independently of the letters and canvas
+        card.style.backgroundColor = 'transparent';
+        frameBg.style.opacity = heroFrameOpacity;
+        frameBg.style.transform = `scale(${0.94 + 0.06 * heroFrameOpacity})`; // a tad of expand-from-center, without touching the letters
+      } else {
+        card.style.backgroundColor = bg;
+      }
       card.style.opacity = opacity;
       card.style.filter = `grayscale(${grayscale}%)`;
       card.style.zIndex = z;
