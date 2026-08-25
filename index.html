@@ -815,7 +815,22 @@
       velX: 0, velY: 0,
       entranceDelay: i * 65, // ms — staggers the rise so letters don't arrive all at once
       splashed: false,
+      baseX: 0, baseY: 0, baseBottom: 0, // cached CSS-px position relative to canvas, captured once below
     }));
+
+    // capture each letter's untransformed base position once — avoids calling
+    // getBoundingClientRect() every frame later (which forces a layout recalc each time)
+    function cacheLetterBasePositions(){
+      const canvasRect0 = heroCanvas.getBoundingClientRect();
+      letterState.forEach(s => {
+        const r = s.el.getBoundingClientRect();
+        s.baseX = r.left + r.width / 2 - canvasRect0.left;
+        s.baseY = r.top + r.height / 2 - canvasRect0.top;
+        s.baseBottom = r.bottom - canvasRect0.top;
+      });
+    }
+    cacheLetterBasePositions();
+    window.addEventListener('resize', cacheLetterBasePositions);
 
     const ENTRANCE_DURATION = 650; // ms
     const ENTRANCE_RISE = 85; // px — how far below rest position each letter starts
@@ -878,18 +893,16 @@
         } else if (!s.splashed && (now - pageLoadTime) >= HERO_FRAME_DELAY) {
           s.splashed = true;
           if (canvasRect.width > 0) {
-            const r = s.el.getBoundingClientRect();
-            const lx = (r.left + r.width / 2 - canvasRect.left) * scaleX;
-            const ly = (r.bottom - canvasRect.top) * scaleY;
+            const lx = (s.baseX + bobX) * scaleX + s.dispX;
+            const ly = (s.baseBottom + bobY) * scaleY + s.dispY;
             spawnSplashBurst(lx, ly);
           }
         }
 
         // cursor moving through the water shoves nearby letters off course
         if (cursorX !== null && canvasRect.width > 0 && elapsed >= ENTRANCE_DURATION) {
-          const r = s.el.getBoundingClientRect();
-          const lx = (r.left + r.width / 2 - canvasRect.left) * scaleX;
-          const ly = (r.top + r.height / 2 - canvasRect.top) * scaleY;
+          const lx = (s.baseX + bobX) * scaleX + s.dispX;
+          const ly = (s.baseY + bobY) * scaleY + s.dispY;
           const dx = lx - cursorX, dy = ly - cursorY;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < PUSH_RADIUS && dist > 0.001) {
