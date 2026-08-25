@@ -751,7 +751,8 @@
       });
 
       if (canvasRect.width > 0) {
-        if (t - lastSpawn >= nextInterval) {
+        const frameHasAppeared = (now - pageLoadTime) >= (HERO_FRAME_DELAY + HERO_FRAME_DURATION);
+        if (frameHasAppeared && t - lastSpawn >= nextInterval) {
           spawnBubble();
           lastSpawn = t;
           nextInterval = SPAWN_INTERVAL + (Math.random() - 0.5) * 0.4;
