@@ -731,7 +731,7 @@
           const eased = easeOutBack(progress);
           entranceY = ENTRANCE_RISE * (1 - eased);
           entranceOpacity = Math.min(1, elapsed / 140);
-        } else if (!s.splashed) {
+        } else if (!s.splashed && (now - pageLoadTime) >= HERO_FRAME_DELAY) {
           s.splashed = true;
           if (canvasRect.width > 0) {
             const r = s.el.getBoundingClientRect();
