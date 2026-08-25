@@ -235,8 +235,8 @@
     color:#fff;
     background:var(--blue);
     will-change:transform;
-    margin:0 6px;
-    padding:0 3px;
+    margin:0 2px;
+    padding:4px 12px;
     border-radius:2px;
   }
   .floating-name .space{ width:.5em; }
@@ -603,6 +603,8 @@
     }
 
     const letters = Array.from(heroName.querySelectorAll('.letter'));
+    const LETTER_COLORS = ['#3355FF', '#82C341', '#8B5CF6', '#FF6B4A', '#00B8A9', '#EC4899'];
+    letters.forEach((el, i) => { el.style.background = LETTER_COLORS[i % LETTER_COLORS.length]; });
     const letterState = letters.map((el, i) => ({
       el,
       phase: Math.random() * Math.PI * 2,
