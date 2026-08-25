@@ -134,8 +134,6 @@
     flex-direction:column;
     align-items:center;
     gap:14px;
-    transform:scale(0.75);
-    opacity:0;
   }
   .fortune-content.pop-in{
     animation:fortunePop 0.6s cubic-bezier(.34,1.56,.64,1) forwards;
@@ -541,11 +539,26 @@
     [0xEC, 0xEC, 0xEC],
     [0x1A, 0x1A, 0x1A],
   ];
+  const RED_COLOR_STOPS = [
+    [196, 30, 45],
+    [110, 26, 32],
+    [0x1A, 0x1A, 0x1A],
+  ];
   function colorForDepth(depth){
     const d = Math.max(0, Math.min(depth, 2));
     const i = Math.min(Math.floor(d), 1); // segment index: 0 (white->grey1) or 1 (grey1->grey2)
     const t = d - i;
     const a = COLOR_STOPS[i], b = COLOR_STOPS[i + 1];
+    const r = Math.round(a[0] + (b[0] - a[0]) * t);
+    const g = Math.round(a[1] + (b[1] - a[1]) * t);
+    const bl = Math.round(a[2] + (b[2] - a[2]) * t);
+    return `rgb(${r}, ${g}, ${bl})`;
+  }
+  function colorForDepthRed(depth){
+    const d = Math.max(0, Math.min(depth, 2));
+    const i = Math.min(Math.floor(d), 1);
+    const t = d - i;
+    const a = RED_COLOR_STOPS[i], b = RED_COLOR_STOPS[i + 1];
     const r = Math.round(a[0] + (b[0] - a[0]) * t);
     const g = Math.round(a[1] + (b[1] - a[1]) * t);
     const bl = Math.round(a[2] + (b[2] - a[2]) * t);
@@ -571,7 +584,7 @@
         opacity = 1 - fadeM;
         grayscale = fadeM * 100;
         rotate = m * 8;
-        bg = (j === 4) ? 'rgb(196,30,45)' : `rgba(255,255,255,${heroFrameOpacity})`; // last card gets red; hero frame fades in from transparent — letters/bubbles are separate elements, never scaled, always full size
+        bg = (j === 4) ? colorForDepthRed(0) : `rgba(255,255,255,${heroFrameOpacity})`; // last card gets red; hero frame fades in from transparent — letters/bubbles are separate elements, never scaled, always full size
         z = 3000; // always renders above the waiting stack while it's leaving
         overlayOpacity = fadeM; // video shows normally while front; fades to solid color as it throws away
       } else {
@@ -586,7 +599,7 @@
         scaleX = scale * (1 - depth * 0.06); // extra horizontal shrink — corners peek out more distinctly
         opacity = stackRevealed;
         grayscale = 0;
-        bg = colorForDepth(depth); // continuous — no snapping between color stops
+        bg = (j === 4) ? colorForDepthRed(depth) : colorForDepth(depth); // continuous — no snapping between color stops, last card uses its own red gradient
         z = 2000 - Math.round(depth * 100); // shallower depth (closer to front) stacks on top
         overlayOpacity = Math.min(1, depth / 0.4); // once behind the front, quickly covers the video with matching grey/black
       }
