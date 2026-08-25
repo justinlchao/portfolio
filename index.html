@@ -382,10 +382,8 @@
   const videoStarted = new Array(cards.length).fill(false);
   const pageStartTime = performance.now();
   let stackRevealed = 0; // 0 = other cards hidden behind hero, 1 = fully revealed
-  let heroFrameRevealed = 0; // 0 = hero frame not yet expanded, 1 = full size — starts at page load
   const STACK_REVEAL_DELAY = 1300; // ms — waits for the letter entrance to mostly finish
   const STACK_REVEAL_DURATION = 450;
-  const HERO_FRAME_DURATION = 500;
   function easeOutBackShared(t){
     const c1 = 1.70158, c3 = c1 + 1;
     return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
@@ -432,12 +430,12 @@
         const FADE_START = 0.6;
         const fadeM = m < FADE_START ? 0 : (m - FADE_START) / (1 - FADE_START);
         translateY = -m * 60;
-        scale = (1 - m * 0.15) * heroFrameRevealed;
+        scale = 1 - m * 0.15;
         scaleX = scale;
         opacity = 1 - fadeM;
         grayscale = fadeM * 100;
         rotate = m * 8;
-        bg = colorForDepth(0); // white, matching the depth-0 end of the gradient
+        bg = `rgba(255,255,255,${stackRevealed})`; // frame fades in from transparent — letters/bubbles are separate elements and stay fully visible throughout
         z = 3000; // always renders above the waiting stack while it's leaving
         overlayOpacity = fadeM; // video shows normally while front; fades to solid color as it throws away
       } else {
@@ -781,16 +779,6 @@
     if (greeting) greeting.classList.add('pop-in');
     if (tagline) tagline.classList.add('pop-in');
   }, 700);
-
-  // expand the hero card frame from center, starting immediately at page load
-  function heroFrameRevealTick(now){
-    const elapsed = now - pageStartTime;
-    const progress = Math.min(elapsed / HERO_FRAME_DURATION, 1);
-    heroFrameRevealed = reduceMotion ? 1 : easeOutBackShared(progress);
-    render();
-    if (progress < 1) requestAnimationFrame(heroFrameRevealTick);
-  }
-  requestAnimationFrame(heroFrameRevealTick);
 
   // reveal the stacked cards behind the hero once the letter entrance has mostly finished
   function stackRevealFrame(now){
