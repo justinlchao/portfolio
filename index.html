@@ -504,6 +504,8 @@
   const cardVideos = cards.map(card => card.querySelector('video'));
   const cardOverlays = cards.map(card => card.querySelector('.video-depth-overlay'));
   let previousFrontIndex = null;
+  let lastMouseX = null, lastMouseY = null;
+  document.addEventListener('mousemove', (e) => { lastMouseX = e.clientX; lastMouseY = e.clientY; });
   const videoStarted = new Array(cards.length).fill(false);
   const pageStartTime = performance.now();
   let heroFrameOpacity = 0; // 0 = hero's own frame not visible yet, 1 = fully faded in — transitions first
@@ -692,6 +694,28 @@
         videoStarted[frontIndex] = true;
       }
       updateProgressDots(frontIndex);
+
+      // cards move via CSS transform under a potentially-stationary cursor, which doesn't fire a
+      // native mouseenter/mousemove — re-check manually so the tooltip doesn't get stuck hidden
+      if (lastMouseX !== null && lastMouseY !== null) {
+        const newFrontCard = cards[frontIndex];
+        if (newFrontCard) {
+          const r = newFrontCard.getBoundingClientRect();
+          const withinBounds = lastMouseX >= r.left && lastMouseX <= r.right && lastMouseY >= r.top && lastMouseY <= r.bottom;
+          if (withinBounds && CLICKABLE_INDICES.includes(frontIndex)) {
+            cursorTip.textContent = 'Click to learn more';
+            cursorTip.style.background = CARD_COLORS[frontIndex];
+            cursorTip.style.color = DARK_TEXT_INDICES_TIP.includes(frontIndex) ? 'rgb(76,44,41)' : '#fff';
+            cursorTip.style.left = lastMouseX + 'px';
+            cursorTip.style.top = lastMouseY + 'px';
+            cursorTip.classList.add('show');
+          } else if (frontIndex !== 0) {
+            // hero (index 0) manages its own bubble-hover tooltip reactively via the canvas
+            cursorTip.classList.remove('show');
+          }
+        }
+      }
+
       previousFrontIndex = frontIndex;
     }
   }
