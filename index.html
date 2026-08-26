@@ -1115,6 +1115,7 @@
     return 1 - Math.pow(1 - t, 3);
   }
   function heroFrameTick(now){
+    if (entranceComplete) return; // stop this independent loop from re-animating over an early-scroll catch-up
     const elapsed = now - pageStartTime;
     if (elapsed < HERO_FRAME_DELAY) {
       requestAnimationFrame(heroFrameTick);
@@ -1129,6 +1130,7 @@
 
   // then the two cards behind slide/fade in afterward
   function stackRevealFrame(now){
+    if (entranceComplete) return; // stop this independent loop from re-animating over an early-scroll catch-up
     const elapsed = now - pageStartTime;
     if (elapsed < STACK_REVEAL_DELAY) {
       requestAnimationFrame(stackRevealFrame);
