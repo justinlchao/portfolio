@@ -103,6 +103,29 @@
     opacity:1;
     transform:scale(1);
   }
+  .cursor-tip{
+    position:fixed;
+    top:0; left:0;
+    z-index:9999;
+    pointer-events:none;
+    opacity:0;
+    transform:translate(-50%, 18px);
+    transition:opacity .15s ease;
+    font-family:var(--font-system);
+    font-weight:600;
+    font-size:13px;
+    color:#fff;
+    padding:6px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    box-shadow:0 6px 16px -4px rgba(0,0,0,.3);
+  }
+  .cursor-tip.show{
+    opacity:1;
+  }
+  .stack-card.clickable{
+    cursor:pointer;
+  }
   .stack-progress-dot.active{
     width:36px;
     height:36px;
@@ -467,8 +490,11 @@
 
 <nav class="stack-progress" id="stackProgress"></nav>
 
+<div class="cursor-tip" id="cursorTip"></div>
+
 <script>
   const cards = Array.from(document.querySelectorAll('.stack-card'));
+  const CARD_COLORS = ['#3355FF', 'rgb(127,204,38)', 'rgb(90,58,168)', 'rgb(255,190,110)', 'rgb(20,21,26)'];
   const frameBgs = cards.map(card => card.querySelector('.hero-frame-bg'));
   const cardVideos = cards.map(card => card.querySelector('video'));
   const cardOverlays = cards.map(card => card.querySelector('.video-depth-overlay'));
@@ -500,7 +526,6 @@
     return dot;
   });
   function updateProgressDots(activeIndex){
-    const CARD_COLORS = ['#3355FF', 'rgb(127,204,38)', 'rgb(90,58,168)', 'rgb(255,190,110)', 'rgb(20,21,26)'];
     const DARK_TEXT_INDICES = [3]; // Broommates' tan is too light for white text
     progressDots.forEach((dot, i) => {
       const isActive = i === activeIndex;
@@ -518,6 +543,29 @@
     });
   }
   const STACK_REVEAL_DELAY = HERO_FRAME_DELAY + HERO_FRAME_DURATION; // starts right after the hero frame finishes
+
+  // clickable cursor tooltip — only the 3 project cards (not hero, not the final card)
+  const cursorTip = document.getElementById('cursorTip');
+  const CLICKABLE_INDICES = [1, 2, 3];
+  const DARK_TEXT_INDICES_TIP = [3]; // Broommates' tan needs dark text too
+  CLICKABLE_INDICES.forEach(i => {
+    const card = cards[i];
+    if (!card) return;
+    card.classList.add('clickable');
+    card.addEventListener('mouseenter', () => {
+      cursorTip.textContent = 'Click to learn more';
+      cursorTip.style.background = CARD_COLORS[i];
+      cursorTip.style.color = DARK_TEXT_INDICES_TIP.includes(i) ? 'rgb(76,44,41)' : '#fff';
+      cursorTip.classList.add('show');
+    });
+    card.addEventListener('mousemove', (e) => {
+      cursorTip.style.left = e.clientX + 'px';
+      cursorTip.style.top = e.clientY + 'px';
+    });
+    card.addEventListener('mouseleave', () => {
+      cursorTip.classList.remove('show');
+    });
+  });
   const STACK_REVEAL_DURATION = 400;
   function easeOutBackShared(t){
     const c1 = 1.70158, c3 = c1 + 1;
