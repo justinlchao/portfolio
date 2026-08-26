@@ -1090,12 +1090,23 @@
     stackRevealed = 1;
     const greeting = document.querySelector('.hero-greeting');
     const tagline = document.querySelector('.hero-tagline');
+    const nav = document.getElementById('navbar');
+    const navItems = nav ? Array.from(nav.querySelectorAll('span')) : [];
+    const skipTransitionEls = [greeting, tagline, ...navItems, ...progressDots].filter(Boolean);
+
+    // disable transitions so this genuinely snaps instantly instead of racing the step animation
+    skipTransitionEls.forEach(el => { el.style.transition = 'none'; });
+
     if (greeting) greeting.classList.add('pop-in');
     if (tagline) tagline.classList.add('pop-in');
-    const nav = document.getElementById('navbar');
     if (nav) nav.classList.add('pop-in');
     progressDots.forEach(dot => dot.classList.add('pop-in'));
     render();
+
+    // force a reflow so the no-transition state is actually applied before restoring transitions
+    void document.body.offsetHeight;
+    skipTransitionEls.forEach(el => { el.style.transition = ''; });
+
     entranceComplete = true;
   }
 
