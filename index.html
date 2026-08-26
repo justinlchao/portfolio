@@ -40,45 +40,70 @@
     z-index:5000;
     display:flex;
     justify-content:center;
-    align-items:center;
-    gap:44px;
-    padding:97px 48px 32px;
+    align-items:flex-start;
     pointer-events:none;
   }
-  .navbar span{
+  .navbar .nav-inner{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:72px 32px 32px;
+    opacity:0;
+    transform:translateY(-10px);
+    transition:opacity .45s ease, transform .55s cubic-bezier(.22,.61,.36,1);
+    pointer-events:auto;
+  }
+  .navbar .nav-link{
+    position:relative;
+    display:block;
+    height:28px;
+    overflow:hidden;
+    border:0;
+    padding:0;
+    background:transparent;
     font-family:var(--font-system);
     font-weight:400;
     font-size:16px;
+    line-height:28px;
     color:var(--mute);
+    text-decoration:none;
+    cursor:pointer;
     pointer-events:auto;
-    opacity:0;
   }
-  .navbar .nav-center{
-    transform:scale(0.6);
-    transition:opacity .35s ease, transform .4s cubic-bezier(.22,.61,.36,1);
+  .navbar .nav-label{
+    display:block;
+    white-space:nowrap;
+    transition:transform .45s cubic-bezier(.22,.61,.36,1), color .3s ease;
   }
-  .navbar .nav-left{
-    transform:translateX(64px);
-    transition:opacity .35s ease .18s, transform .45s cubic-bezier(.22,.61,.36,1) .18s;
+  .navbar .nav-label--active{
+    position:absolute;
+    inset:0;
+    color:var(--ink);
+    transform:translateY(-100%);
   }
-  .navbar .nav-right{
-    transform:translateX(-64px);
-    transition:opacity .35s ease .18s, transform .45s cubic-bezier(.22,.61,.36,1) .18s;
+  .navbar .nav-link:hover .nav-label--default,
+  .navbar .nav-link:focus-visible .nav-label--default{
+    transform:translateY(100%);
   }
-  .navbar.pop-in span{
+  .navbar .nav-link:hover .nav-label--active,
+  .navbar .nav-link:focus-visible .nav-label--active{
+    transform:translateY(0);
+  }
+  .navbar .nav-link:focus-visible{
+    outline:1px solid var(--ink);
+    outline-offset:4px;
+  }
+  .navbar.pop-in .nav-inner{
     opacity:1;
-    transform:translateX(0) scale(1);
+    transform:translateY(0);
   }
   .navbar.hidden{
     opacity:0;
     pointer-events:none;
     transition:opacity .3s ease;
   }
-  nav.navbar.hidden span{
-    transform:translateY(-6px);
-    transition:opacity .5s ease, transform .55s cubic-bezier(.34,0,.64,1);
-  }
   .project-navbar{
+    padding:0;
     opacity:0;
     transform:translateY(14px) scale(0.85);
     pointer-events:none;
@@ -88,6 +113,9 @@
     opacity:1;
     transform:translateY(0) scale(1);
     pointer-events:auto;
+  }
+  .project-navbar .nav-pill-single{
+    margin-top:72px;
   }
   .project-navbar .nav-pill-single{
     opacity:1;
@@ -453,9 +481,20 @@
 <body>
 
 <nav class="navbar" id="navbar">
-  <span class="nav-left">About</span>
-  <span class="nav-center">Projects</span>
-  <span class="nav-right">Resume</span>
+  <div class="nav-inner" aria-label="Primary navigation">
+    <a class="nav-link" href="#about">
+      <span class="nav-label nav-label--default">About</span>
+      <span class="nav-label nav-label--active" aria-hidden="true">About</span>
+    </a>
+    <a class="nav-link" href="#projects">
+      <span class="nav-label nav-label--default">Projects</span>
+      <span class="nav-label nav-label--active" aria-hidden="true">Projects</span>
+    </a>
+    <a class="nav-link" href="#resume">
+      <span class="nav-label nav-label--default">Resume</span>
+      <span class="nav-label nav-label--active" aria-hidden="true">Resume</span>
+    </a>
+  </div>
 </nav>
 
 <nav class="navbar project-navbar" id="projectNavbar">
@@ -1220,8 +1259,8 @@
     const greeting = document.querySelector('.hero-greeting');
     const tagline = document.querySelector('.hero-tagline');
     const nav = document.getElementById('navbar');
-    const navItems = nav ? Array.from(nav.querySelectorAll('span')) : [];
-    const skipTransitionEls = [greeting, tagline, ...navItems, ...progressDots].filter(Boolean);
+    const navInner = nav ? nav.querySelector('.nav-inner') : null;
+    const skipTransitionEls = [greeting, tagline, navInner, ...progressDots].filter(Boolean);
 
     // disable transitions so this genuinely snaps instantly instead of racing the step animation
     skipTransitionEls.forEach(el => { el.style.transition = 'none'; });
