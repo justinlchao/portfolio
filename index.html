@@ -225,26 +225,26 @@
     box-shadow:0 8px 24px -8px rgba(0,0,0,.3);
     transition:background .25s ease, box-shadow .25s ease;
   }
-  .video-caption:hover{
+  .video-caption:hover, .video-caption.touch-active{
     background:rgb(112,188,26);
     box-shadow:0 10px 28px -8px rgba(0,0,0,.36);
   }
   .video-caption.purple-variant{
     background:rgb(90,58,168);
   }
-  .video-caption.purple-variant:hover{
+  .video-caption.purple-variant:hover, .video-caption.purple-variant.touch-active{
     background:rgb(74,45,142);
   }
   .video-caption.brown-variant{
     background:rgb(255,190,110);
   }
-  .video-caption.brown-variant:hover{
+  .video-caption.brown-variant:hover, .video-caption.brown-variant.touch-active{
     background:rgb(245,175,90);
   }
   .video-caption.black-variant{
     background:rgb(20,21,26);
   }
-  .video-caption.black-variant:hover{
+  .video-caption.black-variant:hover, .video-caption.black-variant.touch-active{
     background:rgb(38,40,48);
   }
   .video-caption-title-row{
@@ -289,7 +289,8 @@
   .video-caption-expand-inner{
     overflow:hidden;
   }
-  .video-caption:hover .video-caption-expand{
+  .video-caption:hover .video-caption-expand,
+  .video-caption.touch-active .video-caption-expand{
     grid-template-rows:1fr;
     grid-template-columns:1fr;
   }
@@ -330,13 +331,13 @@
   .floating-name .letter{
     display:inline-block;
     font-weight:700;
-    font-size:clamp(38px, 6vw, 68px);
+    font-size:clamp(19px, 8vw, 68px);
     letter-spacing:-.01em;
     color:#fff;
     background:var(--blue);
     will-change:transform;
     margin:0 2px;
-    padding:4px 12px;
+    padding:0.06em 0.18em;
     border-radius:2px;
   }
   .floating-name .letter.short{
@@ -551,6 +552,22 @@
     });
   }
   const STACK_REVEAL_DELAY = HERO_FRAME_DELAY + HERO_FRAME_DURATION; // starts right after the hero frame finishes
+
+  // touch devices have no real hover — tap a caption button to expand it, tap elsewhere to close
+  const allCaptionButtons = Array.from(document.querySelectorAll('.video-caption'));
+  allCaptionButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const wasActive = btn.classList.contains('touch-active');
+      allCaptionButtons.forEach(b => b.classList.remove('touch-active'));
+      if (!wasActive) {
+        btn.classList.add('touch-active');
+        e.stopPropagation();
+      }
+    });
+  });
+  document.addEventListener('click', () => {
+    allCaptionButtons.forEach(b => b.classList.remove('touch-active'));
+  });
 
   // clickable cursor tooltip — only the 3 project cards (not the final card)
   const cursorTip = document.getElementById('cursorTip');
