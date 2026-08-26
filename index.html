@@ -558,11 +558,13 @@
     const card = cards[i];
     if (!card) return;
     card.classList.add('clickable');
-    card.addEventListener('mouseenter', () => {
+    card.addEventListener('mouseenter', (e) => {
       if (i !== previousFrontIndex) return; // only show while this card is actually the front one, not just peeking behind
       cursorTip.textContent = 'Click to learn more';
       cursorTip.style.background = CARD_COLORS[i];
       cursorTip.style.color = DARK_TEXT_INDICES_TIP.includes(i) ? 'rgb(76,44,41)' : '#fff';
+      cursorTip.style.left = e.clientX + 'px';
+      cursorTip.style.top = e.clientY + 'px';
       cursorTip.classList.add('show');
     });
     card.addEventListener('mousemove', (e) => {
@@ -583,13 +585,6 @@
   // hero card: hover tooltip about the existing bubble-pop interaction (not full-card navigation)
   const heroCard = cards[0];
   if (heroCard) {
-    heroCard.addEventListener('mouseenter', () => {
-      if (previousFrontIndex !== 0) return;
-      cursorTip.textContent = 'Click to pop!';
-      cursorTip.style.background = CARD_COLORS[0];
-      cursorTip.style.color = '#fff';
-      cursorTip.classList.add('show');
-    });
     heroCard.addEventListener('mouseleave', () => {
       cursorTip.classList.remove('show');
     });
@@ -798,8 +793,8 @@
       cursorX = (e.clientX - rect.left) * scaleX;
       cursorY = (e.clientY - rect.top) * scaleY;
 
-      // the canvas sits above the letters and intercepts all pointer events, so this is the
-      // only place we can detect "cursor is over a letter" — check via cached math, no DOM reads
+      // the canvas sits above the letters/bubbles and intercepts all pointer events, so this is the
+      // only place we can detect hover state — check via cached math, no DOM reads
       const cursorTipEl = document.getElementById('cursorTip');
       if (cursorTipEl) {
         const t = performance.now() / 1000;
@@ -815,15 +810,24 @@
             break;
           }
         }
-        if (overLetter) {
-          cursorTipEl.classList.remove('show');
-        } else if (previousFrontIndex === 0) {
+        // only show "Click to pop!" when actually over a poppable bubble — same hit radius as the click handler
+        let overBubble = false;
+        if (!overLetter) {
+          for (const b of bubbles) {
+            if (b.popping) continue;
+            const dx = b.x - cursorX, dy = b.y - cursorY;
+            if (Math.sqrt(dx * dx + dy * dy) <= b.r * 1.6) { overBubble = true; break; }
+          }
+        }
+        if (overBubble && previousFrontIndex === 0) {
           cursorTipEl.textContent = 'Click to pop!';
           cursorTipEl.style.background = CARD_COLORS[0];
           cursorTipEl.style.color = '#fff';
           cursorTipEl.style.left = e.clientX + 'px';
           cursorTipEl.style.top = e.clientY + 'px';
           cursorTipEl.classList.add('show');
+        } else {
+          cursorTipEl.classList.remove('show');
         }
       }
     });
