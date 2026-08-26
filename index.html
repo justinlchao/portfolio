@@ -507,6 +507,7 @@
   const videoStarted = new Array(cards.length).fill(false);
   const pageStartTime = performance.now();
   let heroFrameOpacity = 0; // 0 = hero's own frame not visible yet, 1 = fully faded in — transitions first
+  let entranceComplete = false; // guards against scrolling away mid-entrance and catching the stack in a half-revealed state
   let stackRevealed = 0; // 0 = the two cards behind hidden, 1 = fully revealed — transitions after the hero frame
   const HERO_FRAME_DELAY = 1900; // ms — extra pause here gives time to read the text before frames pop in
   const HERO_FRAME_DURATION = 350;
@@ -708,6 +709,7 @@
 
   function step(dir){
     if (animating) return;
+    if (!entranceComplete) finishEntranceInstantly();
     const target = Math.round(displayPos) + dir;
     if (reduceMotion) {
       displayPos = target;
@@ -1006,6 +1008,23 @@
     });
   }, STACK_REVEAL_DELAY);
 
+  // if the user scrolls before the entrance finishes, snap straight to the fully-revealed
+  // state instead of letting a step happen mid-transition (which would look broken/half-done)
+  function finishEntranceInstantly(){
+    if (entranceComplete) return;
+    heroFrameOpacity = 1;
+    stackRevealed = 1;
+    const greeting = document.querySelector('.hero-greeting');
+    const tagline = document.querySelector('.hero-tagline');
+    if (greeting) greeting.classList.add('pop-in');
+    if (tagline) tagline.classList.add('pop-in');
+    const nav = document.getElementById('navbar');
+    if (nav) nav.classList.add('pop-in');
+    progressDots.forEach(dot => dot.classList.add('pop-in'));
+    render();
+    entranceComplete = true;
+  }
+
   // hero's own frame fades in first, once the letter entrance has mostly finished
   function easeOutSmooth(t){
     return 1 - Math.pow(1 - t, 3);
@@ -1033,6 +1052,7 @@
     const progress = Math.min((elapsed - STACK_REVEAL_DELAY) / STACK_REVEAL_DURATION, 1);
     stackRevealed = reduceMotion ? 1 : easeOutSmooth(progress);
     render();
+    if (progress >= 1) entranceComplete = true;
     if (progress < 1) requestAnimationFrame(stackRevealFrame);
   }
   requestAnimationFrame(stackRevealFrame);
