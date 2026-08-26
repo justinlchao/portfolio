@@ -69,6 +69,50 @@
     opacity:1;
     transform:translateX(0) scale(1);
   }
+  .navbar.hidden{
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .project-navbar{
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .35s ease;
+  }
+  .project-navbar.active{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .project-navbar .nav-pill{
+    opacity:1;
+    transform:none;
+    background:#E8E9EC;
+    color:#3A3D45;
+    font-weight:500;
+    padding:9px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .2s ease;
+  }
+  .project-navbar .nav-pill:hover{
+    background:#DADCE0;
+  }
+  #navHomeBtn{
+    color:#7A7D85;
+  }
+  .page-white-overlay{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    z-index:4000;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  .page-white-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+  }
   .stack-progress{
     position:fixed;
     bottom:0; left:0; right:0;
@@ -396,6 +440,13 @@
   <span class="nav-right">Resume</span>
 </nav>
 
+<nav class="navbar project-navbar" id="projectNavbar">
+  <span class="nav-pill" id="navHomeBtn">Home</span>
+  <span class="nav-pill" id="navProjectBtn"></span>
+</nav>
+
+<div class="page-white-overlay" id="pageWhiteOverlay"></div>
+
 <div class="stack-stage" id="stackStage">
   <article class="stack-card hero-card" data-index="0">
     <div class="hero-frame-bg" id="heroFrameBg"></div>
@@ -599,7 +650,46 @@
       captionGloss.addEventListener('mouseenter', () => cursorTip.classList.remove('show'));
       captionGloss.addEventListener('mouseleave', () => cursorTip.classList.add('show'));
     }
+    card.addEventListener('click', () => {
+      if (i !== previousFrontIndex) return;
+      enterProjectView(i);
+    });
   });
+
+  // project view: click a card -> white page + navbar becomes "Home / [Project Name]"
+  const PROJECT_NAMES = { 1: 'Y Stem & Chess', 2: 'Uplift', 3: 'Broommates' };
+  let inProjectView = false;
+  const pageWhiteOverlay = document.getElementById('pageWhiteOverlay');
+  const mainNavbar = document.getElementById('navbar');
+  const projectNavbar = document.getElementById('projectNavbar');
+  const navProjectBtn = document.getElementById('navProjectBtn');
+  const navHomeBtn = document.getElementById('navHomeBtn');
+  const stackStageEl = document.getElementById('stackStage');
+  const stackProgressEl = document.getElementById('stackProgress');
+
+  function enterProjectView(i){
+    if (inProjectView) return;
+    inProjectView = true;
+    cursorTip.classList.remove('show');
+    navProjectBtn.textContent = PROJECT_NAMES[i] || '';
+    pageWhiteOverlay.classList.add('active');
+    mainNavbar.classList.add('hidden');
+    projectNavbar.classList.add('active');
+    stackStageEl.style.pointerEvents = 'none';
+    stackProgressEl.style.opacity = '0';
+    stackProgressEl.style.pointerEvents = 'none';
+  }
+  function exitProjectView(){
+    if (!inProjectView) return;
+    inProjectView = false;
+    pageWhiteOverlay.classList.remove('active');
+    mainNavbar.classList.remove('hidden');
+    projectNavbar.classList.remove('active');
+    stackStageEl.style.pointerEvents = '';
+    stackProgressEl.style.opacity = '';
+    stackProgressEl.style.pointerEvents = '';
+  }
+  navHomeBtn.addEventListener('click', exitProjectView);
 
   // hero card: hover tooltip about the existing bubble-pop interaction (not full-card navigation)
   const heroCard = cards[0];
@@ -762,6 +852,7 @@
 
   function step(dir){
     if (animating) return;
+    if (inProjectView) return;
     if (!entranceComplete) finishEntranceInstantly();
     const target = Math.round(displayPos) + dir;
     if (reduceMotion) {
