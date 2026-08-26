@@ -51,6 +51,23 @@
     font-size:16px;
     color:var(--mute);
     pointer-events:auto;
+    opacity:0;
+  }
+  .navbar .nav-center{
+    transform:scale(0.6);
+    transition:opacity .35s ease, transform .4s cubic-bezier(.22,.61,.36,1);
+  }
+  .navbar .nav-left{
+    transform:translateX(64px);
+    transition:opacity .35s ease .18s, transform .45s cubic-bezier(.22,.61,.36,1) .18s;
+  }
+  .navbar .nav-right{
+    transform:translateX(-64px);
+    transition:opacity .35s ease .18s, transform .45s cubic-bezier(.22,.61,.36,1) .18s;
+  }
+  .navbar.pop-in span{
+    opacity:1;
+    transform:translateX(0) scale(1);
   }
   .stack-progress{
     position:fixed;
@@ -78,7 +95,13 @@
     border:1.5px solid #E3E5EA;
     cursor:pointer;
     pointer-events:auto;
-    transition:width .3s cubic-bezier(.22,.61,.36,1), height .3s cubic-bezier(.22,.61,.36,1), font-size .3s ease, background .25s ease, border-color .25s ease, color .25s ease;
+    opacity:0;
+    transform:scale(0.4);
+    transition:width .3s cubic-bezier(.22,.61,.36,1), height .3s cubic-bezier(.22,.61,.36,1), font-size .3s ease, background .25s ease, border-color .25s ease, color .25s ease, opacity .3s ease, transform .4s cubic-bezier(.22,.61,.36,1);
+  }
+  .stack-progress-dot.pop-in{
+    opacity:1;
+    transform:scale(1);
   }
   .stack-progress-dot.active{
     width:36px;
@@ -338,10 +361,10 @@
 </head>
 <body>
 
-<nav class="navbar">
-  <span>About</span>
-  <span>Projects</span>
-  <span>Resume</span>
+<nav class="navbar" id="navbar">
+  <span class="nav-left">About</span>
+  <span class="nav-center">Projects</span>
+  <span class="nav-right">Resume</span>
 </nav>
 
 <div class="stack-stage" id="stackStage">
@@ -454,7 +477,7 @@
   const pageStartTime = performance.now();
   let heroFrameOpacity = 0; // 0 = hero's own frame not visible yet, 1 = fully faded in — transitions first
   let stackRevealed = 0; // 0 = the two cards behind hidden, 1 = fully revealed — transitions after the hero frame
-  const HERO_FRAME_DELAY = 2100; // ms — extra pause here gives time to read the text before frames pop in
+  const HERO_FRAME_DELAY = 1900; // ms — extra pause here gives time to read the text before frames pop in
   const HERO_FRAME_DURATION = 350;
 
   // bottom progress dots — one per card, numbered from 1
@@ -915,6 +938,15 @@
     if (greeting) greeting.classList.add('pop-in');
     if (tagline) tagline.classList.add('pop-in');
   }, 700);
+
+  // navbar and progress dots pop in right after the hero frame finishes appearing
+  setTimeout(() => {
+    const nav = document.getElementById('navbar');
+    if (nav) nav.classList.add('pop-in');
+    progressDots.forEach((dot, i) => {
+      setTimeout(() => dot.classList.add('pop-in'), i * 60);
+    });
+  }, STACK_REVEAL_DELAY);
 
   // hero's own frame fades in first, once the letter entrance has mostly finished
   function easeOutSmooth(t){
