@@ -52,6 +52,43 @@
     color:var(--mute);
     pointer-events:auto;
   }
+  .stack-progress{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    z-index:5000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    padding:32px;
+    pointer-events:none;
+  }
+  .stack-progress-dot{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--font-system);
+    font-size:13px;
+    font-weight:500;
+    color:var(--mute);
+    background:#fff;
+    border:1.5px solid #E3E5EA;
+    cursor:pointer;
+    pointer-events:auto;
+    transition:width .3s cubic-bezier(.22,.61,.36,1), height .3s cubic-bezier(.22,.61,.36,1), font-size .3s ease, background .25s ease, border-color .25s ease, color .25s ease;
+  }
+  .stack-progress-dot.active{
+    width:36px;
+    height:36px;
+    font-size:15px;
+    font-weight:700;
+    color:#fff;
+    background:var(--blue);
+    border-color:var(--blue);
+  }
   .stack-stage{
     position:fixed;
     inset:0;
@@ -407,6 +444,8 @@
   </article>
 </div>
 
+<nav class="stack-progress" id="stackProgress"></nav>
+
 <script>
   const cards = Array.from(document.querySelectorAll('.stack-card'));
   const frameBgs = cards.map(card => card.querySelector('.hero-frame-bg'));
@@ -419,6 +458,29 @@
   let stackRevealed = 0; // 0 = the two cards behind hidden, 1 = fully revealed — transitions after the hero frame
   const HERO_FRAME_DELAY = 2100; // ms — extra pause here gives time to read the text before frames pop in
   const HERO_FRAME_DURATION = 350;
+
+  // bottom progress dots — one per card, numbered from 1
+  const progressBar = document.getElementById('stackProgress');
+  const progressDots = cards.map((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'stack-progress-dot';
+    dot.textContent = i + 1;
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => {
+      if (animating) return;
+      if (reduceMotion) {
+        displayPos = i;
+        render();
+      } else {
+        animateTo(i, STEP_DURATION);
+      }
+    });
+    progressBar.appendChild(dot);
+    return dot;
+  });
+  function updateProgressDots(activeIndex){
+    progressDots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
+  }
   const STACK_REVEAL_DELAY = HERO_FRAME_DELAY + HERO_FRAME_DURATION; // starts right after the hero frame finishes
   const STACK_REVEAL_DURATION = 400;
   function easeOutBackShared(t){
@@ -522,6 +584,7 @@
         newVideo.play().catch(() => {});
         videoStarted[frontIndex] = true;
       }
+      updateProgressDots(frontIndex);
       previousFrontIndex = frontIndex;
     }
   }
