@@ -43,6 +43,9 @@
     align-items:flex-start;
     pointer-events:none;
   }
+  #navbar{
+    transition:transform .3s cubic-bezier(.22,.61,.36,1), opacity .3s ease;
+  }
   .navbar .nav-inner{
     display:flex;
     align-items:center;
@@ -96,6 +99,17 @@
   .navbar.pop-in .nav-inner{
     opacity:1;
     transform:translateY(0);
+  }
+  /* The reference condenses into a small panel once the work stack moves away from the hero. */
+  #navbar.compact{
+    transform:translateY(8px);
+  }
+  #navbar.compact .nav-inner{
+    gap:6px;
+    margin-top:72px;
+    padding:8px 24px;
+    background:#EDEEF1;
+    border-radius:999px;
   }
   .navbar.hidden{
     opacity:0;
@@ -853,6 +867,7 @@
 
     // play a card's video the first time it's reached — after that, just let it keep looping
     const frontIndex = ((Math.round(displayPos) % N) + N) % N;
+    mainNavbar.classList.toggle('compact', frontIndex !== 0 && !inProjectView);
     if (frontIndex !== previousFrontIndex) {
       const newVideo = cardVideos[frontIndex];
       if (newVideo && !videoStarted[frontIndex]) {
