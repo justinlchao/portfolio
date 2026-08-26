@@ -74,13 +74,19 @@
     pointer-events:none;
     transition:opacity .3s ease;
   }
+  nav.navbar.hidden span{
+    transform:translateY(-16px);
+    transition:opacity .3s ease, transform .35s cubic-bezier(.34,0,.64,1);
+  }
   .project-navbar{
     opacity:0;
+    transform:translateY(16px);
     pointer-events:none;
-    transition:opacity .35s ease;
+    transition:opacity .35s cubic-bezier(.22,.61,.36,1), transform .4s cubic-bezier(.22,.61,.36,1);
   }
   .project-navbar.active{
     opacity:1;
+    transform:translateY(0);
     pointer-events:auto;
   }
   .project-navbar .nav-pill-single{
