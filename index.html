@@ -109,16 +109,21 @@
     z-index:9999;
     pointer-events:none;
     opacity:0;
-    transform:translate(-50%, 18px);
-    transition:opacity .15s ease;
+    transform:translate(-50%, 18px) scale(0);
+    transform-origin:center center;
+    transition:opacity .2s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
     font-family:var(--font-system);
     font-weight:600;
     font-size:13px;
     color:#fff;
     padding:6px 14px;
-    border-radius:999px;
+    border-radius:6px;
     white-space:nowrap;
     box-shadow:0 6px 16px -4px rgba(0,0,0,.3);
+  }
+  .cursor-tip.show{
+    opacity:1;
+    transform:translate(-50%, 18px) scale(1);
   }
   .cursor-tip.show{
     opacity:1;
@@ -565,6 +570,11 @@
     card.addEventListener('mouseleave', () => {
       cursorTip.classList.remove('show');
     });
+    const captionGloss = card.querySelector('.video-caption-gloss');
+    if (captionGloss) {
+      captionGloss.addEventListener('mouseenter', () => cursorTip.classList.remove('show'));
+      captionGloss.addEventListener('mouseleave', () => cursorTip.classList.add('show'));
+    }
   });
   const STACK_REVEAL_DURATION = 400;
   function easeOutBackShared(t){
