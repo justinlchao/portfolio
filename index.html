@@ -86,8 +86,6 @@
     font-size:15px;
     font-weight:700;
     color:#fff;
-    background:var(--blue);
-    border-color:var(--blue);
   }
   .stack-stage{
     position:fixed;
@@ -479,7 +477,22 @@
     return dot;
   });
   function updateProgressDots(activeIndex){
-    progressDots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
+    const CARD_COLORS = ['#3355FF', 'rgb(127,204,38)', 'rgb(90,58,168)', 'rgb(255,190,110)', 'rgb(20,21,26)'];
+    const DARK_TEXT_INDICES = [3]; // Broommates' tan is too light for white text
+    progressDots.forEach((dot, i) => {
+      const isActive = i === activeIndex;
+      dot.classList.toggle('active', isActive);
+      if (isActive) {
+        const color = CARD_COLORS[i] || 'var(--blue)';
+        dot.style.background = color;
+        dot.style.borderColor = color;
+        dot.style.color = DARK_TEXT_INDICES.includes(i) ? 'rgb(76,44,41)' : '#fff';
+      } else {
+        dot.style.background = '';
+        dot.style.borderColor = '';
+        dot.style.color = '';
+      }
+    });
   }
   const STACK_REVEAL_DELAY = HERO_FRAME_DELAY + HERO_FRAME_DURATION; // starts right after the hero frame finishes
   const STACK_REVEAL_DURATION = 400;
