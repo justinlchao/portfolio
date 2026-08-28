@@ -137,6 +137,7 @@
   }
   #slot2 .slot-new, #slot3 .slot-new{
     color:#6B6E76;
+    font-weight:500;
   }
   .navbar-pill.project-active .slot-old{
     transform:translateY(-100%);
@@ -1117,6 +1118,7 @@
   }
 
   window.addEventListener('wheel', (e) => {
+    if (inProjectView) return; // let native scroll happen inside the case-study content
     e.preventDefault();
     step(e.deltaY > 0 ? 1 : -1);
   }, { passive: false });
@@ -1129,6 +1131,7 @@
   let touchStartY = null;
   window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
   window.addEventListener('touchmove', (e) => {
+    if (inProjectView) return; // let native scroll happen inside the case-study content
     if (touchStartY === null) return;
     const dy = touchStartY - e.touches[0].clientY;
     if (Math.abs(dy) < 30) return;
