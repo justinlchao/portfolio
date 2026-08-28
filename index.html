@@ -47,7 +47,10 @@
     padding:0;
     box-shadow:none;
     opacity:0;
-    transition:opacity .4s ease, gap .45s cubic-bezier(.34,1.56,.64,1), background .4s ease, padding .45s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease;
+    transition:opacity .4s ease, gap .45s cubic-bezier(.34,1.56,.64,1), background .4s ease, padding .45s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease, top .5s cubic-bezier(.34,1.56,.64,1);
+  }
+  .navbar-pill.scrolled-up{
+    top:20px;
   }
   .navbar-pill.pop-in{
     opacity:1;
@@ -850,6 +853,10 @@
   const stackStageEl = document.getElementById('stackStage');
   const stackProgressEl = document.getElementById('stackProgress');
 
+  pageWhiteOverlay.addEventListener('scroll', () => {
+    navbarPill.classList.toggle('scrolled-up', pageWhiteOverlay.scrollTop > 24);
+  });
+
   const slots = [1, 2, 3].map(n => ({
     slot: document.getElementById(`slot${n}`),
     measureA: document.getElementById(`slot${n}MeasureA`),
@@ -924,6 +931,7 @@
     document.getElementById('slot3MeasureB').textContent = '';
     populateCaseStudy(i);
     pageWhiteOverlay.scrollTop = 0;
+    navbarPill.classList.remove('scrolled-up');
     pageWhiteOverlay.classList.add('active');
     navbarPill.classList.add('project-active');
     setSlotWidths(true);
@@ -935,7 +943,7 @@
     if (!inProjectView) return;
     inProjectView = false;
     pageWhiteOverlay.classList.remove('active');
-    navbarPill.classList.remove('project-active');
+    navbarPill.classList.remove('project-active', 'scrolled-up');
     setSlotWidths(false);
     stackStageEl.style.pointerEvents = '';
     stackProgressEl.style.opacity = '';
