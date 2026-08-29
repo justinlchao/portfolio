@@ -904,6 +904,7 @@
     if (!card) return;
     card.classList.add('clickable');
     card.addEventListener('mouseenter', (e) => {
+      if (inProjectView) return;
       if (i !== previousFrontIndex) return; // only show while this card is actually the front one, not just peeking behind
       cursorTip.textContent = 'Click to learn more';
       cursorTip.style.background = CARD_COLORS[i];
@@ -913,6 +914,7 @@
       cursorTip.classList.add('show');
     });
     card.addEventListener('mousemove', (e) => {
+      if (inProjectView) { cursorTip.classList.remove('show'); return; }
       if (i !== previousFrontIndex) { cursorTip.classList.remove('show'); return; }
       cursorTip.style.left = e.clientX + 'px';
       cursorTip.style.top = e.clientY + 'px';
@@ -923,7 +925,7 @@
     const captionGloss = card.querySelector('.video-caption-gloss');
     if (captionGloss) {
       captionGloss.addEventListener('mouseenter', () => cursorTip.classList.remove('show'));
-      captionGloss.addEventListener('mouseleave', () => cursorTip.classList.add('show'));
+      captionGloss.addEventListener('mouseleave', () => { if (!inProjectView) cursorTip.classList.add('show'); });
     }
     card.addEventListener('click', () => {
       if (i !== previousFrontIndex) return;
@@ -1175,7 +1177,7 @@
 
       // cards move via CSS transform under a potentially-stationary cursor, which doesn't fire a
       // native mouseenter/mousemove — re-check manually so the tooltip doesn't get stuck hidden
-      if (lastMouseX !== null && lastMouseY !== null) {
+      if (lastMouseX !== null && lastMouseY !== null && !inProjectView) {
         const newFrontCard = cards[frontIndex];
         if (newFrontCard) {
           const r = newFrontCard.getBoundingClientRect();
