@@ -305,6 +305,20 @@
     letter-spacing:-.02em;
     margin:0;
   }
+  .cs-section-row-full .cs-section-block{
+    max-width:none;
+  }
+  .cs-section-media-plain{
+    margin-top:24px;
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .cs-section-media-plain video{
+    display:block;
+    width:100%;
+    height:auto;
+    border-radius:12px;
+  }
   .cs-section-media{
     background:#F8F8F8;
     border-radius:12px;
@@ -997,12 +1011,12 @@
     previewBox.innerHTML = data.previewImage ? `<img src="${data.previewImage}" alt="${data.title} preview" />${data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : ''}` : '';
 
     // build the label/title/text sections: problem (single), insights (side by side), solutions (stacked)
-    const block = s => `<div class="cs-section-block"><div class="cs-section-label">${s.label}</div><h2 class="cs-section-title">${s.title}</h2>${s.text ? `<p class="cs-section-text">${s.text}</p>` : ''}${s.media ? `<div class="cs-section-media"><video src="${s.media}" autoplay loop muted playsinline></video></div>` : ''}</div>`;
+    const block = (s, mediaClass) => `<div class="cs-section-block"><div class="cs-section-label">${s.label}</div><h2 class="cs-section-title">${s.title}</h2>${s.text ? `<p class="cs-section-text">${s.text}</p>` : ''}${s.media ? `<div class="${mediaClass}"><video src="${s.media}" autoplay loop muted playsinline></video></div>` : ''}</div>`;
     let sectionsHTML = '';
-    if (data.problem) sectionsHTML += `<div class="cs-section-row">${block(data.problem)}</div>`;
-    if (data.insights && data.insights.length) sectionsHTML += `<div class="cs-section-row">${data.insights.map(block).join('')}</div>`;
+    if (data.problem) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.problem, 'cs-section-media')}</div>`;
+    if (data.insights && data.insights.length) sectionsHTML += `<div class="cs-section-row">${data.insights.map(s => block(s, 'cs-section-media-plain')).join('')}</div>`;
     if (data.solutions && data.solutions.length) {
-      data.solutions.forEach(s => { sectionsHTML += `<div class="cs-section-row">${block(s)}</div>`; });
+      data.solutions.forEach(s => { sectionsHTML += `<div class="cs-section-row">${block(s, 'cs-section-media')}</div>`; });
     }
     document.getElementById('csSections').innerHTML = sectionsHTML;
   }
