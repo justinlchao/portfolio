@@ -1025,7 +1025,7 @@
     if (data.problem) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.problem, 'cs-section-media')}</div>`;
     if (data.insights && data.insights.length) sectionsHTML += `<div class="cs-section-row">${data.insights.map(s => block(s, 'cs-section-media-plain')).join('')}</div>`;
     if (data.solutions && data.solutions.length) {
-      data.solutions.forEach(s => { sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(s, 'cs-section-media')}</div>`; });
+      data.solutions.forEach(s => { sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(s, 'cs-section-media-plain')}</div>`; });
     }
     document.getElementById('csSections').innerHTML = sectionsHTML;
   }
