@@ -1077,76 +1077,60 @@
       logo: '',
       title: 'Uplift',
       description: [
-        "Uplift is an AI startup that reads Common App essays and personal insight questions and tells students what isn't working. Not a pep talk, an actual line to fix.",
-        "I designed the essay feedback system and the portfolio view that sits around it."
+        "Uplift is an AI college admissions startup that reads students\u2019 personal insight questions and Common App essays and gives them feedback most people would otherwise pay a counselor $200 an hour for.",
+        "I was brought on to design two core pieces of the product: a portfolio visualization for a student\u2019s overall application, and the essay analysis and recommendation system itself."
       ],
       team: ['1 Designer (Me)', '2 Engineers'],
       year: '',
-      meta: [
-        { label: 'Role', value: 'Product Designer' },
-        { label: 'Timeline', value: '3 months' },
-        { label: 'Skills', value: 'Product Design, Prototyping, 0\u21921' }
-      ],
       previewCustomHtml: '<div class="uplift-anim"><div class="bar" style="height:40%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:100%"></div></div>',
       previewCaption: "Portfolio strength, visualized",
-      challenge: {
-        label: 'Challenge',
-        title: 'How do you critique something this personal without sounding like a form letter?',
-        text: "College essays might be the most personal thing a 17-year-old has ever had graded. We had a small team and a few months to build something that could give real notes on that without feeling like a rubric."
-      },
       problem: {
         label: 'Problem',
-        title: 'Everyone will tell you your essay is good.',
-        text: "Friends do it. Parents do it. ChatGPT does it by default. None of it says which sentence to actually cut."
+        title: 'Good feedback is expensive, bad feedback is free',
+        text: "Every student can get their essay \u201creviewed\u201d by a friend, a parent, or a chatbot that just tells them it\u2019s great. What they can\u2019t easily get is feedback specific enough to actually improve the essay, or a sense of how it fits into the rest of their application."
       },
       insights: [
-        { label: 'Insight', title: 'A score reads like a grade.', text: "Version one returned a number out of 10 and a paragraph underneath it. Students glanced at the number, skimmed the paragraph once, and closed the tab." },
-        { label: 'Insight', title: 'The essay isn\u2019t the whole application.', text: "Students kept asking if the essay even mattered when their grades weren\u2019t great. The tool had no way to answer that, it only knew the essay in front of it." }
+        { label: 'Insight #1', title: 'Feedback without a \u201cwhy\u201d doesn\u2019t stick', text: "Early versions of the essay tool just returned a score and a paragraph of generic advice. Students read it once, felt vaguely bad about it, and had no idea what to actually change." },
+        { label: 'Insight #2', title: 'Essays don\u2019t live in a vacuum', text: "Students weren\u2019t just asking \u201cis this essay good,\u201d they were asking \u201cdoes this essay make sense next to my activities, my grades, everything else colleges will see.\u201d Reviewing essays in isolation was solving the wrong problem." }
       ],
       solutions: [
-        { label: 'Solution', title: 'Comments on the line, not a summary underneath it.', text: "Feedback now attaches to specific sentences: this line is vague, here's a stronger version. Closer to a teacher marking up a draft than a rubric scoring one." },
-        { label: 'Solution', title: 'One view of the whole application.', text: "The portfolio view lines up a student's essays next to their activities and grades, so the essay tool can point at an actual gap instead of guessing." }
+        { label: 'Solution', title: 'Feedback anchored to the actual sentence', text: "Instead of a score and a summary, we rebuilt the analysis to highlight specific lines and attach feedback directly to them \u2014 what\u2019s working, what\u2019s vague, and what a stronger version might sound like." },
+        { label: 'Solution', title: 'A portfolio view, not just an essay view', text: "The portfolio visualization pulls a student\u2019s essays, activities, and academics into a single view, so students and their advisors can see where the application is strong and where the essay needs to be doing more work." }
       ],
       moreSections: [
-        { label: 'User Validation', title: 'A beta group, mid-application season.', text: "We tested this with students on live drafts during actual application season, not mock essays. What we tracked was whether they edited the flagged sentence, not whether they said the feedback was nice." },
-        { label: 'Reflection', title: 'We can measure engagement. Not yet outcome.', text: "Students trust a blunt, specific note more than a polished score, even when it stings a little. What we still don't know is whether the portfolio view changes what a student prioritizes next." }
+        { label: 'Research', title: 'Watching students reread their own essays', text: "We sat with students while they read AI feedback for the first time and watched where they got confused or just skimmed past it. The generic, disconnected comments were the first thing to go." },
+        { label: 'Design Decision', title: 'Specific over encouraging', text: ["It was tempting to make the tool feel supportive by softening every note, but vague encouragement was exactly what wasn\u2019t working from parents and friends either.", "We optimized for feedback a student could act on in the next five minutes, even if that meant being blunter than a typical \u201cgreat job!\u201d tool."] },
+        { label: 'Design Decision', title: 'Visualizing a portfolio without oversimplifying it', text: ["A student\u2019s application isn\u2019t a single score, and we didn\u2019t want the visualization to pretend otherwise by collapsing everything into one number.", "We landed on a layered view \u2014 strength broken out by category, not a single grade \u2014 so students could see the shape of their application instead of a misleadingly tidy summary."] }
       ],
     },
     3: {
       logo: '',
       title: 'Broommates',
       description: [
-        "My Figma Make 2025 submission. A chore app for roommates, built solo, mostly overnight.",
-        "The brief was open, build anything, AI does the screens. Most of the actual work was picking a problem small enough to finish."
+        "Broommates is a chore-splitting app for roommates, built as an entry for Figma Make\u2019s 2025 design challenge.",
+        "I designed and prototyped the entire experience solo, on a deadline, with Figma\u2019s AI tooling doing a lot of the heavy lifting."
       ],
-      team: ['Solo'],
+      team: ['Solo Designer'],
       year: '2025',
-      meta: [
-        { label: 'Role', value: 'Solo Designer' },
-        { label: 'Timeline', value: '6 days' },
-        { label: 'Skills', value: 'Product Design, Prototyping, AI-Assisted Design' }
-      ],
       previewCustomHtml: '<div class="broom-anim"><div class="ring"></div><div class="dot dot1">\ud83e\uddf9</div><div class="dot dot2">\ud83d\udecf\ufe0f</div><div class="dot dot3">\ud83c\udf7d\ufe0f</div><div class="center">\ud83c\udfe0</div></div>',
       previewCaption: "Chores, on rotation",
-      challenge: {
-        label: 'Challenge',
-        title: 'What can one person actually ship in 6 days with an AI design tool?',
-        text: "Figma Make's prompt was wide open. The constraint wasn't the tool, it was picking something specific enough to finish and honest enough to be worth finishing."
-      },
       problem: {
         label: 'Problem',
-        title: 'Chore charts don\u2019t fail, they get abandoned.',
-        text: "I've had one in every apartment I've lived in and it dies the same way. It holds for two weeks, then someone's traveling, the schedule doesn't account for it, and now it's just paper nobody trusts."
+        title: 'Nobody wants to be the reminder text',
+        text: "Every group chat has that one roommate who has to nag everyone else to do the dishes. Chores don\u2019t fail because people are lazy, they fail because nobody knows whose turn it is, and calling that out feels awkward every single time."
       },
       insights: [
-        { label: 'Insight', title: 'It\u2019s never really about the dishes.', text: "Ask a roommate why the system fell apart and they won't blame the schedule. They'll say \u201cJake just stopped doing his,\u201d a person problem wearing a scheduling costume." }
+        { label: 'Insight #1', title: 'Whiteboards don\u2019t scale', text: "Most roommates start with a physical chore chart on the fridge. It works for about two weeks, then someone moves out, someone forgets to update it, and it quietly becomes wallpaper." },
+        { label: 'Insight #2', title: 'Fairness is the whole app', text: "The actual friction isn\u2019t the chore, it\u2019s the perception that someone\u2019s doing less. Any solution that didn\u2019t make effort visible was going to fail for the same reason the whiteboard did." }
       ],
       solutions: [
-        { label: 'Solution', title: 'One wheel, no admin.', text: "Chores rotate on their own and the app tells you when it's your turn. Nobody assigns anything, nobody has to be the one asking." }
+        { label: 'Solution', title: 'A chore wheel that assigns itself', text: "Instead of a shared list everyone has to manage, Broommates auto-rotates chores on a schedule and pings the person whose turn it is. Nobody has to ask, nobody has to assign, the app just tells you." },
+        { label: 'Solution', title: 'Make effort visible, not competitive', text: "We added a lightweight streak and a simple \u201cwho did what this week\u201d view, but stopped short of leaderboards. The goal was reassurance, not a competition that turns chores into a scoreboard fight." }
       ],
       moreSections: [
-        { label: 'User Validation', title: 'Two households, cold.', text: "No time for a real study before submission, so I walked two roommate households through the prototype without explaining it first. Both understood the chore wheel immediately, which was the one thing I actually needed to know." },
-        { label: 'Reflection', title: 'What I\u2019d want before calling this done.', text: "A wheel is easy to like in a five-minute walkthrough and harder to guarantee works once real friction shows up, someone's traveling, someone's chore just sucks more than another's. I'd want to test that before I trusted this past a demo." }
+        { label: 'Research', title: 'Borrowing time I didn\u2019t have', text: "Figma Make entries run on a tight clock, so formal user research wasn\u2019t really on the table. I leaned on my own experience living with three roommates and a handful of rapid, informal chats with friends about what actually breaks down in shared houses." },
+        { label: 'Design Decision', title: 'AI got me to a prototype, not a decision', text: ["Figma Make is fast at generating screens, but it doesn\u2019t know what your users actually need \u2014 that part was still on me.", "I used it to speed through the parts of the process that are usually just execution (layout variations, component states) so I could spend more time on the chore-rotation logic, which was the part actually worth getting right."] },
+        { label: 'Design Decision', title: 'Cutting scope on purpose', text: ["Splitting bills, group messaging, and roommate matching all felt like natural extensions, but none of them were the core problem, so I cut all of it.", "A hackathon entry that does one thing well beats one that half-builds five things, so Broommates only does the chore wheel \u2014 and it does it well."] }
       ],
     }
   };
