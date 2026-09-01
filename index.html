@@ -242,6 +242,12 @@
     margin-top:40px;
     letter-spacing:-.02em;
   }
+  .cs-meta-extra .cs-team-label{
+    margin-bottom:8px;
+  }
+  .cs-meta-extra > div{
+    margin-bottom:28px;
+  }
   .cs-preview-box{
     background:var(--paper);
     border-radius:12px;
@@ -786,6 +792,7 @@
         <div class="cs-desc-block" id="csDescBlock"></div>
       </div>
       <div class="cs-right">
+        <div class="cs-meta-extra" id="csMetaExtra"></div>
         <h3 class="cs-team-label">Team</h3>
         <div class="cs-team-list" id="csTeamList"></div>
         <div class="cs-year" id="csYear"></div>
@@ -1070,31 +1077,39 @@
       logo: '',
       title: 'Uplift',
       description: [
-        "Uplift reads Common App essays and personal insight questions and tells students what isn't working. Not \u201cgood job,\u201d an actual line.",
-        "Role: Product designer, one of three. I owned the essay feedback system and the portfolio visualization that sits around it."
+        "Uplift is an AI startup that reads Common App essays and personal insight questions and tells students what isn't working. Not a pep talk, an actual line to fix.",
+        "I designed the essay feedback system and the portfolio view that sits around it."
       ],
       team: ['1 Designer (Me)', '2 Engineers'],
       year: '',
+      meta: [
+        { label: 'Role', value: 'Product Designer' },
+        { label: 'Timeline', value: '3 months' },
+        { label: 'Skills', value: 'Product Design, Prototyping, 0\u21921' }
+      ],
       previewCustomHtml: '<div class="uplift-anim"><div class="bar" style="height:40%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:100%"></div></div>',
       previewCaption: "Portfolio strength, visualized",
+      challenge: {
+        label: 'Challenge',
+        title: 'How do you critique something this personal without sounding like a form letter?',
+        text: "College essays might be the most personal thing a 17-year-old has ever had graded. We had a small team and a few months to build something that could give real notes on that without feeling like a rubric."
+      },
       problem: {
         label: 'Problem',
-        title: 'Everyone will tell you your essay is good',
-        text: "Friends do it, parents do it, ChatGPT does it by default. None of it helps, because none of it says which sentence to cut. Students weren't short on feedback. They were short on feedback they could actually use before the essay was due Sunday."
+        title: 'Everyone will tell you your essay is good.',
+        text: "Friends do it. Parents do it. ChatGPT does it by default. None of it says which sentence to actually cut."
       },
       insights: [
-        { label: 'Insight', title: 'A score reads like a grade, not a note', text: "The first version of this returned a number out of 10 and a paragraph underneath it. Watching people use it, they'd glance at the number, skim the paragraph once, and close the tab. Nobody went back and rewrote a sentence because of it — it felt finished, like something to accept rather than act on." },
-        { label: 'Insight', title: 'The essay isn’t the whole application', text: "A few students asked some version of “does this even matter if my grades aren’t great,” which the essay tool had no way to answer. It only knew about the essay in front of it. It had no idea what else was sitting in that student’s application, so it couldn’t tell them where the essay actually needed to work harder." }
+        { label: 'Insight', title: 'A score reads like a grade.', text: "Version one returned a number out of 10 and a paragraph underneath it. Students glanced at the number, skimmed the paragraph once, and closed the tab." },
+        { label: 'Insight', title: 'The essay isn\u2019t the whole application.', text: "Students kept asking if the essay even mattered when their grades weren\u2019t great. The tool had no way to answer that, it only knew the essay in front of it." }
       ],
       solutions: [
-        { label: 'Solution', title: 'Comments on the line, not a summary underneath it', text: "We scrapped the score and rebuilt feedback around specific sentences — this line is vague, here's why, here's roughly what a stronger version does instead. It's closer to how a good writing teacher marks up a draft than how a grading rubric scores one." },
-        { label: 'Solution', title: 'One view of the whole application, not just the essay', text: "The portfolio view lines up a student's essays next to their activities and academics so the essay tool can point at a gap instead of guessing. If extracurriculars are thin, the essay has to carry more, and now the feedback can actually say that." }
+        { label: 'Solution', title: 'Comments on the line, not a summary underneath it.', text: "Feedback now attaches to specific sentences: this line is vague, here's a stronger version. Closer to a teacher marking up a draft than a rubric scoring one." },
+        { label: 'Solution', title: 'One view of the whole application.', text: "The portfolio view lines up a student's essays next to their activities and grades, so the essay tool can point at an actual gap instead of guessing." }
       ],
       moreSections: [
-        { label: 'Research', title: 'We watched people read their own feedback', text: "Sat next to a handful of students while they opened AI notes on their own drafts for the first time and just watched where their eyes went. The generic stuff got skimmed in about two seconds. The specific stuff got read twice, which is basically all the signal we needed." },
-        { label: 'Design Decision', title: 'Blunt beats encouraging', text: "It was tempting to soften every note so the tool felt supportive, but soft was the exact problem with feedback from friends and parents. We optimized for something a student could act on in the next five minutes, even when that meant sounding less like a cheerleader and more like an editor." },
-        { label: 'User Validation', title: 'A beta group, mid-application season', text: "Ran this with a small group of students working on live drafts, not test essays, during actual application season. What we tracked was whether they went back and edited the sentence we flagged. Whether they said the feedback was “nice” didn't tell us much — whether they touched the draft again did." },
-        { label: 'Reflection', title: 'We measure engagement, not outcome, still', text: "What surprised me was how much students trusted a blunt, specific note over a polished score, even when the note stung a little. What I haven't figured out is whether the portfolio view actually changes what a student prioritizes — rewriting the essay versus going and doing one more extracurricular. Right now we can tell you they opened the feedback. We can't yet tell you it moved them." }
+        { label: 'User Validation', title: 'A beta group, mid-application season.', text: "We tested this with students on live drafts during actual application season, not mock essays. What we tracked was whether they edited the flagged sentence, not whether they said the feedback was nice." },
+        { label: 'Reflection', title: 'We can measure engagement. Not yet outcome.', text: "Students trust a blunt, specific note more than a polished score, even when it stings a little. What we still don't know is whether the portfolio view changes what a student prioritizes next." }
       ],
     },
     3: {
@@ -1102,27 +1117,36 @@
       title: 'Broommates',
       description: [
         "My Figma Make 2025 submission. A chore app for roommates, built solo, mostly overnight.",
-        "The brief was open — build anything, AI does the screens — so most of the actual design work was picking a problem small enough to finish."
+        "The brief was open, build anything, AI does the screens. Most of the actual work was picking a problem small enough to finish."
       ],
       team: ['Solo'],
       year: '2025',
+      meta: [
+        { label: 'Role', value: 'Solo Designer' },
+        { label: 'Timeline', value: '6 days' },
+        { label: 'Skills', value: 'Product Design, Prototyping, AI-Assisted Design' }
+      ],
       previewCustomHtml: '<div class="broom-anim"><div class="ring"></div><div class="dot dot1">\ud83e\uddf9</div><div class="dot dot2">\ud83d\udecf\ufe0f</div><div class="dot dot3">\ud83c\udf7d\ufe0f</div><div class="center">\ud83c\udfe0</div></div>',
       previewCaption: "Chores, on rotation",
+      challenge: {
+        label: 'Challenge',
+        title: 'What can one person actually ship in 6 days with an AI design tool?',
+        text: "Figma Make's prompt was wide open. The constraint wasn't the tool, it was picking something specific enough to finish and honest enough to be worth finishing."
+      },
       problem: {
         label: 'Problem',
-        title: 'Chore charts don’t fail, they get abandoned',
-        text: "I've had a chore chart in every apartment I've lived in and it dies the same way every time. Someone writes it up, it holds for two weeks, then someone's traveling and the schedule doesn't account for it, and now it's just a piece of paper nobody trusts."
+        title: 'Chore charts don\u2019t fail, they get abandoned.',
+        text: "I've had one in every apartment I've lived in and it dies the same way. It holds for two weeks, then someone's traveling, the schedule doesn't account for it, and now it's just paper nobody trusts."
       },
       insights: [
-        { label: 'Insight', title: 'It’s never really about the dishes', text: "Ask a roommate why the system fell apart and they won't say the schedule was wrong. They'll say something like “Jake just stopped doing his,” which is a person problem wearing a scheduling costume. Whatever I built had to make effort visible without turning into a scoreboard — roommates who feel watched stop opening the app." }
+        { label: 'Insight', title: 'It\u2019s never really about the dishes.', text: "Ask a roommate why the system fell apart and they won't blame the schedule. They'll say \u201cJake just stopped doing his,\u201d a person problem wearing a scheduling costume." }
       ],
       solutions: [
-        { label: 'Solution', title: 'One wheel, no admin', text: "Chores rotate on their own and the app just tells you when it's your turn — nobody assigns anything, nobody has to be the one asking. I killed a shared task-list version almost immediately, because a list still needs someone to manage it, and managing it was the actual thing people were avoiding in the first place." }
+        { label: 'Solution', title: 'One wheel, no admin.', text: "Chores rotate on their own and the app tells you when it's your turn. Nobody assigns anything, nobody has to be the one asking." }
       ],
       moreSections: [
-        { label: 'Research', title: 'Validation on a deadline', text: "There wasn't time for a real study before submission. I walked two roommate households through the prototype cold and watched where they hesitated. Both understood the chore wheel without me explaining it, which was the one thing I actually needed to know — everything past that would've been nice, not necessary." },
-        { label: 'Design Decision', title: 'What got cut the night before', text: "Bill-splitting and a built-in roommate chat were both wired into the prototype at one point. Neither survived, because neither was the reason someone would open the app twice. A submission that does one thing well beats one that half-builds five things." },
-        { label: 'Reflection', title: 'What I’d want before calling this done', text: "A rotating wheel is easy to like in a five-minute walkthrough and much harder to guarantee works once real friction shows up — someone's out of town, someone's chore just objectively sucks more than another's. I didn't have the runway to test for that, and I'd want to before I trusted this past a demo. I'd also lean on Figma Make for production, not decisions — it got me screens fast, but the parts I'm most confident in are the ones I made away from the tool." }
+        { label: 'User Validation', title: 'Two households, cold.', text: "No time for a real study before submission, so I walked two roommate households through the prototype without explaining it first. Both understood the chore wheel immediately, which was the one thing I actually needed to know." },
+        { label: 'Reflection', title: 'What I\u2019d want before calling this done.', text: "A wheel is easy to like in a five-minute walkthrough and harder to guarantee works once real friction shows up, someone's traveling, someone's chore just sucks more than another's. I'd want to test that before I trusted this past a demo." }
       ],
     }
   };
@@ -1139,12 +1163,15 @@
     const teamList = document.getElementById('csTeamList');
     teamList.innerHTML = data.team.map(t => `<div>${t}</div>`).join('');
     document.getElementById('csYear').textContent = data.year || '';
+    const metaExtra = document.getElementById('csMetaExtra');
+    metaExtra.innerHTML = data.meta ? data.meta.map(m => `<div><h3 class="cs-team-label">${m.label}</h3><div class="cs-team-list"><div>${m.value}</div></div></div>`).join('') : '';
     const previewBox = document.getElementById('csPreviewBox');
     previewBox.innerHTML = data.previewImage ? `<img src="${data.previewImage}" alt="${data.title} preview" />${data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : ''}` : (data.previewCustomHtml ? `${data.previewCustomHtml}${data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : ''}` : '');
 
     // build the label/title/text sections: problem (single), insights (side by side), solutions (stacked)
     const block = (s, mediaClass) => `<div class="cs-section-block"><div class="cs-section-label">${s.label}</div><h2 class="cs-section-title">${s.title}</h2>${s.text ? (Array.isArray(s.text) ? s.text.map(p => `<p class="cs-section-text">${p}</p>`).join('') : `<p class="cs-section-text">${s.text}</p>`) : ''}${s.media ? `<div class="${mediaClass}"${s.mediaHeight ? ` style="height:${s.mediaHeight};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;"` : (s.mediaMaxWidth ? ` style="max-width:${s.mediaMaxWidth}"` : '')}><video src="${s.media}" autoplay loop muted playsinline${s.mediaHeight ? ` style="height:100%;width:auto;max-width:100%;object-fit:contain;display:block;"` : ''}></video></div>` : ''}</div>`;
     let sectionsHTML = '';
+    if (data.challenge) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.challenge, 'cs-section-media-plain')}</div>`;
     if (data.problem) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.problem, 'cs-section-media-plain')}</div>`;
     if (data.insights && data.insights.length) sectionsHTML += `<div class="cs-section-row">${data.insights.map(s => block(s, 'cs-section-media-plain')).join('')}</div>`;
     if (data.solutions && data.solutions.length) {
