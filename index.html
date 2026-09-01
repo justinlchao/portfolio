@@ -326,20 +326,20 @@
     height:auto;
     border-radius:12px;
   }
-  .cs-section-media-plain-capped{
+  .cs-section-media-fitbox{
     margin-top:24px;
+    background:#F8F8F8;
     border-radius:12px;
     overflow:hidden;
-    display:flex;
-    justify-content:center;
+    width:fit-content;
+    margin-left:auto;
+    margin-right:auto;
   }
-  .cs-section-media-plain-capped video{
+  .cs-section-media-fitbox video{
     display:block;
-    width:auto;
-    height:auto;
+    width:380px;
     max-width:100%;
-    max-height:480px;
-    border-radius:12px;
+    height:auto;
   }
   .cs-section-media{
     background:#F8F8F8;
@@ -1051,7 +1051,7 @@
     if (data.solutions && data.solutions.length) {
       data.solutions.forEach(s => { sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(s, 'cs-section-media-plain')}</div>`; });
     }
-    if (data.research) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.research, 'cs-section-media-plain-capped')}</div>`;
+    if (data.research) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.research, 'cs-section-media-fitbox')}</div>`;
     if (data.designDecisions && data.designDecisions.length) {
       data.designDecisions.forEach(s => { sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(s, 'cs-section-media-plain')}</div>`; });
     }
