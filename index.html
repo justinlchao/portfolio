@@ -267,6 +267,77 @@
     border-radius:8px;
     box-shadow:0 20px 50px -12px rgba(0,0,0,.25);
   }
+  /* Broommates preview: rotating chore wheel */
+  .broom-anim{
+    position:relative;
+    width:180px;
+    height:180px;
+  }
+  .broom-anim .ring{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    border:2px dashed #C9CBD1;
+    animation:broomSpin 8s linear infinite;
+  }
+  .broom-anim .dot{
+    position:absolute;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Inter', var(--font-system);
+    font-weight:600;
+    font-size:15px;
+    color:#fff;
+    box-shadow:0 8px 20px -6px rgba(0,0,0,.35);
+  }
+  .broom-anim .dot1{ background:#6C63FF; top:0; left:50%; transform:translate(-50%,-50%); }
+  .broom-anim .dot2{ background:#FF6B6B; bottom:8%; left:8%; transform:translate(-50%,50%); }
+  .broom-anim .dot3{ background:#2FBF71; bottom:8%; right:0%; transform:translate(50%,50%); }
+  .broom-anim .center{
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:#14151A;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+  }
+  @keyframes broomSpin{
+    from{ transform:rotate(0deg); }
+    to{ transform:rotate(360deg); }
+  }
+  /* Uplift preview: rising bars */
+  .uplift-anim{
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+    height:160px;
+    width:200px;
+  }
+  .uplift-anim .bar{
+    flex:1;
+    background:linear-gradient(180deg,#6C63FF,#8F88FF);
+    border-radius:6px 6px 0 0;
+    animation:upliftRise 2.4s ease-in-out infinite;
+    transform-origin:bottom;
+  }
+  .uplift-anim .bar:nth-child(1){ animation-delay:0s; }
+  .uplift-anim .bar:nth-child(2){ animation-delay:.2s; }
+  .uplift-anim .bar:nth-child(3){ animation-delay:.4s; }
+  .uplift-anim .bar:nth-child(4){ animation-delay:.6s; }
+  .uplift-anim .bar:nth-child(5){ animation-delay:.8s; }
+  @keyframes upliftRise{
+    0%, 100%{ transform:scaleY(.35); }
+    50%{ transform:scaleY(1); }
+  }
   .cs-sections{
     display:flex;
     flex-direction:column;
@@ -998,16 +1069,62 @@
     2: {
       logo: '',
       title: 'Uplift',
-      description: [],
-      team: [],
-      year: ''
+      description: [
+        "Uplift is an AI college admissions startup that reads students\u2019 personal insight questions and Common App essays and gives them feedback most people would otherwise pay a counselor $200 an hour for.",
+        "I was brought on to design two core pieces of the product: a portfolio visualization for a student\u2019s overall application, and the essay analysis and recommendation system itself."
+      ],
+      team: ['1 Designer (Me)', '2 Engineers'],
+      year: '',
+      previewCustomHtml: '<div class="uplift-anim"><div class="bar" style="height:40%"></div><div class="bar" style="height:65%"></div><div class="bar" style="height:50%"></div><div class="bar" style="height:85%"></div><div class="bar" style="height:100%"></div></div>',
+      previewCaption: "Portfolio strength, visualized",
+      problem: {
+        label: 'Problem',
+        title: 'Good feedback is expensive, bad feedback is free',
+        text: "Every student can get their essay \u201creviewed\u201d by a friend, a parent, or a chatbot that just tells them it\u2019s great. What they can\u2019t easily get is feedback specific enough to actually improve the essay, or a sense of how it fits into the rest of their application."
+      },
+      insights: [
+        { label: 'Insight #1', title: 'Feedback without a \u201cwhy\u201d doesn\u2019t stick', text: "Early versions of the essay tool just returned a score and a paragraph of generic advice. Students read it once, felt vaguely bad about it, and had no idea what to actually change." },
+        { label: 'Insight #2', title: 'Essays don\u2019t live in a vacuum', text: "Students weren\u2019t just asking \u201cis this essay good,\u201d they were asking \u201cdoes this essay make sense next to my activities, my grades, everything else colleges will see.\u201d Reviewing essays in isolation was solving the wrong problem." }
+      ],
+      solutions: [
+        { label: 'Solution', title: 'Feedback anchored to the actual sentence', text: "Instead of a score and a summary, we rebuilt the analysis to highlight specific lines and attach feedback directly to them \u2014 what\u2019s working, what\u2019s vague, and what a stronger version might sound like." },
+        { label: 'Solution', title: 'A portfolio view, not just an essay view', text: "The portfolio visualization pulls a student\u2019s essays, activities, and academics into a single view, so students and their advisors can see where the application is strong and where the essay needs to be doing more work." }
+      ],
+      moreSections: [
+        { label: 'Research', title: 'Watching students reread their own essays', text: "We sat with students while they read AI feedback for the first time and watched where they got confused or just skimmed past it. The generic, disconnected comments were the first thing to go." },
+        { label: 'Design Decision', title: 'Specific over encouraging', text: ["It was tempting to make the tool feel supportive by softening every note, but vague encouragement was exactly what wasn\u2019t working from parents and friends either.", "We optimized for feedback a student could act on in the next five minutes, even if that meant being blunter than a typical \u201cgreat job!\u201d tool."] },
+        { label: 'Design Decision', title: 'Visualizing a portfolio without oversimplifying it', text: ["A student\u2019s application isn\u2019t a single score, and we didn\u2019t want the visualization to pretend otherwise by collapsing everything into one number.", "We landed on a layered view \u2014 strength broken out by category, not a single grade \u2014 so students could see the shape of their application instead of a misleadingly tidy summary."] }
+      ],
     },
     3: {
       logo: '',
       title: 'Broommates',
-      description: [],
-      team: [],
-      year: ''
+      description: [
+        "Broommates is a chore-splitting app for roommates, built as an entry for Figma Make\u2019s 2025 design challenge.",
+        "I designed and prototyped the entire experience solo, on a deadline, with Figma\u2019s AI tooling doing a lot of the heavy lifting."
+      ],
+      team: ['Solo Designer'],
+      year: '2025',
+      previewCustomHtml: '<div class="broom-anim"><div class="ring"></div><div class="dot dot1">\ud83e\uddf9</div><div class="dot dot2">\ud83d\udecf\ufe0f</div><div class="dot dot3">\ud83c\udf7d\ufe0f</div><div class="center">\ud83c\udfe0</div></div>',
+      previewCaption: "Chores, on rotation",
+      problem: {
+        label: 'Problem',
+        title: 'Nobody wants to be the reminder text',
+        text: "Every group chat has that one roommate who has to nag everyone else to do the dishes. Chores don\u2019t fail because people are lazy, they fail because nobody knows whose turn it is, and calling that out feels awkward every single time."
+      },
+      insights: [
+        { label: 'Insight #1', title: 'Whiteboards don\u2019t scale', text: "Most roommates start with a physical chore chart on the fridge. It works for about two weeks, then someone moves out, someone forgets to update it, and it quietly becomes wallpaper." },
+        { label: 'Insight #2', title: 'Fairness is the whole app', text: "The actual friction isn\u2019t the chore, it\u2019s the perception that someone\u2019s doing less. Any solution that didn\u2019t make effort visible was going to fail for the same reason the whiteboard did." }
+      ],
+      solutions: [
+        { label: 'Solution', title: 'A chore wheel that assigns itself', text: "Instead of a shared list everyone has to manage, Broommates auto-rotates chores on a schedule and pings the person whose turn it is. Nobody has to ask, nobody has to assign, the app just tells you." },
+        { label: 'Solution', title: 'Make effort visible, not competitive', text: "We added a lightweight streak and a simple \u201cwho did what this week\u201d view, but stopped short of leaderboards. The goal was reassurance, not a competition that turns chores into a scoreboard fight." }
+      ],
+      moreSections: [
+        { label: 'Research', title: 'Borrowing time I didn\u2019t have', text: "Figma Make entries run on a tight clock, so formal user research wasn\u2019t really on the table. I leaned on my own experience living with three roommates and a handful of rapid, informal chats with friends about what actually breaks down in shared houses." },
+        { label: 'Design Decision', title: 'AI got me to a prototype, not a decision', text: ["Figma Make is fast at generating screens, but it doesn\u2019t know what your users actually need \u2014 that part was still on me.", "I used it to speed through the parts of the process that are usually just execution (layout variations, component states) so I could spend more time on the chore-rotation logic, which was the part actually worth getting right."] },
+        { label: 'Design Decision', title: 'Cutting scope on purpose', text: ["Splitting bills, group messaging, and roommate matching all felt like natural extensions, but none of them were the core problem, so I cut all of it.", "A hackathon entry that does one thing well beats one that half-builds five things, so Broommates only does the chore wheel \u2014 and it does it well."] }
+      ],
     }
   };
 
@@ -1024,7 +1141,7 @@
     teamList.innerHTML = data.team.map(t => `<div>${t}</div>`).join('');
     document.getElementById('csYear').textContent = data.year || '';
     const previewBox = document.getElementById('csPreviewBox');
-    previewBox.innerHTML = data.previewImage ? `<img src="${data.previewImage}" alt="${data.title} preview" />${data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : ''}` : '';
+    previewBox.innerHTML = data.previewImage ? `<img src="${data.previewImage}" alt="${data.title} preview" />${data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : ''}` : (data.previewCustomHtml ? `${data.previewCustomHtml}${data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : ''}` : '');
 
     // build the label/title/text sections: problem (single), insights (side by side), solutions (stacked)
     const block = (s, mediaClass) => `<div class="cs-section-block"><div class="cs-section-label">${s.label}</div><h2 class="cs-section-title">${s.title}</h2>${s.text ? (Array.isArray(s.text) ? s.text.map(p => `<p class="cs-section-text">${p}</p>`).join('') : `<p class="cs-section-text">${s.text}</p>`) : ''}${s.media ? `<div class="${mediaClass}"${s.mediaHeight ? ` style="height:${s.mediaHeight};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;"` : (s.mediaMaxWidth ? ` style="max-width:${s.mediaMaxWidth}"` : '')}><video src="${s.media}" autoplay loop muted playsinline${s.mediaHeight ? ` style="height:100%;width:auto;max-width:100%;object-fit:contain;display:block;"` : ''}></video></div>` : ''}</div>`;
