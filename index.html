@@ -467,7 +467,6 @@
   .cs-sections{
     display:flex;
     flex-direction:column;
-    gap:80px;
     margin-top:80px;
   }
   .cs-section-row{
@@ -500,7 +499,7 @@
     font-weight:400;
     font-size:17px;
     line-height:1.6;
-    color:#2A2C33;
+    color:#71737A;
     letter-spacing:-.02em;
     margin:0;
   }
@@ -1421,14 +1420,21 @@
     // build the label/title/text sections: problem (single), insights (side by side), solutions (stacked)
     const block = (s, mediaClass) => `<div class="cs-section-block">${s.label ? `<div class="cs-section-label">${s.label}</div>` : ''}<h2 class="cs-section-title">${s.title}</h2>${s.list ? `<ul class="cs-section-list">${s.list.map(li => `<li>${li}</li>`).join('')}</ul>` : (s.text ? (Array.isArray(s.text) ? s.text.map(p => `<p class="cs-section-text">${p}</p>`).join('<hr class="cs-text-divider">') : `<p class="cs-section-text">${s.text}</p>`) : '')}${s.media ? `<div class="${mediaClass}"${s.mediaHeight ? ` style="height:${s.mediaHeight};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;"` : (s.mediaMaxWidth ? ` style="max-width:${s.mediaMaxWidth}"` : '')}><video src="${s.media}" autoplay loop muted playsinline${s.mediaHeight ? ` style="height:100%;width:auto;max-width:100%;object-fit:contain;display:block;"` : ''}></video></div>` : (s.customHtml ? `<div class="${mediaClass}" style="height:${s.mediaHeight || '280px'};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;">${s.customHtml}</div>` : '')}</div>`;
     let sectionsHTML = '';
-    if (data.challenge) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.challenge, 'cs-section-media-plain')}</div>`;
-    if (data.problem) sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(data.problem, 'cs-section-media-plain')}</div>`;
-    if (data.insights && data.insights.length) sectionsHTML += `<div class="cs-section-row">${data.insights.map(s => block(s, 'cs-section-media-plain')).join('')}</div>`;
+    let prevLabel = null;
+    const SAME_GAP = 40, DIFF_GAP = 112;
+    const pushRow = (label, innerHtml, extraClass) => {
+      const gap = prevLabel === null ? 0 : (label === prevLabel ? SAME_GAP : DIFF_GAP);
+      sectionsHTML += `<div class="cs-section-row${extraClass ? ' ' + extraClass : ''}" style="margin-top:${gap}px">${innerHtml}</div>`;
+      prevLabel = label;
+    };
+    if (data.challenge) pushRow(data.challenge.label, block(data.challenge, 'cs-section-media-plain'), 'cs-section-row-full');
+    if (data.problem) pushRow(data.problem.label, block(data.problem, 'cs-section-media-plain'), 'cs-section-row-full');
+    if (data.insights && data.insights.length) pushRow(data.insights[0].label, data.insights.map(s => block(s, 'cs-section-media-plain')).join(''), '');
     if (data.solutions && data.solutions.length) {
-      data.solutions.forEach(s => { sectionsHTML += `<div class="cs-section-row cs-section-row-full">${block(s, 'cs-section-media-plain')}</div>`; });
+      data.solutions.forEach(s => { pushRow(s.label, block(s, 'cs-section-media-plain'), 'cs-section-row-full'); });
     }
     if (data.moreSections && data.moreSections.length) {
-      data.moreSections.forEach(s => { sectionsHTML += `<div class="cs-section-row cs-section-row-full${s.bordered ? ' cs-section-row-bordered' : ''}">${block(s, 'cs-section-media-plain')}</div>`; });
+      data.moreSections.forEach(s => { pushRow(s.label, block(s, 'cs-section-media-plain'), `cs-section-row-full${s.bordered ? ' cs-section-row-bordered' : ''}`); });
     }
     document.getElementById('csSections').innerHTML = sectionsHTML;
     buildSideNav();
