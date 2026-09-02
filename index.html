@@ -506,7 +506,7 @@
   }
   .cs-text-divider{
     border:none;
-    margin:14px 0;
+    margin:20px 0;
   }
   .cs-side-nav{
     position:fixed;
@@ -1429,10 +1429,10 @@
     sideNavScrollBound = true;
     const nav = document.getElementById('csSideNav');
     const onScroll = () => {
-      if (window.scrollY > 260) nav.classList.add('visible');
+      if (pageWhiteOverlay.scrollTop > 260) nav.classList.add('visible');
       else nav.classList.remove('visible');
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
+    pageWhiteOverlay.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
   initSideNavScroll();
