@@ -509,8 +509,8 @@
     margin:20px 0;
   }
   .cs-section-row-bordered{
-    border-top:1.5px solid #14151A;
-    border-bottom:1.5px solid #14151A;
+    border-top:1px solid #E4E4E7;
+    border-bottom:1px solid #E4E4E7;
     padding:40px 0;
     margin:24px 0;
   }
@@ -552,9 +552,10 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:24px;
     background:#F8F8F8;
     border-radius:16px;
-    padding:36px 40px;
+    padding:24px 40px;
     cursor:pointer;
     transition:background .2s ease, transform .2s ease;
   }
@@ -568,6 +569,25 @@
     font-size:28px;
     letter-spacing:-.03em;
     color:#14151A;
+  }
+  .cs-next-frame{
+    flex:1;
+    max-width:220px;
+    height:100px;
+    background:#FFFFFF;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .cs-next-frame img, .cs-next-frame video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .cs-next-frame-scale{
+    transform:scale(.42);
   }
   .cs-next-arrow{
     font-family:'Inter', var(--font-system);
@@ -1438,7 +1458,8 @@
     const nextData = PROJECT_CONTENT[nextId];
     const nextEl = document.getElementById('csNext');
     if (!nextData || ids.length < 2) { nextEl.innerHTML = ''; return; }
-    nextEl.innerHTML = `<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-title">${nextData.title}</div><div class="cs-next-arrow">&#8594;</div></div>`;
+    const frameInner = nextData.previewVideo ? `<video src="${nextData.previewVideo}" autoplay loop muted playsinline></video>` : (nextData.previewImage ? `<img src="${nextData.previewImage}" alt="${nextData.title} preview" />` : (nextData.previewCustomHtml ? `<div class="cs-next-frame-scale">${nextData.previewCustomHtml}</div>` : ''));
+    nextEl.innerHTML = `<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-title">${nextData.title}</div><div class="cs-next-frame">${frameInner}</div><div class="cs-next-arrow">&#8594;</div></div>`;
     document.getElementById('csNextCard').addEventListener('click', () => {
       const projectName = PROJECT_NAMES[nextId] || '';
       document.getElementById('slot2New').textContent = projectName;
@@ -1459,7 +1480,7 @@
     blocks.forEach((block, i) => {
       const labelEl = block.querySelector('.cs-section-label');
       const label = labelEl ? labelEl.textContent.trim() : '';
-      if (!label || label === 'Insight' || seen.has(label)) return;
+      if (!label || label.startsWith('Insight') || seen.has(label)) return;
       seen.add(label);
       const id = `cs-anchor-${i}`;
       block.id = id;
