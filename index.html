@@ -510,8 +510,8 @@
   }
   .cs-side-nav{
     position:fixed;
-    left:calc(50% - 480px);
-    top:230px;
+    left:calc(50% - 560px);
+    top:120px;
     display:flex;
     flex-direction:column;
     align-items:flex-start;
@@ -1429,7 +1429,7 @@
     sideNavScrollBound = true;
     const nav = document.getElementById('csSideNav');
     const onScroll = () => {
-      if (pageWhiteOverlay.scrollTop > 260) nav.classList.add('visible');
+      if (pageWhiteOverlay.scrollTop > 20) nav.classList.add('visible');
       else nav.classList.remove('visible');
     };
     pageWhiteOverlay.addEventListener('scroll', onScroll, { passive: true });
