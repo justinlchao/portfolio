@@ -566,6 +566,12 @@
     object-fit:contain;
     display:block;
   }
+  .cs-next-caption-slot{
+    position:absolute;
+    right:32px;
+    bottom:32px;
+    z-index:2;
+  }
   .cs-next-title{
     font-family:'Inter', var(--font-system);
     font-weight:600;
@@ -1437,11 +1443,13 @@
     const nextData = PROJECT_CONTENT[nextId];
     const nextEl = document.getElementById('csNext');
     if (!nextData || ids.length < 2) { nextEl.innerHTML = ''; return; }
-    // Pull the real video straight from the matching homepage hero-card
+    // Pull the real video + caption button straight from the matching homepage hero-card
     const homeCard = document.querySelector(`.stack-card[data-index="${nextId}"]`);
     const homeVideoSrc = homeCard ? homeCard.querySelector('.card-video source') : null;
+    const homeCaption = homeCard ? homeCard.querySelector('.video-caption') : null;
     const videoHtml = homeVideoSrc ? `<video class="cs-next-video" autoplay loop muted playsinline><source src="${homeVideoSrc.getAttribute('src')}" type="video/mp4"></video>` : '';
-    nextEl.innerHTML = `<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-hero">${videoHtml}</div><div class="cs-next-title">${nextData.title}</div></div>`;
+    const captionHtml = homeCaption ? `<div class="cs-next-caption-slot">${homeCaption.outerHTML}</div>` : '';
+    nextEl.innerHTML = `<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-hero">${videoHtml}${captionHtml}</div><div class="cs-next-title">${nextData.title}</div></div>`;
     document.getElementById('csNextCard').addEventListener('click', () => {
       const projectName = PROJECT_NAMES[nextId] || '';
       document.getElementById('slot2New').textContent = projectName;
