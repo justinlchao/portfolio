@@ -571,14 +571,13 @@
     right:32px;
     bottom:32px;
     z-index:2;
+    max-width:calc(100% - 64px);
   }
-  .cs-next-title{
-    font-family:'Inter', var(--font-system);
-    font-weight:600;
-    font-size:26px;
-    letter-spacing:-.03em;
-    color:#14151A;
-    margin-top:20px;
+  .cs-next-caption-slot .video-caption-title{
+    white-space:normal;
+  }
+  .cs-next-caption-slot .video-caption-sub{
+    white-space:normal;
   }
   .cs-side-nav{
     position:fixed;
@@ -1449,7 +1448,7 @@
     const homeCaption = homeCard ? homeCard.querySelector('.video-caption') : null;
     const videoHtml = homeVideoSrc ? `<video class="cs-next-video" autoplay loop muted playsinline><source src="${homeVideoSrc.getAttribute('src')}" type="video/mp4"></video>` : '';
     const captionHtml = homeCaption ? `<div class="cs-next-caption-slot">${homeCaption.outerHTML}</div>` : '';
-    nextEl.innerHTML = `<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-hero">${videoHtml}${captionHtml}</div><div class="cs-next-title">${nextData.title}</div></div>`;
+    nextEl.innerHTML = `<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-hero">${videoHtml}${captionHtml}</div></div>`;
     document.getElementById('csNextCard').addEventListener('click', () => {
       const projectName = PROJECT_NAMES[nextId] || '';
       document.getElementById('slot2New').textContent = projectName;
