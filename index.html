@@ -556,8 +556,10 @@
     color:#14151A;
   }
   .cs-side-nav a.cs-nav-home{
-    margin-bottom:14px;
-    color:#8A8D93;
+    margin-bottom:32px;
+    color:#C5C7CC;
+    overflow:visible;
+    max-width:none;
   }
   .cs-side-nav a.cs-nav-home:hover{
     color:#14151A;
@@ -1365,9 +1367,10 @@
     const items = [];
     blocks.forEach((block, i) => {
       const labelEl = block.querySelector('.cs-section-label');
-      const label = labelEl ? labelEl.textContent.trim() : '';
-      if (!label || label === 'Insight' || seen.has(label)) return;
-      seen.add(label);
+      let label = labelEl ? labelEl.textContent.trim() : '';
+      if (!label || seen.has(label)) return;
+      if (label === 'Insight') label = 'Insights';
+      seen.add(labelEl.textContent.trim());
       const id = `cs-anchor-${i}`;
       block.id = id;
       items.push({ label, id, el: block });
