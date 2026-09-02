@@ -510,15 +510,21 @@
   }
   .cs-side-nav{
     position:fixed;
-    right:36px;
-    top:50%;
-    transform:translateY(-50%);
+    left:calc(50% - 480px);
+    top:230px;
     display:flex;
     flex-direction:column;
-    align-items:flex-end;
-    gap:13px;
+    align-items:flex-start;
+    gap:12px;
     z-index:60;
-    max-width:180px;
+    max-width:170px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .cs-side-nav.visible{
+    opacity:1;
+    pointer-events:auto;
   }
   .cs-side-nav a{
     font-family:'Inter', var(--font-system);
@@ -527,18 +533,36 @@
     letter-spacing:-.01em;
     color:#C5C7CC;
     text-decoration:none;
-    text-align:right;
+    text-align:left;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
-    max-width:180px;
-    transition:color .2s ease;
+    max-width:170px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    opacity:0;
+    transform:translateY(10px);
+    transition:color .2s ease, opacity .35s ease, transform .35s ease;
+    transition-delay:0s;
+  }
+  .cs-side-nav.visible a{
+    opacity:1;
+    transform:translateY(0);
+    transition-delay:calc(var(--i, 0) * 55ms);
   }
   .cs-side-nav a:hover,
   .cs-side-nav a.active{
     color:#14151A;
   }
-  @media (max-width:1100px){
+  .cs-side-nav a.cs-nav-home{
+    margin-bottom:14px;
+    color:#8A8D93;
+  }
+  .cs-side-nav a.cs-nav-home:hover{
+    color:#14151A;
+  }
+  @media (max-width:1250px){
     .cs-side-nav{ display:none; }
   }
   .cs-section-row-full .cs-section-block{
@@ -1342,18 +1366,44 @@
     blocks.forEach((block, i) => {
       const labelEl = block.querySelector('.cs-section-label');
       const label = labelEl ? labelEl.textContent.trim() : '';
-      if (!label || seen.has(label)) return;
+      if (!label || label === 'Insight' || seen.has(label)) return;
       seen.add(label);
       const id = `cs-anchor-${i}`;
       block.id = id;
       items.push({ label, id, el: block });
     });
     if (!items.length) return;
-    items.forEach(item => {
+    // Home link, set apart from the section links
+    const home = document.createElement('a');
+    home.href = '#';
+    home.className = 'cs-nav-home';
+    home.style.setProperty('--i', 0);
+    home.innerHTML = '&#8592; Home';
+    home.addEventListener('click', (e) => {
+      e.preventDefault();
+      exitProjectView();
+    });
+    nav.appendChild(home);
+    // Intro link, pointing to the very top of the case study content
+    const intro = document.createElement('a');
+    intro.href = '#csContent';
+    intro.textContent = 'Intro';
+    intro.dataset.target = 'cs-anchor-intro';
+    intro.id = 'cs-anchor-intro-link';
+    intro.style.setProperty('--i', 1);
+    intro.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('csContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    nav.appendChild(intro);
+    const introTarget = document.getElementById('csContent');
+    introTarget.id = introTarget.id || 'csContent';
+    items.forEach((item, idx) => {
       const a = document.createElement('a');
       a.href = `#${item.id}`;
       a.textContent = item.label;
       a.dataset.target = item.id;
+      a.style.setProperty('--i', idx + 2);
       a.addEventListener('click', (e) => {
         e.preventDefault();
         item.el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1372,6 +1422,20 @@
     }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
     items.forEach(item => sideNavObserver.observe(item.el));
   }
+
+  let sideNavScrollBound = false;
+  function initSideNavScroll(){
+    if (sideNavScrollBound) return;
+    sideNavScrollBound = true;
+    const nav = document.getElementById('csSideNav');
+    const onScroll = () => {
+      if (window.scrollY > 260) nav.classList.add('visible');
+      else nav.classList.remove('visible');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+  initSideNavScroll();
 
   function enterProjectView(i){
     if (inProjectView) return;
