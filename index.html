@@ -295,17 +295,18 @@
   }
   .cs-preview-overlay{
     position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    left:0;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    background:#6C63FF;
+    padding:18px 28px;
     text-align:center;
-    padding:24px;
     font-family:'Inter', var(--font-system);
-    font-weight:600;
-    font-size:19px;
-    letter-spacing:-.02em;
-    color:#14151A;
+    font-weight:400;
+    font-size:18px;
+    letter-spacing:-.01em;
+    color:#fff;
   }
   /* Broommates preview: rotating chore wheel */
   .broom-anim{
