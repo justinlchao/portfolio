@@ -1502,10 +1502,8 @@
     });
   }
 
-  let sideNavObserver = null;
   function buildSideNav(){
     const nav = document.getElementById('csSideNav');
-    if (sideNavObserver) { sideNavObserver.disconnect(); sideNavObserver = null; }
     nav.innerHTML = '';
     const blocks = Array.from(document.querySelectorAll('#csSections .cs-section-block'));
     const seen = new Set();
@@ -1557,17 +1555,23 @@
       });
       nav.appendChild(a);
     });
-    sideNavObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const link = nav.querySelector(`a[data-target="${entry.target.id}"]`);
-        if (!link) return;
-        if (entry.isIntersecting) {
-          nav.querySelectorAll('a.active').forEach(a => a.classList.remove('active'));
-          link.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-    items.forEach(item => sideNavObserver.observe(item.el));
+    sideNavItems = items;
+    updateActiveNavLink();
+  }
+
+  let sideNavItems = [];
+  function updateActiveNavLink(){
+    const nav = document.getElementById('csSideNav');
+    if (!nav || !sideNavItems.length) return;
+    const triggerY = 200; // px from top of the scroll container
+    let current = sideNavItems[0];
+    for (const item of sideNavItems) {
+      if (item.el.offsetTop - pageWhiteOverlay.scrollTop <= triggerY) current = item;
+      else break;
+    }
+    nav.querySelectorAll('a.active').forEach(a => a.classList.remove('active'));
+    const link = nav.querySelector(`a[data-target="${current.id}"]`);
+    if (link) link.classList.add('active');
   }
 
   let sideNavScrollBound = false;
@@ -1578,6 +1582,7 @@
     const onScroll = () => {
       if (pageWhiteOverlay.scrollTop > 20) nav.classList.add('visible');
       else nav.classList.remove('visible');
+      updateActiveNavLink();
     };
     pageWhiteOverlay.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
