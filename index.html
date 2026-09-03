@@ -307,6 +307,9 @@
     font-size:18px;
     letter-spacing:-.01em;
     color:#fff;
+    cursor:pointer;
+    text-decoration:none;
+    display:block;
   }
   /* Broommates preview: rotating chore wheel */
   .broom-anim{
@@ -567,6 +570,8 @@
   }
   .cs-next{
     margin-top:80px;
+  }
+  .cs-next.with-divider{
     padding-top:56px;
     border-top:1px solid #E4E4E7;
   }
@@ -1482,7 +1487,8 @@
     previewBox.classList.toggle('preview-blurred', !!data.previewBlur);
     const mediaInner = data.previewVideo ? `<video src="${data.previewVideo}" autoplay loop muted playsinline></video>` : (data.previewImage ? `<img src="${data.previewImage}" alt="${data.title} preview" />` : (data.previewCustomHtml || ''));
     const captionHtml = data.previewCaption ? `<div class="cs-preview-caption">${data.previewCaption}</div>` : '';
-    const overlayHtml = data.previewOverlayText ? `<div class="cs-preview-overlay">${data.previewOverlayText}</div>` : '';
+    const overlayUrl = data.underDevelopmentNotice ? data.underDevelopmentNotice.url : null;
+    const overlayHtml = data.previewOverlayText ? (overlayUrl ? `<a class="cs-preview-overlay" href="${overlayUrl}" target="_blank" rel="noopener">${data.previewOverlayText}</a>` : `<div class="cs-preview-overlay">${data.previewOverlayText}</div>`) : '';
     previewBox.innerHTML = mediaInner ? `<div class="cs-preview-media-wrap">${mediaInner}${overlayHtml}</div>${captionHtml}` : '';
 
     // build the label/title/text sections: problem (single), insights (side by side), solutions (stacked)
@@ -1523,6 +1529,8 @@
     const videoHtml = homeVideoSrc ? `<video class="cs-next-video" autoplay loop muted playsinline><source src="${homeVideoSrc.getAttribute('src')}" type="video/mp4"></video>` : '';
     const captionHtml = homeCaption ? `<div class="cs-next-caption-slot">${homeCaption.outerHTML}</div>` : '';
     const currentData = PROJECT_CONTENT[currentId];
+    const lastMoreSection = (currentData && currentData.moreSections && currentData.moreSections.length) ? currentData.moreSections[currentData.moreSections.length - 1] : null;
+    nextEl.classList.toggle('with-divider', !(lastMoreSection && lastMoreSection.bordered));
     const noticeHtml = (currentData && currentData.underDevelopmentNotice) ? `<a class="cs-dev-notice" href="${currentData.underDevelopmentNotice.url}" target="_blank" rel="noopener">${currentData.logo ? `<img class="cs-dev-notice-logo" src="${currentData.logo}" alt="" />` : ''}<span>${currentData.underDevelopmentNotice.text}</span></a>` : '';
     nextEl.innerHTML = `${noticeHtml}<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-hero">${videoHtml}${captionHtml}</div></div>`;
     document.getElementById('csNextCard').addEventListener('click', () => {
