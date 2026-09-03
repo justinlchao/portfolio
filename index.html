@@ -130,6 +130,24 @@
     font-weight:500;
     cursor:pointer;
   }
+  #slot2New{
+    position:absolute;
+    overflow:hidden;
+  }
+  #slot2New .roll-old, #slot2New .roll-new{
+    position:absolute;
+    top:0; left:0;
+    white-space:nowrap;
+    color:#6B6E76;
+    font-weight:500;
+    font-family:'Inter', var(--font-system);
+    font-size:16px;
+    transition:transform .38s cubic-bezier(.22,.61,.36,1);
+  }
+  #slot2New .roll-old{ transform:translateY(0%); }
+  #slot2New .roll-new{ transform:translateY(100%); }
+  #slot2New.swap .roll-old{ transform:translateY(-100%); }
+  #slot2New.swap .roll-new{ transform:translateY(0%); }
   #slot1 .slot-new:hover{
     opacity:.7;
   }
@@ -1535,10 +1553,20 @@
     nextEl.innerHTML = `${noticeHtml}<div class="cs-next-label">Next</div><div class="cs-next-card" id="csNextCard"><div class="cs-next-hero">${videoHtml}${captionHtml}</div></div>`;
     document.getElementById('csNextCard').addEventListener('click', () => {
       const projectName = PROJECT_NAMES[nextId] || '';
-      document.getElementById('slot2New').textContent = projectName;
+      const slot2NewEl = document.getElementById('slot2New');
+      const oldName = slot2NewEl.textContent;
+      slot2NewEl.innerHTML = `<span class="roll-old">${oldName}</span><span class="roll-new">${projectName}</span>`;
+      slot2NewEl.getBoundingClientRect(); // force reflow so the transition actually plays
+      slot2NewEl.classList.add('swap');
       document.getElementById('slot2MeasureB').textContent = projectName;
+      setSlotWidths(true);
+      document.getElementById('csSideNav').classList.remove('visible');
       populateCaseStudy(nextId);
-      pageWhiteOverlay.scrollTop = 0;
+      pageWhiteOverlay.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        slot2NewEl.textContent = projectName;
+        slot2NewEl.classList.remove('swap');
+      }, 400);
     });
   }
 
