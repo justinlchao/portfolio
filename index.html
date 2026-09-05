@@ -955,6 +955,7 @@
   .video-frame{
     position:absolute;
     inset:0;
+    background:var(--paper);
   }
   .card-video{
     position:absolute;
@@ -966,6 +967,13 @@
   }
   .card-video.video-contain{
     object-fit:contain;
+  }
+  .card-video.card-video-inset{
+    inset:0 11%;
+    width:78%;
+    left:11%;
+    right:11%;
+    background:var(--paper);
   }
   .video-depth-overlay{
     position:absolute;
@@ -1228,7 +1236,7 @@
   </article>
   <article class="stack-card hero-card" data-index="1">
     <div class="video-frame">
-      <video class="card-video video-contain" muted loop playsinline>
+      <video class="card-video video-contain card-video-inset" muted loop playsinline>
         <source src="card2_walkthrough.mp4" type="video/mp4">
       </video>
       <div class="video-depth-overlay"></div>
