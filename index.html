@@ -207,16 +207,6 @@
     gap:64px;
     margin-bottom:64px;
   }
-  .cs-main-row.full-bleed{
-    width:100vw;
-    position:relative;
-    left:50%;
-    right:50%;
-    margin-left:-50vw;
-    margin-right:-50vw;
-    padding:0 32px;
-    box-sizing:border-box;
-  }
   .cs-left{
     flex:1.6;
     min-width:0;
@@ -1482,7 +1472,6 @@
     3: {
       logo: '',
       title: 'Broommates',
-      wideIntro: true,
       description: [
         "Broommates is a chore-splitting app for roommates, built as an entry for FigBuild 2025. I designed and prototyped this digital experience all by myself!",
         "Liking your roommate is a crucial factor for whether or not you\u2019re going to enjoy your first years in college. One small miscommunication between two roommates can sour a living situation for the rest of the year. Broommates is designed to help roommates assign chores, communicate, and ultimately avoid conflict."
@@ -1521,7 +1510,6 @@
     document.getElementById('csTitle').textContent = data.title || '';
     const descBlock = document.getElementById('csDescBlock');
     descBlock.innerHTML = data.description.map(p => `<p>${p}</p>`).join('');
-    document.getElementById('csMainRow').classList.toggle('full-bleed', !!data.wideIntro);
     const teamList = document.getElementById('csTeamList');
     teamList.innerHTML = data.team.map(t => `<div>${t}</div>`).join('');
     document.getElementById('csYear').textContent = data.year || '';
