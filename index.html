@@ -592,6 +592,42 @@
     from{ transform:translateX(0); }
     to{ transform:translateX(-50%); }
   }
+  .cs-exploration-tabs{
+    width:100%;
+  }
+  .cs-exploration-tabnav{
+    display:flex;
+    gap:28px;
+    border-bottom:1px solid #E4E4E7;
+    margin-bottom:28px;
+  }
+  .cs-exploration-tab{
+    background:none;
+    border:none;
+    padding:0 0 12px;
+    font-family:'Inter', var(--font-system);
+    font-weight:500;
+    font-size:14px;
+    letter-spacing:-.01em;
+    color:#ADAFB5;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .cs-exploration-tab:hover{
+    color:#14151A;
+  }
+  .cs-exploration-tab.active{
+    color:#14151A;
+    border-bottom-color:#14151A;
+  }
+  .cs-exploration-panel{
+    display:none;
+  }
+  .cs-exploration-panel.active{
+    display:block;
+  }
   .cs-media-caption{
     font-family:'Inter', var(--font-system);
     font-weight:400;
@@ -1486,9 +1522,10 @@
         title: 'Your roommate can make or break your college experience',
         text: ""
       },
-      insights: [
-        { label: 'Insight #1', title: 'Whiteboards don\u2019t scale', text: "Most roommates start with a physical chore chart on the fridge. It works for about two weeks, then someone moves out, someone forgets to update it, and it quietly becomes wallpaper." },
-        { label: 'Insight #2', title: 'Fairness is the whole app', text: "The actual friction isn\u2019t the chore, it\u2019s the perception that someone\u2019s doing less. Any solution that didn\u2019t make effort visible was going to fail for the same reason the whiteboard did." }
+      explorations: [
+        { label: 'Exploration #1', title: 'Streaks', text: "I liked this design initially because it promotes consistent usage of the application. The major drawback of this design is that it rewards consistency over the size of the contribution, and not all chores are created equal. Taking out the trash and doing everyone\u2019s dishes should not be weighed the same." },
+        { label: 'Exploration #2', title: 'Shared Goal', text: "Unfortunately, at least for house chores, this \u201csocialist\u201d design has major drawbacks as well. In a shared system, individual efforts are less visible, and for users who do like a bit of competition, this means that they would be using the app less." },
+        { label: 'Exploration #3', title: 'Leaderboard', text: ["I ended up choosing a leaderboard system because it provided that visibility while giving users a simple reason to stay engaged. Seeing your position change over time creates a sense of progress and friendly competition.", "However, I didn\u2019t want the leaderboard to feel like a competition between roommates. Instead of emphasizing who was \u201cwinning,\u201d the goal was to make contributions visible and give users a reason to keep participating."] }
       ],
       solutions: [
         { label: 'Solution', title: 'A chore wheel that assigns itself', text: "Instead of a shared list everyone has to manage, Broommates auto-rotates chores on a schedule and pings the person whose turn it is. Nobody has to ask, nobody has to assign, the app just tells you." },
@@ -1538,6 +1575,7 @@
     if (data.challenge) pushRow(data.challenge.label, block(data.challenge, 'cs-section-media-plain'), 'cs-section-row-full');
     if (data.problem) pushRow(data.problem.label, block(data.problem, 'cs-section-media-plain'), 'cs-section-row-full');
     if (data.insights && data.insights.length) pushRow(data.insights[0].label, data.insights.map(s => block(s, 'cs-section-media-plain')).join(''), '');
+    if (data.explorations && data.explorations.length) pushRow(data.explorations[0].label, buildExplorationTabsHTML(data.explorations), 'cs-section-row-full');
     if (data.solutions && data.solutions.length) {
       data.solutions.forEach(s => { pushRow(s.label, block(s, 'cs-section-media-plain'), 'cs-section-row-full'); });
     }
@@ -1548,6 +1586,29 @@
     buildSideNav();
     buildNextCard(i);
   }
+
+  function buildExplorationTabsHTML(explorations){
+    const tabs = explorations.map((e, i) => `<button class="cs-exploration-tab${i === 0 ? ' active' : ''}" data-index="${i}">${e.label}</button>`).join('');
+    const panels = explorations.map((e, i) => {
+      const body = Array.isArray(e.text)
+        ? e.text.map(p => `<p class="cs-section-text">${p}</p>`).join('<hr class="cs-text-divider">')
+        : `<p class="cs-section-text">${e.text}</p>`;
+      return `<div class="cs-exploration-panel${i === 0 ? ' active' : ''}" data-index="${i}"><h2 class="cs-section-title">${e.title}</h2>${body}</div>`;
+    }).join('');
+    return `<div class="cs-exploration-tabs"><div class="cs-exploration-tabnav">${tabs}</div><div class="cs-exploration-panels">${panels}</div></div>`;
+  }
+  document.addEventListener('click', (e) => {
+    const tab = e.target.closest('.cs-exploration-tab');
+    if (!tab) return;
+    const container = tab.closest('.cs-exploration-tabs');
+    if (!container) return;
+    container.querySelectorAll('.cs-exploration-tab').forEach(t => t.classList.remove('active'));
+    container.querySelectorAll('.cs-exploration-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const idx = tab.dataset.index;
+    const panel = container.querySelector(`.cs-exploration-panel[data-index="${idx}"]`);
+    if (panel) panel.classList.add('active');
+  });
 
   function buildNextCard(currentId){
     const ids = Object.keys(PROJECT_CONTENT).map(Number).sort((a, b) => a - b);
