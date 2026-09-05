@@ -193,9 +193,6 @@
     font-family:'Inter', var(--font-system);
     zoom:0.9;
   }
-  .cs-content.wide{
-    max-width:1100px;
-  }
   .cs-logo{
     width:64px;
     height:64px;
@@ -1147,7 +1144,7 @@
   <nav class="cs-side-nav" id="csSideNav"></nav>
   <div class="cs-content" id="csContent">
     <img class="cs-logo" id="csLogo" src="" alt="" />
-    <div class="cs-main-row" id="csMainRow">
+    <div class="cs-main-row">
       <div class="cs-left">
         <h1 class="cs-title" id="csTitle"></h1>
         <div class="cs-desc-block" id="csDescBlock"></div>
@@ -1475,7 +1472,6 @@
     3: {
       logo: '',
       title: 'Broommates',
-      wideIntro: true,
       description: [
         "Broommates is a chore-splitting app for roommates, built as an entry for FigBuild 2025. I designed and prototyped this digital experience all by myself!",
         "Liking your roommate is a crucial factor for whether or not you\u2019re going to enjoy your first years in college. One small miscommunication between two roommates can sour a living situation for the rest of the year. Broommates is designed to help roommates assign chores, communicate, and ultimately avoid conflict."
@@ -1514,7 +1510,6 @@
     document.getElementById('csTitle').textContent = data.title || '';
     const descBlock = document.getElementById('csDescBlock');
     descBlock.innerHTML = data.description.map(p => `<p>${p}</p>`).join('');
-    document.getElementById('csContent').classList.toggle('wide', !!data.wideIntro);
     const teamList = document.getElementById('csTeamList');
     teamList.innerHTML = data.team.map(t => `<div>${t}</div>`).join('');
     document.getElementById('csYear').textContent = data.year || '';
