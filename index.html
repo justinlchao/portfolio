@@ -628,6 +628,20 @@
   .cs-exploration-panel.active{
     display:block;
   }
+  .cs-exploration-image-wrap{
+    display:flex;
+    justify-content:center;
+    margin-top:24px;
+  }
+  .cs-exploration-image{
+    display:block;
+    max-width:100%;
+    width:auto;
+    height:auto;
+    max-height:520px;
+    border-radius:12px;
+    box-shadow:0 20px 50px -12px rgba(0,0,0,.15);
+  }
   .cs-media-caption{
     font-family:'Inter', var(--font-system);
     font-weight:400;
@@ -1523,9 +1537,9 @@
         text: ""
       },
       explorations: [
-        { label: 'Exploration #1', title: 'Streaks', text: "I liked this design initially because it promotes consistent usage of the application. The major drawback of this design is that it rewards consistency over the size of the contribution, and not all chores are created equal. Taking out the trash and doing everyone\u2019s dishes should not be weighed the same." },
-        { label: 'Exploration #2', title: 'Shared Goal', text: "Unfortunately, at least for house chores, this \u201csocialist\u201d design has major drawbacks as well. In a shared system, individual efforts are less visible, and for users who do like a bit of competition, this means that they would be using the app less." },
-        { label: 'Exploration #3', title: 'Leaderboard', text: ["I ended up choosing a leaderboard system because it provided that visibility while giving users a simple reason to stay engaged. Seeing your position change over time creates a sense of progress and friendly competition.", "However, I didn\u2019t want the leaderboard to feel like a competition between roommates. Instead of emphasizing who was \u201cwinning,\u201d the goal was to make contributions visible and give users a reason to keep participating."] }
+        { label: 'Exploration #1', title: 'Streaks', text: "I liked this design initially because it promotes consistent usage of the application. The major drawback of this design is that it rewards consistency over the size of the contribution, and not all chores are created equal. Taking out the trash and doing everyone\u2019s dishes should not be weighed the same.", image: 'exploration_streak.png' },
+        { label: 'Exploration #2', title: 'Shared Goal', text: "Unfortunately, at least for house chores, this \u201csocialist\u201d design has major drawbacks as well. In a shared system, individual efforts are less visible, and for users who do like a bit of competition, this means that they would be using the app less.", image: 'exploration_housegoal.png' },
+        { label: 'Exploration #3', title: 'Leaderboard', text: ["I ended up choosing a leaderboard system because it provided that visibility while giving users a simple reason to stay engaged. Seeing your position change over time creates a sense of progress and friendly competition.", "However, I didn\u2019t want the leaderboard to feel like a competition between roommates. Instead of emphasizing who was \u201cwinning,\u201d the goal was to make contributions visible and give users a reason to keep participating."], image: 'exploration_leaderboard.png' }
       ],
       solutions: [
         { label: 'Solution', title: 'A chore wheel that assigns itself', text: "Instead of a shared list everyone has to manage, Broommates auto-rotates chores on a schedule and pings the person whose turn it is. Nobody has to ask, nobody has to assign, the app just tells you." },
@@ -1593,7 +1607,8 @@
       const body = Array.isArray(e.text)
         ? e.text.map(p => `<p class="cs-section-text">${p}</p>`).join('<hr class="cs-text-divider">')
         : `<p class="cs-section-text">${e.text}</p>`;
-      return `<div class="cs-exploration-panel${i === 0 ? ' active' : ''}" data-index="${i}"><h2 class="cs-section-title">${e.title}</h2>${body}</div>`;
+      const image = e.image ? `<div class="cs-exploration-image-wrap"><img class="cs-exploration-image" src="${e.image}" alt="${e.title} wireframe"></div>` : '';
+      return `<div class="cs-exploration-panel${i === 0 ? ' active' : ''}" data-index="${i}"><h2 class="cs-section-title">${e.title}</h2>${body}${image}</div>`;
     }).join('');
     return `<div class="cs-exploration-tabs"><div class="cs-exploration-tabnav">${tabs}</div><div class="cs-exploration-panels">${panels}</div></div>`;
   }
