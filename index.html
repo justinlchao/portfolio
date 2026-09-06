@@ -664,32 +664,27 @@
   .cs-phone-stack{
     position:relative;
     width:100%;
-    max-width:560px;
+    max-width:430px;
     margin:0 auto;
-    aspect-ratio:5 / 6;
+    aspect-ratio:43 / 47;
   }
   .cs-phone-stack img{
     position:absolute;
-    width:46%;
+    width:42%;
     height:auto;
     display:block;
-    border-radius:20px;
   }
   .cs-phone-stack .phone-back{
-    left:6%;
+    left:8%;
     top:0;
-    transform:rotate(-7deg);
-    filter:drop-shadow(0 14px 30px rgba(76,44,41,0.16));
   }
   .cs-phone-stack .phone-front{
-    right:4%;
-    top:16%;
-    transform:rotate(5deg);
-    filter:drop-shadow(0 20px 42px rgba(76,44,41,0.24));
+    right:6%;
+    top:13%;
   }
   @media (max-width:640px){
-    .cs-phone-stack{ aspect-ratio:5 / 7; }
-    .cs-phone-stack img{ width:54%; }
+    .cs-phone-stack{ aspect-ratio:43 / 52; }
+    .cs-phone-stack img{ width:50%; }
   }
   .cs-research-link{
     display:flex;
@@ -1662,7 +1657,7 @@
         { label: 'Design Decision', title: 'Turning roommates into \u201cbroom-mates\u201d', text: ["Incorporating a social feed into the application creates that shared-house identity, without making any one user feel bad for maybe falling behind in their chores.", "This also helped connect the rest of the product. Chores, points, achievements, and other household activities could become things roommates experienced together rather than isolated actions performed by individual users."], customHtml: '<a class="cs-research-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13323923/" target="_blank" rel="noopener"><span class="cs-research-mark">\u201c</span><span class="cs-research-body"><p class="cs-research-quote">people appear to primarily seek common ground by establishing a shared social identity with the receiver</p><span class="cs-research-source">PubMed Central, PMC13323923</span></span></a>', mediaHeight: 'auto', mediaBg: 'transparent' },
         { label: 'Design Decision', title: 'Iterating with AI', text: ["One of the biggest things I learned from this project was how useful AI could be as an iteration partner. I used AI to explore different directions for my wireframes and prototypes, quickly generate alternative layouts, and challenge decisions I had already made. This made it much easier to move beyond my first idea instead of becoming attached to it.", "At the same time, I learned that AI-generated suggestions aren\u2019t automatically good design solutions. Some ideas looked interesting but didn\u2019t actually support the goals of Broommates or fit the way I wanted users to interact with the product. I had to evaluate each suggestion through the lens of the user, the problem, and the overall experience."], mediaHeight: 'auto', mediaBg: '#F8F8F8', customHtml: '<img src="broommates_wireframes_ai.png?v=2" alt="Broommates onboarding wireframe explorations" style="width:100%;height:auto;display:block;">' },
         { label: 'Prototype', title: 'Prototype', hideLabel: true, centerHeader: true, mediaHeight: '800px', mediaBg: 'transparent', customHtml: '<iframe src="broommates_prototype.html?v=2026-09-06a" title="Broommates interactive prototype" loading="lazy" scrolling="no" style="width:100%;height:100%;border:0;display:block;background:transparent;overflow:hidden;"></iframe>' },
-        { label: 'User Feedback', title: 'How those with roommates received it', text: ["The feedback I received was mixed, but in a way that was useful. Different people responded to different parts of the experience. Some were more interested in the competitive aspect of the leaderboard, while others cared more about working toward a shared house goal. Some enjoyed the social feed and shoutouts, while others were primarily interested in the satisfaction of completing chores and seeing their progress.", "Understanding that different users care about different things was the biggest takeaway from designing Broommates. This helped shape Broommates into a product with multiple forms of engagement. Competition could motivate one person, shared progress could motivate another, and social recognition could appeal to someone else.", "Ultimately, I wanted the app to have a little something for everyone while still working toward the same goal: getting roommates to contribute and creating a stronger sense of community within the home."], mediaHeight: 'auto', mediaBg: 'transparent', customHtml: '<div class="cs-phone-stack"><img class="phone-back" src="broommates_feedback_back.png" alt="Broommates splash screen"><img class="phone-front" src="broommates_feedback_front.png" alt="Broommates onboarding name screen"></div>' },
+        { label: 'User Feedback', title: 'How those with roommates received it', text: ["The feedback I received was mixed, but in a way that was useful. Different people responded to different parts of the experience. Some were more interested in the competitive aspect of the leaderboard, while others cared more about working toward a shared house goal. Some enjoyed the social feed and shoutouts, while others were primarily interested in the satisfaction of completing chores and seeing their progress.", "Understanding that different users care about different things was the biggest takeaway from designing Broommates. This helped shape Broommates into a product with multiple forms of engagement. Competition could motivate one person, shared progress could motivate another, and social recognition could appeal to someone else.", "Ultimately, I wanted the app to have a little something for everyone while still working toward the same goal: getting roommates to contribute and creating a stronger sense of community within the home."], mediaHeight: 'auto', mediaBg: 'transparent', customHtml: '<div class="cs-phone-stack"><img class="phone-back" src="broommates_feedback_back.png?v=2" alt="Broommates splash screen"><img class="phone-front" src="broommates_feedback_front.png?v=2" alt="Broommates onboarding name screen"></div>' },
         { label: 'Reflections', title: 'Key Learnings', bordered: true, list: [
           "I initially approached Broommates as a way to make chores easier to manage. Through research and iteration, I realized the bigger opportunity was improving the relationship between roommates, rather than just designing a chore-assignment app.",
           "Users aren\u2019t motivated by the same thing. Others respond well to competition and seeing how their contribution compared to others, while others are motivated by working toward a shared goal. This meant learning to find a balance between these different motivations without letting one design overpower the other."
