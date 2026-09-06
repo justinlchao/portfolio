@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     '  transform-origin: top center !important; filter: none !important; }',
     '#dc-root > div > div > div > div { box-shadow: none !important; }',
     /* soften the hard brown-to-cream edge at the top of the tab bar */
-    'div:has(> [data-hit="tabHome"]) { box-shadow: 0 -20px 32px rgba(43,20,18,0.40) !important; }'
+    'div:has(> [data-hit="tabHome"]) { box-shadow: inset 0 22px 26px -18px rgba(43,20,18,0.45) !important; }'
   ].join('\n');
 
   function apply() {
