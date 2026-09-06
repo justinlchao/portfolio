@@ -810,6 +810,14 @@
     height:auto;
     border-radius:12px;
   }
+  .cs-media-fade-bottom{
+    border-radius:12px 12px 0 0;
+  }
+  .cs-media-fade-bottom video{
+    border-radius:12px 12px 0 0;
+    -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 34px), transparent 100%);
+    mask-image:linear-gradient(to bottom, #000 calc(100% - 34px), transparent 100%);
+  }
   .cs-section-media{
     background:#F8F8F8;
     border-radius:12px;
@@ -1536,7 +1544,8 @@
           "Liking your roommate is a crucial factor for whether or not you\u2019re going to enjoy your first years in college. One small miscommunication between two roommates can sour a living situation for the rest of the year.",
           "Broommates is designed to help roommates assign chores, communicate, and ultimately avoid conflict."
         ],
-        media: 'broommates_walkthrough.mp4'
+        media: 'broommates_walkthrough.mp4',
+        fadeBottom: true
       },
       problem: {
         label: 'Problem',
@@ -1551,7 +1560,7 @@
       moreSections: [
         { label: 'Design Philosophy', title: 'Balancing cooperation, communication, and competition', text: ["These three core elements of the application needed to work in harmony, not against each other. For example, too much competition would give Broommates a hyper-competitive design.", "I wanted the competitive elements to act as a motivator rather than the main goal. Features like points, progress, and the leaderboard gave users a way to visualize their contributions, while the social feed and shared activities shifted the focus back toward the household as a whole."] },
         { label: 'Design Decision', title: 'Turning roommates into \u201cbroom-mates\u201d', text: ["Incorporating a social feed into the application creates that shared-house identity, without making any one user feel bad for maybe falling behind in their chores.", "This also helped connect the rest of the product. Chores, points, achievements, and other household activities could become things roommates experienced together rather than isolated actions performed by individual users."] },
-        { label: 'Prototype', title: 'Prototype' },
+        { label: 'Prototype', title: 'Prototype', mediaHeight: '960px', mediaBg: '#FFFFFF', customHtml: '<iframe src="broommates_prototype.html" title="Broommates interactive prototype" loading="lazy" style="width:100%;height:100%;border:0;display:block;background:#FFFFFF;"></iframe>' },
         { label: 'Key Learnings', title: 'Key Learnings', bordered: true, list: [
           "I initially approached Broommates as a way to make chores easier to manage. Through research and iteration, I realized the bigger opportunity was improving the relationship between roommates, rather than just designing a chore-assignment app.",
           "Users aren\u2019t motivated by the same thing. Others respond well to competition and seeing how their contribution compared to others, while others are motivated by working toward a shared goal. This meant learning to find a balance between these different motivations without letting one design overpower the other."
@@ -1584,7 +1593,7 @@
     previewBox.innerHTML = mediaInner ? `<div class="cs-preview-media-wrap">${mediaInner}${overlayHtml}</div>${captionHtml}` : '';
 
     // build the label/title/text sections: problem (single), insights (side by side), solutions (stacked)
-    const block = (s, mediaClass) => `<div class="cs-section-block">${s.label ? `<div class="cs-section-label">${s.label}</div>` : ''}${s.title ? `<h2 class="cs-section-title">${s.title}</h2>` : ''}${s.list ? `<ul class="cs-section-list">${s.list.map(li => `<li>${li}</li>`).join('')}</ul>` : (s.text ? (Array.isArray(s.text) ? s.text.map(p => `<p class="cs-section-text">${p}</p>`).join('<hr class="cs-text-divider">') : `<p class="cs-section-text">${s.text}</p>`) : '')}${s.media ? `<div class="${mediaClass}"${s.mediaHeight ? ` style="height:${s.mediaHeight};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;"` : (s.mediaMaxWidth ? ` style="max-width:${s.mediaMaxWidth}"` : '')}><video src="${s.media}" autoplay loop muted playsinline${s.mediaHeight ? ` style="height:100%;width:auto;max-width:100%;object-fit:contain;display:block;"` : ''}></video></div>${s.mediaCaption ? `<div class="cs-media-caption">${s.mediaCaption}</div>` : ''}` : (s.customHtml ? `<div class="${mediaClass}" style="height:${s.mediaHeight || '280px'};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;">${s.customHtml}</div>${s.mediaCaption ? `<div class="cs-media-caption">${s.mediaCaption}</div>` : ''}` : '')}</div>`;
+    const block = (s, mediaClass) => `<div class="cs-section-block">${s.label ? `<div class="cs-section-label">${s.label}</div>` : ''}${s.title ? `<h2 class="cs-section-title">${s.title}</h2>` : ''}${s.list ? `<ul class="cs-section-list">${s.list.map(li => `<li>${li}</li>`).join('')}</ul>` : (s.text ? (Array.isArray(s.text) ? s.text.map(p => `<p class="cs-section-text">${p}</p>`).join('<hr class="cs-text-divider">') : `<p class="cs-section-text">${s.text}</p>`) : '')}${s.media ? `<div class="${mediaClass}${s.fadeBottom ? ' cs-media-fade-bottom' : ''}"${s.mediaHeight ? ` style="height:${s.mediaHeight};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;"` : (s.mediaMaxWidth ? ` style="max-width:${s.mediaMaxWidth}"` : '')}><video src="${s.media}" autoplay loop muted playsinline${s.mediaHeight ? ` style="height:100%;width:auto;max-width:100%;object-fit:contain;display:block;"` : ''}></video></div>${s.mediaCaption ? `<div class="cs-media-caption">${s.mediaCaption}</div>` : ''}` : (s.customHtml ? `<div class="${mediaClass}" style="height:${s.mediaHeight || '280px'};background:${s.mediaBg || '#F8F8F8'};display:flex;align-items:center;justify-content:center;">${s.customHtml}</div>${s.mediaCaption ? `<div class="cs-media-caption">${s.mediaCaption}</div>` : ''}` : '')}</div>`;
     let sectionsHTML = '';
     let prevLabel = null;
     const SAME_GAP = 40, DIFF_GAP = 112;
