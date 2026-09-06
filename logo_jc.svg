@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 74" width="460" height="370" role="img" aria-label="JC monogram">
   <g fill="none" stroke="#14151A" stroke-linecap="round" stroke-linejoin="round">
-    <!-- C: tall ellipse, its left edge sitting on the J stem's centreline -->
+    <!-- C: ellipse arc, left edge sitting on the J stem's centreline -->
     <path d="M81.2 46.8 A26.5 31.5 0 1 1 81.2 24.2" stroke-width="7.4"/>
-    <!-- J: stem plus a hook sweeping left at the foot -->
-    <path d="M29.5 4 V50 A16 16 0 0 1 13.5 66 H5.5" stroke-width="7.4"/>
-    <!-- two eyes -->
-    <path d="M57.8 36.6 Q62 33.1 66.2 36.6" stroke-width="4"/>
-    <path d="M77.8 36.6 Q82 33.1 86.2 36.6" stroke-width="4"/>
+    <!-- J: stem easing into the hook with a single cubic, so curvature ramps
+         up and back down instead of jumping at a line/arc join -->
+    <path d="M29.5 4 V42 C29.5 58 21 66 6 66" stroke-width="7.4"/>
+    <!-- eyes: true circular arcs rather than quadratics -->
+    <path d="M57.8 36.8 A6 6 0 0 1 66.2 36.8" stroke-width="4"/>
+    <path d="M77.8 36.8 A6 6 0 0 1 86.2 36.8" stroke-width="4"/>
   </g>
 </svg>
