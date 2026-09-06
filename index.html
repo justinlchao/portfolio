@@ -57,7 +57,7 @@
   }
   .navbar-pill.project-active{
     gap:6px;
-    background:#EDEEF1;
+    background:#F8F8F8;
     padding:10px 22px;
     box-shadow:0 2px 10px -4px rgba(0,0,0,.15);
     zoom:0.9;
@@ -142,7 +142,7 @@
     align-items:center;
     white-space:nowrap;
     color:#6B6E76;
-    font-weight:500;
+    font-weight:400;
     font-family:'Inter', var(--font-system);
     font-size:16px;
     transition:transform .38s cubic-bezier(.22,.61,.36,1);
@@ -162,7 +162,7 @@
   }
   #slot2 .slot-new, #slot3 .slot-new{
     color:#6B6E76;
-    font-weight:500;
+    font-weight:400;
   }
   .navbar-pill.project-active .slot-old{
     transform:translateY(-100%);
@@ -807,6 +807,16 @@
   }
   .cs-next-caption-slot .video-caption-sub{
     white-space:normal;
+  }
+  .cs-content.info-mode .cs-logo,
+  .cs-content.info-mode .cs-right,
+  .cs-content.info-mode .cs-preview-box,
+  .cs-content.info-mode .cs-sections,
+  .cs-content.info-mode .cs-next{
+    display:none;
+  }
+  #slot1Old, #slot2Old{
+    cursor:pointer;
   }
   .cs-side-nav{
     position:fixed;
@@ -1904,6 +1914,7 @@
     document.getElementById('slot2MeasureB').textContent = projectName;
     document.getElementById('slot3New').textContent = '';
     document.getElementById('slot3MeasureB').textContent = '';
+    document.getElementById('csContent').classList.remove('info-mode');
     populateCaseStudy(i);
     pageWhiteOverlay.scrollTop = 0;
     navbarPill.classList.remove('scrolled-up');
@@ -1914,9 +1925,63 @@
     stackProgressEl.style.opacity = '0';
     stackProgressEl.style.pointerEvents = 'none';
   }
+  // About / Playground use the same transition as entering a project frame
+  const INFO_PAGES = {
+    about: { name: 'About', body: '<p class="cs-desc">Coming soon.</p>' },
+    playground: { name: 'Playground', body: '<p class="cs-desc">Coming soon.</p>' }
+  };
+  function buildInfoContent(key){
+    const page = INFO_PAGES[key];
+    const nav = document.getElementById('csSideNav');
+    nav.innerHTML = '';
+    nav.classList.remove('visible');
+    sideNavItems = [];
+    document.getElementById('csContent').classList.add('info-mode');
+    document.getElementById('csTitle').textContent = page.name;
+    document.getElementById('csDescBlock').innerHTML = page.body || '';
+    document.getElementById('csMetaExtra').innerHTML = '';
+    document.getElementById('csTeamList').innerHTML = '';
+    document.getElementById('csYear').textContent = '';
+    const preview = document.getElementById('csPreviewBox');
+    preview.innerHTML = '';
+    preview.className = 'cs-preview-box';
+    document.getElementById('csSections').innerHTML = '';
+    document.getElementById('csNext').innerHTML = '';
+  }
+  function enterInfoView(key){
+    if (inProjectView) return;
+    inProjectView = true;
+    cursorTip.classList.remove('show');
+    const page = INFO_PAGES[key];
+    const slot2NewEl = document.getElementById('slot2New');
+    const outgoing = slot2NewEl.textContent || document.getElementById('slot2Old').textContent || '';
+    slot2NewEl.innerHTML = `<span class="roll-old">${outgoing}</span><span class="roll-new">${page.name}</span>`;
+    slot2NewEl.getBoundingClientRect(); // force reflow so the transition plays
+    slot2NewEl.classList.add('swap');
+    setTimeout(() => {
+      slot2NewEl.textContent = page.name;
+      slot2NewEl.classList.remove('swap');
+    }, 400);
+    document.getElementById('slot2MeasureB').textContent = page.name;
+    document.getElementById('slot3New').textContent = '';
+    document.getElementById('slot3MeasureB').textContent = '';
+    buildInfoContent(key);
+    pageWhiteOverlay.scrollTop = 0;
+    navbarPill.classList.remove('scrolled-up');
+    pageWhiteOverlay.classList.add('active');
+    navbarPill.classList.add('project-active');
+    setSlotWidths(true);
+    stackStageEl.style.pointerEvents = 'none';
+    stackProgressEl.style.opacity = '0';
+    stackProgressEl.style.pointerEvents = 'none';
+  }
+  document.getElementById('slot1Old').addEventListener('click', () => enterInfoView('about'));
+  document.getElementById('slot2Old').addEventListener('click', () => enterInfoView('playground'));
+
   function exitProjectView(){
     if (!inProjectView) return;
     inProjectView = false;
+    document.getElementById('csContent').classList.remove('info-mode');
     pageWhiteOverlay.classList.remove('active');
     navbarPill.classList.remove('project-active', 'scrolled-up');
     setSlotWidths(false);
