@@ -886,9 +886,9 @@
   .about-carousel{
     position:relative;
     width:100%;
-    max-width:380px;
+    max-width:560px;
     margin:0 auto;
-    aspect-ratio:4 / 5;
+    aspect-ratio:1 / 1;
     border-radius:16px;
     overflow:hidden;
     background:#EDEEF1;
@@ -909,8 +909,8 @@
     position:absolute;
     top:50%;
     transform:translateY(-50%);
-    width:34px;
-    height:34px;
+    width:40px;
+    height:40px;
     border:none;
     border-radius:50%;
     background:rgba(255,255,255,.86);
@@ -948,14 +948,10 @@
     transform:scale(1.25);
   }
   .about-grid{
-    display:grid;
-    grid-template-columns:1fr 380px;
-    gap:64px;
-    align-items:start;
+    display:block;
   }
-  @media (max-width:860px){
-    .about-grid{ grid-template-columns:1fr; gap:40px; }
-    .about-carousel{ max-width:100%; }
+  .about-photos{
+    margin-top:72px;
   }
   .cs-side-nav{
     position:fixed;
@@ -1997,6 +1993,7 @@
   }
 
   let sideNavItems = [];
+  let stackHideTimer = null;
   function updateActiveNavLink(){
     const nav = document.getElementById('csSideNav');
     if (!nav || !sideNavItems.length) return;
@@ -2039,6 +2036,8 @@
     if (inProjectView) return;
     inProjectView = true;
     cursorTip.classList.remove('show');
+    clearTimeout(stackHideTimer);
+    stackStageEl.style.visibility = '';
     const projectName = PROJECT_NAMES[i] || '';
     const slot2NewEl = document.getElementById('slot2New');
     // match the roll used when moving project -> project
@@ -2063,10 +2062,14 @@
     stackStageEl.style.pointerEvents = 'none';
     stackProgressEl.style.opacity = '0';
     stackProgressEl.style.pointerEvents = 'none';
+    // once the overlay has faded in, take the home page out of the paint tree so
+    // its hero letters / card logos can't show through
+    clearTimeout(stackHideTimer);
+    stackHideTimer = setTimeout(() => { if (inProjectView) stackStageEl.style.visibility = 'hidden'; }, 620);
   }
   // About / Playground use the same transition as entering a project frame
   const INFO_PAGES = {
-    about: { name: 'About', heading: 'Hey, I\u2019m Justin!', body: '<div class="about-grid"><div class="about-body"><div class="about-role">Product Designer</div><p>I think deeply about the products I design and the people they are designed for. Currently thinking about the future of design and technology.</p><p>Outside of product design I am:</p><ul class="about-list"><li>Tutoring students at C2 Education. I like teaching.</li><li>Painting landscapes. Bob Ross is my idol.</li><li>Trying to learn Mandarin. Apologies to my ancestors.</li></ul><p>I believe life is about craftsmanship: crafting skills, adventures, and memories. If you would like me to craft your next project, let\u2019s get in touch.</p><div class="about-links"><a href="#" data-placeholder="linkedin">LinkedIn</a><a href="#" data-placeholder="email">Email</a></div></div><div><div class="about-carousel" id="aboutCarousel"><img class="active" src="about_1.jpg" alt="Sunrise above the clouds on a hike"><img src="about_2.jpg" alt="Wat Pho reclining Buddha, Bangkok"><img src="about_3.jpg" alt="Mountain burning festival at night"><img src="about_4.jpg" alt="Mount Rainier"><button class="about-arrow prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="about-arrow next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="about-dots" id="aboutDots"></div></div></div>' },
+    about: { name: 'About', heading: 'Hey, I\u2019m Justin!', body: '<div class="about-grid"><div class="about-body"><div class="about-role">Product Designer</div><p>I think deeply about the products I design and the people they are designed for. Currently thinking about the future of design and technology.</p><p>Outside of product design I am:</p><ul class="about-list"><li>Tutoring students at C2 Education. I like teaching.</li><li>Painting landscapes. Bob Ross is my idol.</li><li>Trying to learn Mandarin. Apologies to my ancestors.</li></ul><p>I believe life is about craftsmanship: crafting skills, adventures, and memories. If you would like me to craft your next project, let\u2019s get in touch.</p><div class="about-links"><a href="#" data-placeholder="linkedin">LinkedIn</a><a href="#" data-placeholder="email">Email</a></div></div><div class="about-photos"><div class="about-carousel" id="aboutCarousel"><img class="active" src="about_1.jpg?v=2" alt="Sunrise above the clouds on a hike"><img src="about_2.jpg?v=2" alt="Wat Pho reclining Buddha, Bangkok"><img src="about_3.jpg?v=2" alt="Mountain burning festival at night"><img src="about_4.jpg?v=2" alt="Mount Rainier"><button class="about-arrow prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="about-arrow next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="about-dots" id="aboutDots"></div></div></div>' },
     playground: { name: 'Playground', heading: 'Playground', body: '<p class="cs-desc">Coming soon.</p>' }
   };
   function buildInfoContent(key){
@@ -2108,13 +2111,24 @@
       slides.forEach((s, k) => s.classList.toggle('active', k === i));
       dots.forEach((d, k) => d.classList.toggle('active', k === i));
     }
-    wrap.querySelector('.about-arrow.prev').addEventListener('click', () => show(i - 1));
-    wrap.querySelector('.about-arrow.next').addEventListener('click', () => show(i + 1));
+    wrap.querySelector('.about-arrow.prev').addEventListener('click', () => { show(i - 1); restart(); });
+    wrap.querySelector('.about-arrow.next').addEventListener('click', () => { show(i + 1); restart(); });
+    dots.forEach((d, n) => d.addEventListener('click', restart));
+    function restart(){
+      clearInterval(aboutTimer);
+      aboutTimer = setInterval(() => show(i + 1), 4200);
+    }
+    wrap.addEventListener('mouseenter', () => clearInterval(aboutTimer));
+    wrap.addEventListener('mouseleave', restart);
+    restart();
   }
+  let aboutTimer = null;
   function enterInfoView(key){
     if (inProjectView) return;
     inProjectView = true;
     cursorTip.classList.remove('show');
+    clearTimeout(stackHideTimer);
+    stackStageEl.style.visibility = '';
     const page = INFO_PAGES[key];
     const slot2NewEl = document.getElementById('slot2New');
     const outgoing = slot2NewEl.textContent || document.getElementById('slot2Old').textContent || '';
@@ -2137,6 +2151,10 @@
     stackStageEl.style.pointerEvents = 'none';
     stackProgressEl.style.opacity = '0';
     stackProgressEl.style.pointerEvents = 'none';
+    // once the overlay has faded in, take the home page out of the paint tree so
+    // its hero letters / card logos can't show through
+    clearTimeout(stackHideTimer);
+    stackHideTimer = setTimeout(() => { if (inProjectView) stackStageEl.style.visibility = 'hidden'; }, 620);
   }
   document.getElementById('slot1Old').addEventListener('click', () => enterInfoView('about'));
   document.getElementById('slot2Old').addEventListener('click', () => enterInfoView('playground'));
@@ -2144,6 +2162,8 @@
   function exitProjectView(){
     if (!inProjectView) return;
     inProjectView = false;
+    clearInterval(aboutTimer);
+    stackStageEl.style.visibility = '';
     document.getElementById('csContent').classList.remove('info-mode');
     pageWhiteOverlay.classList.remove('active');
     navbarPill.classList.remove('project-active', 'scrolled-up');
