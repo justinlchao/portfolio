@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 36" width="440" height="360" role="img" aria-label="JC monogram">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 74" width="460" height="370" role="img" aria-label="JC monogram">
   <g fill="none" stroke="#14151A" stroke-linecap="round" stroke-linejoin="round">
-    <!-- C: true circle, left edge tangent to the J stem so the two never cross -->
-    <path d="M39 25.4 A14 14 0 1 1 39 8.6" stroke-width="3.2"/>
-    <!-- J: stem sits on the circle's leftmost point, hook clears the C's lower arc -->
-    <path d="M13.5 4 V23 A7.5 7.5 0 0 1 6 30.5 H4" stroke-width="3.2"/>
+    <!-- C: tall ellipse, its left edge sitting on the J stem's centreline -->
+    <path d="M81.2 46.8 A26.5 31.5 0 1 1 81.2 24.2" stroke-width="7.4"/>
+    <!-- J: stem plus a hook sweeping left at the foot -->
+    <path d="M29.5 4 V50 A16 16 0 0 1 13.5 66 H5.5" stroke-width="7.4"/>
     <!-- two eyes -->
-    <path d="M24.9 17.4 Q27.1 15.2 29.3 17.4" stroke-width="2.4"/>
-    <path d="M33.3 17.4 Q35.5 15.2 37.7 17.4" stroke-width="2.4"/>
+    <path d="M57.8 36.6 Q62 33.1 66.2 36.6" stroke-width="4"/>
+    <path d="M77.8 36.6 Q82 33.1 86.2 36.6" stroke-width="4"/>
   </g>
 </svg>
