@@ -952,6 +952,44 @@
   .about-photos{
     margin-top:120px;
   }
+  .gallery-intro{
+    font-family:'Inter', var(--font-system);
+    font-weight:400;
+    font-size:17px;
+    line-height:1.65;
+    color:#4E5058;
+    letter-spacing:-.02em;
+    margin:0 0 64px;
+    max-width:620px;
+  }
+  .gallery-item{
+    margin:0 0 88px;
+  }
+  .gallery-item:last-child{
+    margin-bottom:0;
+  }
+  .gallery-item img{
+    display:block;
+    width:100%;
+    max-width:820px;
+    height:auto;
+    border-radius:14px;
+    background:#EDEEF1;
+  }
+  .gallery-item figcaption{
+    font-family:'Inter', var(--font-system);
+    font-weight:400;
+    font-size:14.5px;
+    line-height:1.55;
+    color:#8A8D94;
+    letter-spacing:-.01em;
+    margin-top:16px;
+    max-width:820px;
+  }
+  .gallery-item figcaption em{
+    font-style:italic;
+    color:#4E5058;
+  }
   .cs-side-nav{
     position:fixed;
     left:calc(50% - 560px);
@@ -1422,9 +1460,9 @@
   </div>
   <span class="nav-arrow" id="navArrow"><svg viewBox="0 0 24 24" fill="none" width="100%" height="100%"><path d="M9 8.5 Q9 7 10.7 8.1 L15.5 10.9 Q17 12 15.5 13.1 L10.7 15.9 Q9 17 9 15.5 Z" fill="currentColor"/></svg></span>
   <div class="nav-slot" id="slot2">
-    <span class="slot-measure" id="slot2MeasureA">Playground</span>
+    <span class="slot-measure" id="slot2MeasureA">Gallery</span>
     <span class="slot-measure" id="slot2MeasureB"></span>
-    <div class="slot-content slot-old" id="slot2Old">Playground</div>
+    <div class="slot-content slot-old" id="slot2Old">Gallery</div>
     <div class="slot-content slot-new" id="slot2New"></div>
   </div>
   <div class="nav-slot" id="slot3">
@@ -2069,7 +2107,7 @@
   // About / Playground use the same transition as entering a project frame
   const INFO_PAGES = {
     about: { name: 'About', heading: 'Hey, I\u2019m Justin!', logo: 'logo_jc.svg?v=4', body: '<div class="about-grid"><div class="about-body"><div class="about-role">Product Designer</div><p>I think deeply about the products I design and the people they are designed for. Currently thinking about the future of design and technology.</p><p>Outside of product design I am:</p><ul class="about-list"><li>Tutoring students at C2 Education (I like teaching)</li><li>Painting landscapes (Bob Ross is my idol)</li><li>Trying to learn Mandarin (apologies to my ancestors)</li></ul><p>I believe life is about craftsmanship: crafting great products, adventures, and memories. If you would like me to craft your next project, let\u2019s get in touch.</p><div class="about-links"><a href="#" data-placeholder="linkedin">LinkedIn</a><a href="#" data-placeholder="email">Email</a></div></div><div class="about-photos"><div class="about-carousel" id="aboutCarousel"><img class="active" src="about_1.jpg?v=2" alt="Sunrise above the clouds on a hike"><img src="about_2.jpg?v=2" alt="Wat Pho reclining Buddha, Bangkok"><img src="about_3.jpg?v=2" alt="Mountain burning festival at night"><img src="about_4.jpg?v=2" alt="Mount Rainier"><button class="about-arrow prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="about-arrow next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="about-dots" id="aboutDots"></div></div></div>' },
-    playground: { name: 'Playground', heading: 'Playground', body: '<p class="cs-desc">Coming soon.</p>' }
+    gallery: { name: 'Gallery', heading: 'Gallery', body: '<p class="gallery-intro">A few landscapes from the easel. Mostly acrylic, mostly on weekends.</p><figure class="gallery-item"><img src="gallery_1.jpg" alt="Holding a painting of a wooded path in autumn"><figcaption>A painting I did as a gift for a friend</figcaption></figure><figure class="gallery-item"><img src="gallery_2.jpg" alt="Three small mountain landscape canvases side by side"><figcaption>Paint night with friends! Mine is in the middle.</figcaption></figure><figure class="gallery-item"><img src="gallery_3.jpg" alt="Acrylic painting of a jacaranda tree beside a rocky stream"><figcaption><em>Jacaranda Reflections</em>, Acrylic</figcaption></figure>' }
   };
   function buildInfoContent(key){
     const page = INFO_PAGES[key];
@@ -2166,7 +2204,7 @@
     stackHideTimer = setTimeout(() => { if (inProjectView) stackStageEl.style.visibility = 'hidden'; }, 620);
   }
   document.getElementById('slot1Old').addEventListener('click', () => enterInfoView('about'));
-  document.getElementById('slot2Old').addEventListener('click', () => enterInfoView('playground'));
+  document.getElementById('slot2Old').addEventListener('click', () => enterInfoView('gallery'));
 
   function exitProjectView(){
     if (!inProjectView) return;
