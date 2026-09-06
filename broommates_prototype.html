@@ -403,7 +403,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     '  height: 700px !important; overflow: visible !important;',
     '  align-items: center !important; justify-content: flex-start !important; }',
     '#dc-root > div > div > div { transform: scale(0.79) !important;',
-    '  transform-origin: top center !important; }'
+    '  transform-origin: top center !important; filter: none !important; }',
+    '#dc-root > div > div > div > div { box-shadow: none !important; }'
   ].join('\n');
 
   function apply() {
