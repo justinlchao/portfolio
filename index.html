@@ -818,6 +818,145 @@
   #slot1Old, #slot2Old{
     cursor:pointer;
   }
+  .about-role{
+    font-family:'Inter', var(--font-system);
+    font-weight:400;
+    font-size:15px;
+    letter-spacing:-.01em;
+    color:#8A8D94;
+    margin:6px 0 26px;
+  }
+  .about-body p{
+    font-family:'Inter', var(--font-system);
+    font-weight:400;
+    font-size:17px;
+    line-height:1.65;
+    color:#4E5058;
+    letter-spacing:-.02em;
+    margin:0 0 20px;
+  }
+  .about-list{
+    list-style:none;
+    margin:0 0 20px;
+    padding:0;
+  }
+  .about-list li{
+    font-family:'Inter', var(--font-system);
+    font-weight:400;
+    font-size:17px;
+    line-height:1.65;
+    color:#4E5058;
+    letter-spacing:-.02em;
+    padding-left:18px;
+    position:relative;
+  }
+  .about-list li::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:12px;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:#C5C7CC;
+  }
+  .about-links{
+    display:flex;
+    gap:10px;
+    margin-top:28px;
+  }
+  .about-links a{
+    font-family:'Inter', var(--font-system);
+    font-weight:400;
+    font-size:14.5px;
+    letter-spacing:-.01em;
+    color:#14151A;
+    text-decoration:none;
+    padding:9px 18px;
+    border:1px solid #E3E5EA;
+    border-radius:999px;
+    background:var(--paper);
+    transition:background .2s ease, border-color .2s ease, transform .2s ease;
+  }
+  .about-links a:hover{
+    background:#EFEFF1;
+    border-color:#D4D6DB;
+    transform:translateY(-1px);
+  }
+  .about-carousel{
+    position:relative;
+    width:100%;
+    max-width:380px;
+    margin:0 auto;
+    aspect-ratio:4 / 5;
+    border-radius:16px;
+    overflow:hidden;
+    background:#EDEEF1;
+  }
+  .about-carousel img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:opacity .45s ease;
+  }
+  .about-carousel img.active{
+    opacity:1;
+  }
+  .about-arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.86);
+    color:#14151A;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:2;
+    opacity:0;
+    transition:opacity .25s ease, background .2s ease;
+  }
+  .about-carousel:hover .about-arrow{ opacity:1; }
+  .about-arrow:hover{ background:#fff; }
+  .about-arrow.prev{ left:12px; }
+  .about-arrow.next{ right:12px; }
+  .about-dots{
+    display:flex;
+    justify-content:center;
+    gap:7px;
+    margin-top:14px;
+  }
+  .about-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    border:none;
+    padding:0;
+    background:#D4D6DB;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .about-dot.active{
+    background:#14151A;
+    transform:scale(1.25);
+  }
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 380px;
+    gap:64px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .about-grid{ grid-template-columns:1fr; gap:40px; }
+    .about-carousel{ max-width:100%; }
+  }
   .cs-side-nav{
     position:fixed;
     left:calc(50% - 560px);
@@ -1927,8 +2066,8 @@
   }
   // About / Playground use the same transition as entering a project frame
   const INFO_PAGES = {
-    about: { name: 'About', body: '<p class="cs-desc">Coming soon.</p>' },
-    playground: { name: 'Playground', body: '<p class="cs-desc">Coming soon.</p>' }
+    about: { name: 'About', heading: 'Hey, I\u2019m Justin!', body: '<div class="about-grid"><div class="about-body"><div class="about-role">Product Designer</div><p>I think deeply about the products I design and the people they are designed for. Currently thinking about the future of design and technology.</p><p>Outside of product design I am:</p><ul class="about-list"><li>Tutoring students at C2 Education. I like teaching.</li><li>Painting landscapes. Bob Ross is my idol.</li><li>Trying to learn Mandarin. Apologies to my ancestors.</li></ul><p>I believe life is about craftsmanship: crafting skills, adventures, and memories. If you would like me to craft your next project, let\u2019s get in touch.</p><div class="about-links"><a href="#" data-placeholder="linkedin">LinkedIn</a><a href="#" data-placeholder="email">Email</a></div></div><div><div class="about-carousel" id="aboutCarousel"><img class="active" src="about_1.jpg" alt="Sunrise above the clouds on a hike"><img src="about_2.jpg" alt="Wat Pho reclining Buddha, Bangkok"><img src="about_3.jpg" alt="Mountain burning festival at night"><img src="about_4.jpg" alt="Mount Rainier"><button class="about-arrow prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="about-arrow next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="about-dots" id="aboutDots"></div></div></div>' },
+    playground: { name: 'Playground', heading: 'Playground', body: '<p class="cs-desc">Coming soon.</p>' }
   };
   function buildInfoContent(key){
     const page = INFO_PAGES[key];
@@ -1937,8 +2076,9 @@
     nav.classList.remove('visible');
     sideNavItems = [];
     document.getElementById('csContent').classList.add('info-mode');
-    document.getElementById('csTitle').textContent = page.name;
+    document.getElementById('csTitle').textContent = page.heading || page.name;
     document.getElementById('csDescBlock').innerHTML = page.body || '';
+    if (key === 'about') initAboutCarousel();
     document.getElementById('csMetaExtra').innerHTML = '';
     document.getElementById('csTeamList').innerHTML = '';
     document.getElementById('csYear').textContent = '';
@@ -1947,6 +2087,29 @@
     preview.className = 'cs-preview-box';
     document.getElementById('csSections').innerHTML = '';
     document.getElementById('csNext').innerHTML = '';
+  }
+  function initAboutCarousel(){
+    const wrap = document.getElementById('aboutCarousel');
+    const dotsEl = document.getElementById('aboutDots');
+    if (!wrap || !dotsEl) return;
+    const slides = [...wrap.querySelectorAll('img')];
+    let i = 0;
+    dotsEl.innerHTML = '';
+    const dots = slides.map((_, n) => {
+      const d = document.createElement('button');
+      d.className = 'about-dot' + (n === 0 ? ' active' : '');
+      d.setAttribute('aria-label', `Photo ${n + 1}`);
+      d.addEventListener('click', () => show(n));
+      dotsEl.appendChild(d);
+      return d;
+    });
+    function show(n){
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle('active', k === i));
+      dots.forEach((d, k) => d.classList.toggle('active', k === i));
+    }
+    wrap.querySelector('.about-arrow.prev').addEventListener('click', () => show(i - 1));
+    wrap.querySelector('.about-arrow.next').addEventListener('click', () => show(i + 1));
   }
   function enterInfoView(key){
     if (inProjectView) return;
