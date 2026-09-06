@@ -2079,6 +2079,9 @@
     nav.classList.remove('visible');
     sideNavItems = [];
     document.getElementById('csContent').classList.add('info-mode');
+    const logoEl = document.getElementById('csLogo');
+    logoEl.style.display = 'none';   // populateCaseStudy sets this inline, which beats the info-mode rule
+    logoEl.removeAttribute('src');
     document.getElementById('csTitle').textContent = page.heading || page.name;
     document.getElementById('csDescBlock').innerHTML = page.body || '';
     if (key === 'about') initAboutCarousel();
