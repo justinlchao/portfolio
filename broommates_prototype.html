@@ -404,7 +404,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     '  align-items: center !important; justify-content: flex-start !important; }',
     '#dc-root > div > div > div { transform: scale(0.79) !important;',
     '  transform-origin: top center !important; filter: none !important; }',
-    '#dc-root > div > div > div > div { box-shadow: none !important; }'
+    '#dc-root > div > div > div > div { box-shadow: none !important; }',
+    /* soften the hard brown-to-cream edge at the top of the tab bar */
+    'div:has(> [data-hit="tabHome"]) { box-shadow: 0 -20px 32px rgba(43,20,18,0.40) !important; }'
   ].join('\n');
 
   function apply() {
