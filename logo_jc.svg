@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2.5 -2.5 45 37" width="450" height="370" role="img" aria-label="JC monogram">
+  <g fill="none" stroke="#14151A" stroke-linecap="round" stroke-linejoin="round">
+    <!-- J: stem with a hook sweeping left at the foot -->
+    <path d="M13.5 1.5 V23.2 A6.3 6.3 0 0 1 7.2 29.5 H1.5" stroke-width="3"/>
+    <!-- C: ellipse arc left open on the right -->
+    <path d="M38 21.2 A13.4 15.5 0 1 1 38 9.8" stroke-width="3"/>
+    <!-- two small arches sitting in the C's opening -->
+    <path d="M25.2 16.2 Q27.5 13.9 29.8 16.2" stroke-width="2.4"/>
+    <path d="M34.7 16.2 Q37.0 13.9 39.3 16.2" stroke-width="2.4"/>
+  </g>
+</svg>
