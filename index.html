@@ -659,36 +659,53 @@
     border-top:1px solid #E4E4E7;
   }
   .cs-research-link{
-    display:block;
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
     margin-top:24px;
-    padding:20px 24px;
-    background:#F8F8F8;
-    border:1px solid #E4E4E7;
-    border-radius:12px;
+    padding:22px 26px;
+    background:#FFF3E0;
+    border:1px solid #F2D3A4;
+    border-left:4px solid #FFBE6E;
+    border-radius:14px;
     text-decoration:none;
-    transition:background 180ms ease, border-color 180ms ease;
+    transition:background 200ms ease, border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
   }
   .cs-research-link:hover{
-    background:#F1F1F2;
-    border-color:#D4D4D8;
+    background:#FFEBCE;
+    border-color:#E9C48E;
+    border-left-color:#F0A94F;
+    transform:translateY(-2px);
+    box-shadow:0 10px 26px rgba(120,74,40,0.13);
+  }
+  .cs-research-mark{
+    flex-shrink:0;
+    font-family:'Inter', var(--font-system);
+    font-size:34px;
+    line-height:1;
+    font-weight:600;
+    color:#F0A94F;
+    margin-top:-2px;
+  }
+  .cs-research-body{
+    display:block;
   }
   .cs-research-quote{
     font-family:'Inter', var(--font-system);
-    font-weight:400;
-    font-size:16px;
+    font-weight:450;
+    font-size:16.5px;
     line-height:1.55;
-    color:#2A2C33;
+    color:#4C2C29;
     letter-spacing:-.02em;
-    font-style:italic;
     margin:0;
   }
   .cs-research-source{
     display:block;
-    margin-top:10px;
+    margin-top:12px;
     font-family:'Inter', var(--font-system);
     font-weight:500;
     font-size:13px;
-    color:#8A8D94;
+    color:#A85E3C;
     letter-spacing:-.01em;
   }
   .cs-dev-notice{
@@ -1604,7 +1621,7 @@
         { label: 'Exploration #3', title: 'Leaderboard', text: "I ended up choosing a leaderboard system because it provided that visibility while giving users a simple reason to stay engaged. Seeing your position change over time creates a sense of progress and friendly competition.", image: 'exploration_leaderboard.png' }
       ],
       moreSections: [
-        { label: 'Design Philosophy', title: 'Balancing cooperation, communication, and competition', text: ["These three core elements of the application needed to work in harmony, not against each other. For example, too much competition would give Broommates a hyper-competitive design.", "I wanted the competitive elements to act as a motivator rather than the main goal. Features like points, progress, and the leaderboard gave users a way to visualize their contributions, while the social feed and shared activities shifted the focus back toward the household as a whole."], customHtml: '<a class="cs-research-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13323923/" target="_blank" rel="noopener"><p class="cs-research-quote">\u201cpeople appear to primarily seek common ground by establishing a shared social identity with the receiver\u201d</p><span class="cs-research-source">Read the research \u2192</span></a>', mediaHeight: 'auto', mediaBg: 'transparent' },
+        { label: 'Design Philosophy', title: 'Balancing cooperation, communication, and competition', text: ["These three core elements of the application needed to work in harmony, not against each other. For example, too much competition would give Broommates a hyper-competitive design.", "I wanted the competitive elements to act as a motivator rather than the main goal. Features like points, progress, and the leaderboard gave users a way to visualize their contributions, while the social feed and shared activities shifted the focus back toward the household as a whole."], customHtml: '<a class="cs-research-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13323923/" target="_blank" rel="noopener"><span class="cs-research-mark">\u201c</span><span class="cs-research-body"><p class="cs-research-quote">people appear to primarily seek common ground by establishing a shared social identity with the receiver</p><span class="cs-research-source">PubMed Central, PMC13323923</span></span></a>', mediaHeight: 'auto', mediaBg: 'transparent' },
         { label: 'Design Decision', title: 'Turning roommates into \u201cbroom-mates\u201d', text: ["Incorporating a social feed into the application creates that shared-house identity, without making any one user feel bad for maybe falling behind in their chores.", "This also helped connect the rest of the product. Chores, points, achievements, and other household activities could become things roommates experienced together rather than isolated actions performed by individual users."] },
         { label: 'Design Decision', title: 'Iterating with AI', text: ["One of the biggest things I learned from this project was how useful AI could be as an iteration partner. I used AI to explore different directions for my wireframes and prototypes, quickly generate alternative layouts, and challenge decisions I had already made. This made it much easier to move beyond my first idea instead of becoming attached to it.", "At the same time, I learned that AI-generated suggestions aren\u2019t automatically good design solutions. Some ideas looked interesting but didn\u2019t actually support the goals of Broommates or fit the way I wanted users to interact with the product. I had to evaluate each suggestion through the lens of the user, the problem, and the overall experience."], mediaHeight: 'auto', mediaBg: '#F8F8F8', customHtml: '<img src="broommates_wireframes_ai.png?v=2" alt="Broommates onboarding wireframe explorations" style="width:100%;height:auto;display:block;">' },
         { label: 'Prototype', title: 'Prototype', hideLabel: true, centerHeader: true, mediaHeight: '800px', mediaBg: 'transparent', customHtml: '<iframe src="broommates_prototype.html?v=2026-09-06a" title="Broommates interactive prototype" loading="lazy" scrolling="no" style="width:100%;height:100%;border:0;display:block;background:transparent;overflow:hidden;"></iframe>' },
