@@ -1281,6 +1281,105 @@
   .gallery-intro-tight{
     margin-bottom:36px;
   }
+  .farewell-hello{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 32px;
+    text-align:center;
+    font-family:'Inter', var(--font-system);
+    font-weight:500;
+    font-size:31px;
+    letter-spacing:-.025em;
+    color:#14151A;
+    z-index:1;
+    pointer-events:none;
+    opacity:1;
+    transition:opacity .45s ease;
+  }
+  .stack-card.farewell-revealed .farewell-hello{
+    opacity:0;
+    transition:opacity .4s ease .35s;
+  }
+  /* colour bands drop in from the top, one after another */
+  .farewell-panel{
+    transform:translateY(-101%);
+    transition:transform .78s cubic-bezier(.22,.61,.36,1),
+               flex-grow .5s cubic-bezier(.22,.61,.36,1),
+               filter .35s ease;
+  }
+  .farewell-revealed .farewell-panel{
+    transform:translateY(0);
+  }
+  .farewell-revealed .farewell-panel:nth-child(1){ transition-delay:.30s, 0s, 0s; }
+  .farewell-revealed .farewell-panel:nth-child(2){ transition-delay:.42s, 0s, 0s; }
+  .farewell-revealed .farewell-panel:nth-child(3){ transition-delay:.54s, 0s, 0s; }
+  .farewell-panel > *{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .5s ease, transform .5s cubic-bezier(.22,.61,.36,1);
+  }
+  .farewell-revealed .farewell-panel > *{
+    opacity:1;
+    transform:none;
+  }
+  .farewell-revealed .farewell-panel:nth-child(1) > *{ transition-delay:.72s; }
+  .farewell-revealed .farewell-panel:nth-child(2) > *{ transition-delay:.84s; }
+  .farewell-revealed .farewell-panel:nth-child(3) > *{ transition-delay:.96s; }
+  .resume-hint{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:17px;
+    height:17px;
+    margin-left:7px;
+    border-radius:50%;
+    border:1px solid #D4D6DB;
+    background:transparent;
+    color:#8A8D94;
+    font-family:'Inter', var(--font-system);
+    font-size:10.5px;
+    font-weight:600;
+    line-height:1;
+    cursor:pointer;
+    vertical-align:middle;
+    transition:background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .resume-hint:hover{
+    background:#EFEFF1;
+    color:#14151A;
+    border-color:#B9BCC4;
+  }
+  .resume-hint-text{
+    font-family:'Inter', var(--font-system);
+    font-size:12.5px;
+    color:#8A8D94;
+    letter-spacing:-.01em;
+    margin-top:9px;
+    opacity:0;
+    max-height:0;
+    overflow:hidden;
+    transition:opacity .25s ease, max-height .25s ease;
+  }
+  .resume-hint-text.show{
+    opacity:1;
+    max-height:40px;
+  }
+  .resume-error{
+    font-family:'Inter', var(--font-system);
+    font-size:12.5px;
+    color:#C2483C;
+    letter-spacing:-.01em;
+    margin-top:9px;
+    min-height:16px;
+  }
+  .resume-label-row{
+    display:flex;
+    align-items:center;
+    margin-bottom:6px;
+  }
   .cs-side-nav{
     position:fixed;
     left:calc(50% - 560px);
@@ -1866,6 +1965,7 @@
     </div>
   </article>
   <article class="stack-card hero-card" data-index="4">
+    <div class="farewell-hello">Hope you enjoyed your stay!</div>
     <div class="farewell-panels" id="farewellPanels"></div>
     <div class="video-depth-overlay"></div>
       <div class="video-caption-gloss">
@@ -2617,6 +2717,59 @@
     caption.style.cursor = 'pointer';
     caption.addEventListener('click', e => { e.stopPropagation(); openContact(); });
   })();
+  // resume sits behind a light password gate
+  const RESUME_PASSWORD = '123';
+  let resumeOverlay = null;
+  function openResume(){
+    if (!resumeOverlay){
+      resumeOverlay = document.createElement('div');
+      resumeOverlay.className = 'contact-overlay';
+      resumeOverlay.innerHTML =
+        '<div class="contact-card">' +
+          '<button class="contact-close" aria-label="Close">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
+          '</button>' +
+          '<div class="contact-eyebrow">Protected</div>' +
+          '<h2 class="contact-title">Enter the password</h2>' +
+          '<div class="contact-field">' +
+            '<div class="resume-label-row">' +
+              '<label for="rsPass" style="margin:0">Password</label>' +
+              '<button class="resume-hint" type="button" aria-label="Password hint">?</button>' +
+            '</div>' +
+            '<input id="rsPass" type="password" placeholder="\u2022 \u2022 \u2022" autocomplete="off">' +
+            '<div class="resume-hint-text">It\u2019s 1 2 3.</div>' +
+            '<div class="resume-error"></div>' +
+          '</div>' +
+          '<div class="contact-actions"><button class="contact-send">View resume</button></div>' +
+        '</div>';
+      document.body.appendChild(resumeOverlay);
+      const input = resumeOverlay.querySelector('#rsPass');
+      const err = resumeOverlay.querySelector('.resume-error');
+      const hint = resumeOverlay.querySelector('.resume-hint-text');
+      const close = () => resumeOverlay.classList.remove('open');
+      resumeOverlay.addEventListener('click', e => { if (e.target === resumeOverlay) close(); });
+      resumeOverlay.querySelector('.contact-close').addEventListener('click', close);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+      resumeOverlay.querySelector('.resume-hint').addEventListener('click', () => hint.classList.toggle('show'));
+      const submit = () => {
+        if (input.value.replace(/\s/g, '') === RESUME_PASSWORD){
+          err.textContent = '';
+          input.value = '';
+          close();
+          window.open('resume.pdf', '_blank', 'noopener');
+        } else {
+          err.textContent = 'That\u2019s not it. Try the hint.';
+        }
+      };
+      resumeOverlay.querySelector('.contact-send').addEventListener('click', submit);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+      input.addEventListener('input', () => { err.textContent = ''; });
+    }
+    resumeOverlay.classList.add('open');
+    setTimeout(() => resumeOverlay.querySelector('#rsPass').focus(), 260);
+  }
+  document.getElementById('slot3Old').style.cursor = 'pointer';
+  document.getElementById('slot3Old').addEventListener('click', openResume);
   document.getElementById('slot1New').addEventListener('click', exitProjectView);
 
 
@@ -2730,6 +2883,10 @@
         videoStarted[frontIndex] = true;
       }
       updateProgressDots(frontIndex);
+
+      // the farewell frame plays its reveal each time it becomes the front card
+      const farewellCard = document.querySelector('.stack-card[data-index="4"]');
+      if (farewellCard) farewellCard.classList.toggle('farewell-revealed', frontIndex === 4);
 
       // cards move via CSS transform under a potentially-stationary cursor, which doesn't fire a
       // native mouseenter/mousemove — re-check manually so the tooltip doesn't get stuck hidden
