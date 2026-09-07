@@ -877,6 +877,16 @@
     background:var(--paper);
     transition:background .2s ease, border-color .2s ease, transform .2s ease;
   }
+  .about-link-icon{
+    width:15px;
+    height:15px;
+    flex-shrink:0;
+  }
+  .about-links a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
   .about-links a:hover{
     background:#EFEFF1;
     border-color:#D4D6DB;
@@ -1125,6 +1135,141 @@
     .farewell-panel-logo{ width:44px; height:44px; border-radius:12px; }
     .farewell-panel-logo img{ width:30px; height:30px; }
   }
+  .contact-overlay{
+    position:fixed;
+    inset:0;
+    z-index:5200;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    background:rgba(248,248,248,.94);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .28s ease;
+  }
+  .contact-overlay.open{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .contact-card{
+    position:relative;
+    width:min(520px, 100%);
+    background:#fff;
+    border:1px solid #E9EAEE;
+    border-radius:18px;
+    padding:38px 38px 32px;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,.28);
+    transform:translateY(10px) scale(.985);
+    transition:transform .3s cubic-bezier(.22,.61,.36,1);
+  }
+  .contact-overlay.open .contact-card{
+    transform:none;
+  }
+  .contact-eyebrow{
+    font-family:'Inter', var(--font-system);
+    font-weight:500;
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#A9ACB3;
+    margin-bottom:10px;
+  }
+  .contact-title{
+    font-family:'Geist', var(--font-system);
+    font-weight:400;
+    font-size:27px;
+    letter-spacing:-.03em;
+    color:#14151A;
+    margin:0 0 26px;
+  }
+  .contact-field{
+    margin-bottom:14px;
+  }
+  .contact-field label{
+    display:block;
+    font-family:'Inter', var(--font-system);
+    font-size:12.5px;
+    color:#8A8D94;
+    letter-spacing:-.01em;
+    margin-bottom:6px;
+  }
+  .contact-field input,
+  .contact-field textarea{
+    width:100%;
+    box-sizing:border-box;
+    font-family:'Inter', var(--font-system);
+    font-size:14.5px;
+    color:#14151A;
+    letter-spacing:-.01em;
+    background:var(--paper);
+    border:1px solid #E3E5EA;
+    border-radius:10px;
+    padding:11px 13px;
+    outline:none;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .contact-field textarea{
+    min-height:104px;
+    resize:vertical;
+  }
+  .contact-field input:focus,
+  .contact-field textarea:focus{
+    border-color:#B9BCC4;
+    background:#fff;
+  }
+  .contact-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:20px;
+  }
+  .contact-send{
+    font-family:'Inter', var(--font-system);
+    font-weight:500;
+    font-size:14.5px;
+    letter-spacing:-.01em;
+    color:#fff;
+    background:#14151A;
+    border:none;
+    border-radius:999px;
+    padding:11px 24px;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .contact-send:hover{
+    background:#2A2C33;
+    transform:translateY(-1px);
+  }
+  .contact-alt{
+    font-family:'Inter', var(--font-system);
+    font-size:13px;
+    color:#8A8D94;
+    letter-spacing:-.01em;
+  }
+  .contact-alt a{
+    color:#14151A;
+    text-decoration:none;
+    border-bottom:1px solid #D4D6DB;
+  }
+  .contact-close{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:32px;
+    height:32px;
+    border:none;
+    border-radius:50%;
+    background:var(--paper);
+    color:#14151A;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+  .contact-close:hover{ background:#EFEFF1; }
   .cs-side-nav{
     position:fixed;
     left:calc(50% - 560px);
@@ -2247,7 +2392,7 @@
   }
   // About / Playground use the same transition as entering a project frame
   const INFO_PAGES = {
-    about: { name: 'About', heading: 'Hey, I\u2019m Justin!', logo: 'logo_jc.svg?v=4', body: '<div class="about-grid"><div class="about-body"><div class="about-role">Product Designer</div><p>I think deeply about the products I design and the people they are designed for. Currently thinking about the future of design and technology.</p><p>Outside of product design I am:</p><ul class="about-list"><li>Tutoring students at C2 Education (I like teaching)</li><li>Painting landscapes (Bob Ross is my idol)</li><li>Trying to learn Mandarin (apologies to my ancestors)</li></ul><p>I believe life is about craftsmanship: crafting great products, adventures, and memories. If you would like me to help craft your next project, let\u2019s get in touch.</p><div class="about-links"><a href="https://www.linkedin.com/in/justinlchao/" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:justinchao50@gmail.com">Email</a></div></div><div class="about-photos"><div class="about-carousel" id="aboutCarousel"><img class="active" src="about_1.jpg?v=2" alt="Sunrise above the clouds on a hike"><img src="about_2.jpg?v=2" alt="Wat Pho reclining Buddha, Bangkok"><img src="about_3.jpg?v=2" alt="Mountain burning festival at night"><img src="about_4.jpg?v=2" alt="Mount Rainier"><img src="about_5.jpg" alt="Feeding a deer in Nara"><button class="about-arrow prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="about-arrow next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="about-dots" id="aboutDots"></div></div></div>' },
+    about: { name: 'About', heading: 'Hey, I\u2019m Justin!', logo: 'logo_jc.svg?v=4', body: '<div class="about-grid"><div class="about-body"><div class="about-role">Product Designer</div><p>I think deeply about the products I design and the people they are designed for. Currently thinking about the future of design and technology.</p><p>Outside of product design I am:</p><ul class="about-list"><li>Tutoring students at C2 Education (I like teaching)</li><li>Painting landscapes (Bob Ross is my idol)</li><li>Trying to learn Mandarin (apologies to my ancestors)</li></ul><p>I believe life is about craftsmanship: crafting great products, adventures, and memories. If you would like me to help craft your next project, let\u2019s get in touch.</p><div class="about-links"><a href="https://www.linkedin.com/in/justinlchao/" target="_blank" rel="noopener"><svg class="about-link-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 5a2 2 0 1 1-4-.02 2 2 0 0 1 4 .02zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.92v-6.57c0-3.65 4.77-3.98 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"/></svg>LinkedIn</a><a href="mailto:justinchao50@gmail.com"><svg class="about-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6"/></svg>Email</a></div></div><div class="about-photos"><div class="about-carousel" id="aboutCarousel"><img class="active" src="about_1.jpg?v=2" alt="Sunrise above the clouds on a hike"><img src="about_2.jpg?v=2" alt="Wat Pho reclining Buddha, Bangkok"><img src="about_3.jpg?v=2" alt="Mountain burning festival at night"><img src="about_4.jpg?v=2" alt="Mount Rainier"><img src="about_5.jpg" alt="Feeding a deer in Nara"><button class="about-arrow prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="about-arrow next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><div class="about-dots" id="aboutDots"></div></div></div>' },
     gallery: { name: 'Gallery', heading: 'Gallery', body: '<p class="gallery-intro">A few landscapes from the easel. Click any piece to see it larger.</p><div class="gallery-grid"><figure class="gallery-item"><img class="gallery-thumb" src="gallery_1.jpg?v=2" data-full="gallery_1_full.jpg" alt="Acrylic painting of a wooded path in autumn"><figcaption>A painting I did as a gift for a friend</figcaption></figure><figure class="gallery-item"><img class="gallery-thumb" src="gallery_2.jpg" alt="Three small mountain landscape canvases side by side"><figcaption>Paint night with friends! Mine is in the middle.</figcaption></figure><figure class="gallery-item"><img class="gallery-thumb" src="gallery_3.jpg" alt="Acrylic painting of a jacaranda tree beside a rocky stream"><figcaption><em>Jacaranda Reflections</em>, Acrylic</figcaption></figure></div>' }
   };
   function buildInfoContent(key){
@@ -2412,6 +2557,54 @@
       });
       wrap.appendChild(panel);
     });
+  })();
+  // contact window, opened from the final frame's caption
+  const CONTACT_EMAIL = 'justinchao50@gmail.com';
+  let contactOverlay = null;
+  function openContact(){
+    if (!contactOverlay){
+      contactOverlay = document.createElement('div');
+      contactOverlay.className = 'contact-overlay';
+      contactOverlay.innerHTML =
+        '<div class="contact-card">' +
+          '<button class="contact-close" aria-label="Close">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>' +
+          '</button>' +
+          '<div class="contact-eyebrow">Get in touch</div>' +
+          '<h2 class="contact-title">Let\u2019s build something</h2>' +
+          '<div class="contact-field"><label for="ctName">Your name</label><input id="ctName" type="text" placeholder="Jane Doe"></div>' +
+          '<div class="contact-field"><label for="ctSubject">Subject</label><input id="ctSubject" type="text" placeholder="A project I\u2019d like to talk about"></div>' +
+          '<div class="contact-field"><label for="ctBody">Message</label><textarea id="ctBody" placeholder="Tell me a bit about it..."></textarea></div>' +
+          '<div class="contact-actions">' +
+            '<button class="contact-send">Send email</button>' +
+            '<span class="contact-alt">or <a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + '</a></span>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(contactOverlay);
+      const close = () => contactOverlay.classList.remove('open');
+      contactOverlay.addEventListener('click', e => { if (e.target === contactOverlay) close(); });
+      contactOverlay.querySelector('.contact-close').addEventListener('click', close);
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+      contactOverlay.querySelector('.contact-send').addEventListener('click', () => {
+        const name = contactOverlay.querySelector('#ctName').value.trim();
+        const subject = contactOverlay.querySelector('#ctSubject').value.trim() || 'Hello from your portfolio';
+        const body = contactOverlay.querySelector('#ctBody').value.trim();
+        const signed = name ? `${body}\n\n\u2014 ${name}` : body;
+        // no backend here, so hand off to the visitor's own mail client
+        window.location.href = 'mailto:' + CONTACT_EMAIL +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(signed);
+      });
+    }
+    contactOverlay.classList.add('open');
+    setTimeout(() => contactOverlay.querySelector('#ctName').focus(), 260);
+  }
+  (function wireContactTrigger(){
+    const card = document.querySelector('.stack-card[data-index="4"]');
+    const caption = card && card.querySelector('.video-caption');
+    if (!caption) return;
+    caption.style.cursor = 'pointer';
+    caption.addEventListener('click', e => { e.stopPropagation(); openContact(); });
   })();
   document.getElementById('slot1New').addEventListener('click', exitProjectView);
 
