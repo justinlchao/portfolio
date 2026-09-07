@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="JC monogram">
+  <rect width="128" height="128" rx="28" fill="#FFFFFF"/>
+  <g transform="translate(18, 27)" fill="none" stroke="#14151A" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M81.2 46.8 A26.5 31.5 0 1 1 81.2 24.2" stroke-width="7.4"/>
+    <path d="M29.5 4 V42 C29.5 58 21 66 6 66" stroke-width="7.4"/>
+    <path d="M57.8 36.8 A6 6 0 0 1 66.2 36.8" stroke-width="4"/>
+    <path d="M77.8 36.8 A6 6 0 0 1 86.2 36.8" stroke-width="4"/>
+  </g>
+</svg>
