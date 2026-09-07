@@ -1069,7 +1069,7 @@
     display:flex;
     overflow:hidden;
     border-radius:20px;
-    z-index:1;
+    z-index:0;   /* must sit under the depth overlay and the caption pill */
   }
   .farewell-panel{
     flex:1 1 0;
@@ -1390,6 +1390,8 @@
     inset:0;
     pointer-events:none;
     opacity:0;
+    z-index:2;
+    border-radius:20px;
   }
   .video-caption-gloss{
     position:absolute;
