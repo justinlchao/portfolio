@@ -1789,7 +1789,9 @@
   const stackProgressEl = document.getElementById('stackProgress');
 
   pageWhiteOverlay.addEventListener('scroll', () => {
-    navbarPill.classList.toggle('scrolled-up', pageWhiteOverlay.scrollTop > 24);
+    // only while an overlay view is open — otherwise a stray scroll event fired
+    // during exit re-applies the bumped-up position on the home page
+    navbarPill.classList.toggle('scrolled-up', inProjectView && pageWhiteOverlay.scrollTop > 24);
   });
 
   const slots = [1, 2, 3].map(n => ({
@@ -2308,6 +2310,7 @@
   function exitProjectView(){
     if (!inProjectView) return;
     inProjectView = false;
+    pageWhiteOverlay.scrollTop = 0;
     clearInterval(aboutTimer);
     if (galleryLightbox) galleryLightbox.classList.remove('open');
     stackStageEl.style.visibility = '';
