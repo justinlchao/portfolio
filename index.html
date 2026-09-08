@@ -3011,21 +3011,19 @@
   // A trackpad flick keeps emitting momentum events long after the fingers lift, and
   // each one used to fire another step once the previous animation finished. Lock after
   // a step and only release once the wheel has been quiet for a moment.
+  // One gesture, one card. A trackpad flick emits ~30 events over more than a second
+  // (1000px+ of cumulative delta), so the only reliable end-of-gesture signal is the
+  // wheel going quiet. Stay locked until then — no delta threshold can tell a long
+  // momentum tail apart from a deliberate second scroll.
   let wheelLocked = false;
   let wheelIdleTimer = null;
-  let wheelSinceLock = 0;
   window.addEventListener('wheel', (e) => {
     if (inProjectView) return; // let native scroll happen inside the case-study content
     e.preventDefault();
     clearTimeout(wheelIdleTimer);
-    wheelIdleTimer = setTimeout(() => { wheelLocked = false; wheelSinceLock = 0; }, 140);
-    if (Math.abs(e.deltaY) < 3) return; // ignore the tail of the momentum curve
-    if (wheelLocked) {
-      wheelSinceLock += Math.abs(e.deltaY); // a sustained, deliberate scroll still advances
-      if (wheelSinceLock < 320) return;
-      wheelSinceLock = 0;
-    }
-    if (animating) return;
+    wheelIdleTimer = setTimeout(() => { wheelLocked = false; }, 160);
+    if (wheelLocked || animating) return;
+    if (Math.abs(e.deltaY) < 2) return;
     wheelLocked = true;
     step(e.deltaY > 0 ? 1 : -1);
   }, { passive: false });
