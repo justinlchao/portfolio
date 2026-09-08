@@ -3015,17 +3015,31 @@
   // (1000px+ of cumulative delta), so the only reliable end-of-gesture signal is the
   // wheel going quiet. Stay locked until then — no delta threshold can tell a long
   // momentum tail apart from a deliberate second scroll.
+  // One frame per scroll, whatever its size. A trackpad flick fires ~30 events whose
+  // deltas decay, so momentum is recognised by the delta falling; a rising delta means
+  // the user pushed again and should move another frame.
   let wheelLocked = false;
   let wheelIdleTimer = null;
+  let wheelPrevAbs = 0;
+  let wheelLastStep = 0;
   window.addEventListener('wheel', (e) => {
     if (inProjectView) return; // let native scroll happen inside the case-study content
     e.preventDefault();
+    const abs = Math.abs(e.deltaY);
+    const now = performance.now();
     clearTimeout(wheelIdleTimer);
-    wheelIdleTimer = setTimeout(() => { wheelLocked = false; }, 160);
-    if (wheelLocked || animating) return;
-    if (Math.abs(e.deltaY) < 2) return;
-    wheelLocked = true;
-    step(e.deltaY > 0 ? 1 : -1);
+    wheelIdleTimer = setTimeout(() => { wheelLocked = false; wheelPrevAbs = 0; }, 160);
+    const rising = abs > wheelPrevAbs * 1.15 + 2;
+    wheelPrevAbs = abs;
+    if (abs < 2 || animating) return;
+    if (!wheelLocked) {                       // first push of a new gesture
+      wheelLocked = true;
+      wheelLastStep = now;
+      step(e.deltaY > 0 ? 1 : -1);
+    } else if (rising && now - wheelLastStep > 480) {  // kept scrolling, so keep going
+      wheelLastStep = now;
+      step(e.deltaY > 0 ? 1 : -1);
+    }
   }, { passive: false });
 
   window.addEventListener('keydown', (e) => {
