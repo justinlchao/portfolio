@@ -1629,6 +1629,14 @@
     justify-content:flex-end;
     padding:32px;
   }
+  /* on shorter laptop screens the centred card creeps up under the navbar,
+     so shrink it a little and nudge the whole stack down */
+  @media (max-height:860px){
+    .stack-card{
+      height:min(460px, 56vh);
+      top:52%;
+    }
+  }
 
   .stack-card .card-tag{
     font-family:'JetBrains Mono', monospace;
@@ -3000,9 +3008,25 @@
     }
   }
 
+  // A trackpad flick keeps emitting momentum events long after the fingers lift, and
+  // each one used to fire another step once the previous animation finished. Lock after
+  // a step and only release once the wheel has been quiet for a moment.
+  let wheelLocked = false;
+  let wheelIdleTimer = null;
+  let wheelSinceLock = 0;
   window.addEventListener('wheel', (e) => {
     if (inProjectView) return; // let native scroll happen inside the case-study content
     e.preventDefault();
+    clearTimeout(wheelIdleTimer);
+    wheelIdleTimer = setTimeout(() => { wheelLocked = false; wheelSinceLock = 0; }, 140);
+    if (Math.abs(e.deltaY) < 3) return; // ignore the tail of the momentum curve
+    if (wheelLocked) {
+      wheelSinceLock += Math.abs(e.deltaY); // a sustained, deliberate scroll still advances
+      if (wheelSinceLock < 320) return;
+      wheelSinceLock = 0;
+    }
+    if (animating) return;
+    wheelLocked = true;
     step(e.deltaY > 0 ? 1 : -1);
   }, { passive: false });
 
